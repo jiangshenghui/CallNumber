@@ -1,0 +1,110 @@
+<resources>
+    <!--标题栏-->
+    <declare-styleable name="TitleBarView">
+        <!-- 中间标题 -->
+        <attr name="tb_centerText" format="string" />
+        <!-- 中间标题文字颜色 -->
+        <attr name="tb_centerTextColor" format="color" />
+        <!-- 中间标题文字_字体大小 -->
+        <attr name="tb_centerTextSize" format="dimension" />
+        <!-- 右边文字 -->
+        <attr name="tb_rightText" format="string" />
+        <!-- 右边文字颜色 -->
+        <attr name="tb_rightTextColor" format="color" />
+        <!-- 右边文字_字体大小 -->
+        <attr name="tb_rightTextSize" format="dimension" />
+        <!-- 左边文字 -->
+        <attr name="tb_leftText" format="string" />
+        <!-- 左边文字颜色 -->
+        <attr name="tb_leftTextColor" format="color" />
+        <!-- 左边文字_字体大小 -->
+        <attr name="tb_leftTextSize" format="dimension" />
+        <!-- 左边图片 -->
+        <attr name="tb_leftImageDrawable" format="reference" />
+        <!-- 右边图片 -->
+        <attr name="tb_rightImageDrawable" format="reference" />
+        <!-- 右边图片2 -->
+        <attr name="tb_rightImageDrawable2" format="reference" />
+        <!-- 右边图片2_距离右边距离 -->
+        <attr name="tb_rightImage2_marginRight" format="dimension" />
+        <!-- 底部分割线 -->
+        <attr name="tb_divider" format="boolean" />
+        <!-- TitleBar高度 -->
+        <attr name="tb_titleBarHeight" format="dimension" />
+        <!-- TitleBar背景色 -->
+        <attr name="tb_titleBarBackground" format="color" />
+    </declare-styleable>
+
+    <!--验证码控件-->
+    <declare-styleable name="VerificationCodeView">
+        <!-- 正常文字颜色 -->
+        <attr name="vc_normalColor" format="color" />
+        <!-- 点击之后文字颜色 -->
+        <attr name="vc_disableColor" format="color" />
+        <!-- 文字大小 -->
+        <attr name="vc_textSize" format="dimension" />
+        <!-- 文字 -->
+        <attr name="vc_text" format="string" />
+    </declare-styleable>
+
+    <!-- 适用于个人中心item类型布局 -->
+    <declare-styleable name="BgRelativeLayout">
+        <!-- 右边文字 -->
+        <attr name="rl_rightText" format="string" />
+        <!-- 右边文字颜色 -->
+        <attr name="rl_rightTextColor" format="color" />
+        <!-- 右边文字_字体大小 -->
+        <attr name="rl_rightTextSize" format="dimension" />
+        <!-- 右边文字_距离右边距离 -->
+        <attr name="rl_rightText_marginRight" format="dimension" />
+        <!-- 右边文字_距离左边距离 -->
+        <attr name="rl_rightText_marginLeft" format="dimension" />
+        <!-- 左边文字 -->
+        <attr name="rl_leftText" format="string" />
+        <!-- 左边文字颜色 -->
+        <attr name="rl_leftTextColor" format="color" />
+        <!-- 左边文字_字体大小 -->
+        <attr name="rl_leftTextSize" format="dimension" />
+        <!-- 左边文字_距离左边距离 -->
+        <attr name="rl_leftText_marginLeft" format="dimension" />
+        <!-- 左边图片 -->
+        <attr name="rl_leftImageDrawable" format="reference" />
+        <!-- 左边图片_距离左边距离 -->
+        <attr name="rl_leftImageDrawable_marginLeft" format="dimension" />
+        <!-- 右边图片 -->
+        <attr name="rl_rightImageDrawable" format="reference" />
+        <!-- 右边图片_距离右边距离 -->
+        <attr name="rl_rightImageDrawable_marginRight" format="dimension" />
+        <!-- 底部分割线 -->
+        <attr name="rl_bottom_divider" format="boolean" />
+        <!-- 底部分割线距离左边距离 -->
+        <attr name="rl_bottom_divider_marginLeft" format="dimension" />
+        <!-- 底部分割线距离右边距离 -->
+        <attr name="rl_bottom_divider_marginRight" format="dimension" />
+        <!-- 顶部分割线 -->
+        <attr name="rl_top_divider" format="boolean" />
+        <!-- BgRelativeLayout高度 -->
+        <attr name="rl_height" format="dimension" />
+        <!-- BgRelativeLayout背景色 -->
+        <attr name="rl_background" format="color" />
+        <!-- 设置Edit的String -->
+        <attr name="rl_editText" format="string" />
+        <!-- 设置Edit的hint -->
+        <attr name="rl_editHint" format="string" />
+        <!-- 设置Edit的hint -->
+        <attr name="rl_editHintColor" format="color" />
+        <!-- Edit文字颜色 -->
+        <attr name="rl_editTextColor" format="color" />
+        <!-- Edit文字_字体大小 -->
+        <attr name="rl_editTextSize" format="dimension" />
+        <!-- Edit文字_最大长度 -->
+        <attr name="rl_editMaxLength" format="integer" />
+        <!-- 设置Edit距离右边的padding -->
+        <attr name="rl_editPaddingRight" format="dimension" />
+        <!-- 是否显示背景效果 -->
+        <attr name="rl_isShowBgEffect" format="boolean"/>
+        <!-- 设置Edit是否可以输入 -->
+        <attr name="rl_isEditEnabled" format="boolean"/>
+
+    </declare-styleable>
+</resources>

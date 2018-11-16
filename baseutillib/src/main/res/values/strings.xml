@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BaseUtilLib</string>
+    <string name="util_money">¥</string>
+</resources>

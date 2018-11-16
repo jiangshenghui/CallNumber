@@ -1,0 +1,23 @@
+<resources>
+    <!--自定义对话框使用的样式-->
+    <style name="CustomDialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <!--加载中的对话框样式-->
+    <style name="LoadingDialog" parent="Theme.AppCompat.Dialog">
+        <!--表示页面时候变暗，false不变暗-->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!--表示背景颜色，我们这种为透明，因为我们给布局文件背景设置了圆角，如果不设置对话框为透明的话，圆角部分会留白-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <!-- 底部弹框进出动画 -->
+    <style name="BottomDialogEnterAndExitAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+</resources>

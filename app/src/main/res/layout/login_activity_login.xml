@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_default_head"
+        android:layout_width="@dimen/x273"
+        android:layout_height="@dimen/x273"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/x266" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我是昵称"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/iv_default_head"
+        android:textSize="16sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x60"
+            android:layout_marginRight="@dimen/x60"
+            android:layout_marginTop="@dimen/x737"
+
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y150">
+                <ImageView
+                    android:id="@+id/ivPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/x40" />
+                <TextView
+                    android:id="@+id/tv_phone_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="+86"
+                    android:layout_marginLeft="9dp"
+
+                    android:textSize="@dimen/x48"
+                    />
+                <EditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/x48"
+                    android:layout_toRightOf="@+id/tv_phone_prompt"
+                    android:hint="请输入您的手机号"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:maxLength="11"
+
+                    android:textSize="@dimen/x48" />
+
+                <ImageView
+                    android:id="@+id/ivCleanPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/x40"
+                    android:paddingRight="@dimen/x40"
+
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y2"
+                    android:layout_alignParentBottom="true"
+                  />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y150">
+
+                <ImageView
+                    android:id="@+id/ivPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/x40"
+                  />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/x48"
+                    android:layout_toRightOf="@+id/ivPassword"
+                    android:hint="请输入6-18位密码"
+                    android:inputType="textPassword"
+                    android:background="@null"
+                    android:maxLength="18"
+
+                    android:textSize="@dimen/x48" />
+
+                <ToggleButton
+                    android:id="@+id/tbLook"
+                    android:layout_width="25dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x40"
+
+                    android:textOff=""
+                    android:textOn="" />
+            </RelativeLayout>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:padding="@dimen/x40"
+                android:text="注册"
+                android:layout_centerHorizontal="true"
+
+                android:textSize="@dimen/x48" />
+            <TextView
+                android:id="@+id/tvForgetPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/x40"
+                android:text="忘记密码"
+
+                android:textSize="@dimen/x48" />
+        </RelativeLayout>
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="@dimen/x480"
+            android:layout_height="@dimen/y120"
+            android:layout_marginTop="@dimen/x300"
+            android:text="登录"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

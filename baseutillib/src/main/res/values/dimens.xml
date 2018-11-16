@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="paddingLeftRight">@dimen/x60</dimen>
+
+    <dimen name="dividerHeight">@dimen/y1</dimen>
+</resources>
