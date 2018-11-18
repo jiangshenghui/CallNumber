@@ -1,10 +1,8 @@
 package com.call.net.update;
 
-import com.hx.zzp.net.ApiManager;
-import com.hx.zzp.net.update.response.UpdateBean;
-
+import com.call.net.ApiManager;
+import com.call.net.update.response.UpdateBean;
 import java.util.Map;
-
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;

@@ -4,12 +4,14 @@ import android.content.Context;
 
 import com.bg.baseutillib.base.BaseRequestDao;
 import com.bg.baseutillib.net.NetworkRequest;
+
 import com.bg.baseutillib.net.RxNetCallback;
 import com.bg.baseutillib.net.base.BaseObserver;
 import com.bg.baseutillib.net.exception.ApiException;
 import com.bg.baseutillib.net.exception.HttpResponseFunc;
-import com.hx.zzp.net.ApiManager;
-import com.hx.zzp.net.update.response.UpdateBean;
+import com.call.net.ApiManager;
+import com.call.net.update.response.UpdateBean;
+
 
 import java.util.HashMap;
 import java.util.Map;

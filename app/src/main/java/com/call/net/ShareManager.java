@@ -5,15 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
-import com.hx.zzp.R;
-import com.hx.zzp.utils.AppConfig;
-import com.hx.zzp.utils.AppUserData;
+import com.call.R;
+import com.call.utils.AppConfig;
+import com.call.utils.AppUserData;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -69,7 +68,7 @@ public class ShareManager {
         Bitmap thumbBmp = null;
 
         if (!file.exists()) {
-            thumbBmp = BitmapFactory.decodeResource(context.getResources(), R.mipmap.login_back);
+            thumbBmp = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
         } else if (!isDetail) {
             try {
                 File fileCs = new Compressor(context)
