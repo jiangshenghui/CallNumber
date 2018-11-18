@@ -1,5 +1,7 @@
 package com.bg.baseutillib.net.exception;
 
+import android.util.Log;
+
 import com.bg.baseutillib.net.base.BaseResponse;
 import com.bg.baseutillib.net.StatusCode;
 
@@ -14,7 +16,7 @@ import io.reactivex.functions.Function;
 public class ServerResponseFunc<T> implements Function<BaseResponse<T>, T> {
     @Override
     public T apply(BaseResponse<T> response) throws Exception {
-        if (!response.success) {
+        if (0!=response.getStatus()) {
             throw new ServerException(response.getStatus(), response.getMsg());
         }
         return response.getData();

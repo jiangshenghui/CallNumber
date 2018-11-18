@@ -11,7 +11,8 @@ public class ApiManager {
 //    public static final String HOST = "http://47.107.72.255/";//正式环境
 //    public static final String HOST = "https://daorv-rent.icebartech.com/";//测试环境
 //    public static final String HOST = "http://192.168.31.241:7001/";//测试环境
-    public static final String HOST =  "https://pai.foxxgame.com/";//正式环境
+  //  public static final String HOST =  "https://pai.foxxgame.com/";//正式环境
+    public static final String HOST =  " http://ghapi.paihao123.com/";//正式环境
 
 //    public static final String HOST = "http://yk2w5t.natappfree.cc/";//测试环境
 
@@ -27,7 +28,7 @@ public class ApiManager {
     /**
      * app登录
      */
-    public static final String LOGIN = "api/user/login";
+    public static final String LOGIN = "CallUserLogin";
 
 
     /**

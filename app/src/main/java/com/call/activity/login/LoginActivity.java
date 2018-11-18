@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -25,13 +26,21 @@ import com.bg.baseutillib.tool.SystemUtils;
 import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseActivity;
+import com.call.activity.service.ServiceWindowActivity;
 import com.call.event.LoginEvent;
 import com.call.net.login.LoginDao;
+import com.call.net.login.request.CommonBody;
+import com.call.net.login.request.ParamsSet;
 import com.call.net.login.response.SessionBean;
+import com.call.net.login.response.UserBean;
 import com.call.utils.AppConfig;
 import com.call.utils.AppUserData;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -166,9 +175,23 @@ public class LoginActivity extends RvBaseActivity {
             return;
         }
 //        mDialog = Utils.showProgressDialog(this);
-        ((LoginDao)createRequestData).login(this, account, pwd, new RxNetCallback<SessionBean>() {
+
+        CommonBody  commonBody = new CommonBody();
+        ParamsSet paramsSet1 = new ParamsSet();
+        paramsSet1.name = "loginName";
+        paramsSet1.value = "test";
+
+        ParamsSet paramsSet2 = new ParamsSet();
+        paramsSet2.name = account;
+        paramsSet2.value = pwd;
+
+        List<ParamsSet> paramsSets =new ArrayList<ParamsSet>();
+        paramsSets.add(paramsSet1);
+        paramsSets.add(paramsSet2);
+        commonBody.paramsSet = paramsSets;
+        ((LoginDao)createRequestData).login(this, commonBody, pwd, new RxNetCallback<UserBean>() {
             @Override
-            public void onSuccess(SessionBean userBean) {
+            public void onSuccess(UserBean userBean) {
                 if (mDialog != null) {
                     mDialog.dismiss();
                     mDialog = null;
@@ -180,11 +203,7 @@ public class LoginActivity extends RvBaseActivity {
                     AppUserData.getInstance().setPassWord(pwd);
                     AppUserData.getInstance().setIsLogin(true);
                     EventBus.getDefault().post(new LoginEvent(true));
-                    if(AppUserData.getInstance().getUserBean().isPartner){//是合伙人
-//                        startActivity(UpgradeAgentActivity.class);
-                    }else {
-//                        startActivity(PartnerStatementActivity.class);
-                    }
+                    startActivity(ServiceWindowActivity.class);
                     finish();
                 }
             }

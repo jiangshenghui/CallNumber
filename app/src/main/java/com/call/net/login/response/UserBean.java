@@ -1,6 +1,36 @@
 package com.call.net.login.response;
 
+import com.call.net.login.request.ParamsSet;
+
+import java.util.List;
+
 public class UserBean {
+
+    public String actionName;
+    public String status;
+    public String timeStamp;
+    public String entrySet;
+    public List<ParamsSet> paramsSet;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * bussData : {"avatarKey":"img.jpg","avatarUrl":"http://file.icebartech.com/img.jpg","creator":"string","creditScore":74,"gmtCreated":"2018-10-11T03:08:01.341Z","gmtModified":"2018-10-11T03:08:01.341Z","id":0,"isDeleted":"string","isOwner":"y: 是车主, n: 不是车主","mobile":"18871231747","modifier":"string","nickname":"匿名用户","password":"$2a$11$X3tMWQEbEG0f7Ogca/mw.u5Drpm9ibP2lH7YsbOeUhnHVKO5jKm0m","userAuthDTO":{"authStatus":"pass","authStatusText":"拒绝","avatarKey":"img.jpg","creator":"string","driverCard1":"img.jpg","driverCard1Key":"img.jpg","driverCard2":"img.jpg","driverCard2Key":"img.jpg","gmtCreated":"2018-10-11T03:08:01.341Z","gmtModified":"2018-10-11T03:08:01.341Z","id":0,"idCard":"img.jpg","idCardKey":"img.jpg","isDeleted":"string","mobile":"18871231747","modifier":"string","userId":0},"userSex":"male","userSexText":"女","userStatus":"pass","userStatusText":"拒绝"}
@@ -12,7 +42,6 @@ public class UserBean {
     public String inviteUrl;
     public String mobile;
     public BussDataBean income;
-
 
 //    public BussDataBean getBussData() {
 //        return income;

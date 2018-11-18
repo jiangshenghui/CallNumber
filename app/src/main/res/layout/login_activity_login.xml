@@ -63,7 +63,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:maxLength="11"
-
+                    android:text="loginPwd"
                     android:textSize="@dimen/x48" />
 
                 <ImageView
@@ -108,7 +108,7 @@
                     android:inputType="textPassword"
                     android:background="@null"
                     android:maxLength="18"
-
+                    android:text="123456"
                     android:textSize="@dimen/x48" />
 
                 <ToggleButton

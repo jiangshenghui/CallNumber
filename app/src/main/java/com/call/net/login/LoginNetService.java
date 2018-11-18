@@ -23,8 +23,8 @@ public interface LoginNetService {
     /**
      * 登录
      */
-    @POST(ApiManager.LOGIN)
-    Observable<BaseResponse<SessionBean>> login(@Body Map<String, String> paramsMap);
+    @GET("WebApi.ashx")
+    Observable<UserBean> login( @Query("json") String param);
 
 
     /**
