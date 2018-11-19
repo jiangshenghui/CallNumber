@@ -16,7 +16,7 @@ public class ApiManager {
 
 //    public static final String HOST = "http://yk2w5t.natappfree.cc/";//测试环境
 
-    
+
     /**
      * a登录
      */
