@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
@@ -72,5 +72,10 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+    <include
+        android:id="@+id/ui_advice_sort"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:layout_height="fill_parent"
+        layout="@layout/activity_advice_sort" />
+</RelativeLayout>

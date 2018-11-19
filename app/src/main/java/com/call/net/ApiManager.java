@@ -16,17 +16,9 @@ public class ApiManager {
 
 //    public static final String HOST = "http://yk2w5t.natappfree.cc/";//测试环境
 
-
-
-
-    public final static String APP_ID= "wxf2243a9b03aea7d4" ;
-    public final static String WX_APP_SECRET= "bf5e5123f3d280bb9f9bc6d8f554eb7b";
-    public final static String QQ_APP_ID= "1107893107" ;
-    public final static String QQ_WX_APP_KEY= "CzwYTuutMYNPw2BI";
-    public final static String WX_TYPE = "02" ;
-
+    
     /**
-     * app登录
+     * a登录
      */
     public static final String LOGIN = "CallUserLogin";
 
@@ -34,47 +26,52 @@ public class ApiManager {
      * 获取服务网点
      */
     public static final String GETDEPLIST = "GetDepList";
-
-
     /**
-     * app用户详情信息
+     * 获取服务窗口
      */
-    public static final String FINDDETAIL = "api/user";
-
+    public static final String GETDEPLIST_WINDOW_LIST = "GetDepWindowList";
     /**
-     * 扫码确认登陆
+     * 获取服务网点队列列表
      */
-    public static final String AGREELOGIN = "api/app/usercore/agreeLogin";
+    public static final String GETDEPLIST_GROUP = "getDepartGroupList";
     /**
-     * app注册
+     * 获取队列排队列表
      */
-    public static final String REGISTER = "api/user/reg";
+    public static final String GETDEPART_GROUP = "GetGroupQueueList";
     /**
-     * 校验是否注册
+     * 呼叫下一位
      */
-    public static final String CHECKREGISTER = "api/app/usercore/checkRegister";
+    public static final String CLIENT_CALL_NEXT = "ClientCallNext";
     /**
-     * 获取验证码
+     * 重呼
      */
-    public static final String FIND_MOBILE_CODE = "api/captcha";
+    public static final String CLIENT_RE_CALL = "ClientReCall";
     /**
-     * app重置密码
+     * 办理完成
      */
-    public static final String RESETPASSWORD = "api/user/forgotPassword";
+    public static final String CLIENT_CALL_HANDLE = "ClientHandleCall";
     /**
-     * 支付订单
+     * 过号
      */
-    public static final String PAY_URL = "api/pay/createOrder";
-
+    public static final String CLIENT_PASS_CALL = "ClientPassCall";
     /**
-     * 成为合伙人
+     * 暂停
      */
-    public static final String PARTNER_URL = "api/user/bePartner";
-
+    public static final String CLIENT_PAUSE_CALL = "ClientPauseCall";
     /**
-     * 合伙人
+     * 解散
      */
-    public static final String UPGRADE_PARTNER_URL = "api/user/partnerLevelUp";
-
-
+    public static final String CLIENT_DISSOLUTION_QUEUE = "ClientDissolutionQueue";
+    /**
+     * 12、获取所选队列的排队人数
+     */
+    public static final String CLIENT_GROUP_WAIT_NUMBER = "GetGroupWaitNumber";
+    /**
+     * 13、窗口办理情况统计
+     */
+    public static final String CLIENT_WINDOW_STATICTICS = "GetWindowHandleStatictics";
+    /**
+     * 14、获取用户信息
+     */
+    public static final String CLIENT_USER_INFO = "GetArchivalUserInfo";
 }
