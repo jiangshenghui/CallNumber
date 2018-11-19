@@ -3,13 +3,12 @@ package com.call.fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.call.R;
 import com.call.RvBaseFragment;
-import com.call.net.login.LoginDao;
 import com.call.net.window.WindowDao;
-
 import butterknife.BindView;
 
 /**
@@ -20,6 +19,9 @@ public class QueueFragment extends RvBaseFragment {
 
     @BindView(R.id.gv_classification_adivice)
     ListView listView;
+    @BindView(R.id.gv_queue)
+    GridView gridView;
+
     public int setLayoutResID() {
         return R.layout.fragment_queue;
     }

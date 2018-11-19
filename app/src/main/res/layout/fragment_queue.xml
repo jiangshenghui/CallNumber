@@ -72,6 +72,12 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
+    <GridView
+        android:id="@+id/gv_queue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </GridView>
     <include
         android:id="@+id/ui_advice_sort"
         android:layout_width="fill_parent"
