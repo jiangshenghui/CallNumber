@@ -30,6 +30,11 @@ public class ApiManager {
      */
     public static final String LOGIN = "CallUserLogin";
 
+    /**
+     * 获取服务网点
+     */
+    public static final String GETDEPLIST = "GetDepList";
+
 
     /**
      * app用户详情信息

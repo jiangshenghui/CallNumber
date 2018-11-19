@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/white"  >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_queue_set"
+            android:layout_width="@dimen/x240"
+            android:text="队列设置"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_language"
+            android:layout_width="@dimen/x240"
+            android:text="语言设置"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_set"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
