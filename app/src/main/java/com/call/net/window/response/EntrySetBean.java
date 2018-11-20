@@ -9,5 +9,33 @@ public class EntrySetBean implements Serializable {
     public String name;//": "布吉行政服务窗口",
     public String pId;//": "0",
     public String userId;//": "Use154095456732C4A088D8D8CD3BCD7E1DA"
+    public boolean isChoose;
+
+    //3、获取服务网点窗口列表
+    public String creater;
+    public String createtime;
+    public String depId;
+    public String isValid;
+    public String reserve;
+    public String usestatue;
+    public String winAddress;
+    public String  windowName;
+
+
+    //4、网点队列列表
+    public String BusinessType;
+    public String NumberHead;
+    public String endWaitTime;
+    public String frontnumber;
+    public String groupNo;
+    public String groupaddr;
+    public String groupname;
+    public String groupphoto;
+    public String lat;
+    public String lng;
+    public String qrcode;
+    public String startWaitTime;
+    public String waittime;
+
 
 }

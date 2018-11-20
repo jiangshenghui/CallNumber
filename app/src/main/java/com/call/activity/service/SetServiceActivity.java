@@ -3,14 +3,15 @@ package com.call.activity.service;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.Button;
 import com.call.R;
 import com.call.RvBaseActivity;
 import com.call.fragment.LanguageFragment;
 import com.call.fragment.QueueFragment;
 import com.call.net.window.WindowDao;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /***
@@ -20,10 +21,13 @@ public class SetServiceActivity extends RvBaseActivity {
 
     private QueueFragment queueFragment;
     private LanguageFragment languageFragment;
+    @BindView(R.id.btn_queue_set)
+    Button btnQueue;
+    @BindView(R.id.btn_language)
+    Button btnLanguage;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -52,13 +56,13 @@ public class SetServiceActivity extends RvBaseActivity {
     private FragmentTransaction switchFragment(Fragment targetFragment) {
 
              FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
              if (!targetFragment.isAdded()) {
                 //第一次使用switchFragment()时currentFragment为null，所以要判断一下
                  if (currentFragment != null) {
                     transaction.hide(currentFragment);
-                 }else {
-                     transaction.add(R.id.fragment_set, targetFragment, targetFragment.getClass().getName());
                  }
+                 transaction.add(R.id.fragment_set, targetFragment, targetFragment.getClass().getName());
             } else {
                 transaction
                      .hide(currentFragment)
@@ -84,11 +88,16 @@ public class SetServiceActivity extends RvBaseActivity {
         switch (view.getId()) {
             case R.id.btn_queue_set:
                 switchFragment(queueFragment).commit();
+                btnQueue.setBackgroundResource(R.color.green_00);
+                btnLanguage.setBackgroundResource(R.color.grey_cc);
                 break;
             case R.id.btn_language:
                 switchFragment(languageFragment).commit();
+                btnQueue.setBackgroundResource(R.color.grey_cc);
+                btnLanguage.setBackgroundResource(R.color.green_00);
                 break;
         }
+
     }
 
     @Override

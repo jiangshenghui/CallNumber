@@ -12,11 +12,13 @@
             android:id="@+id/btn_queue_set"
             android:layout_width="@dimen/x240"
             android:text="队列设置"
+            android:background="@color/green_00"
             android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btn_language"
             android:layout_width="@dimen/x240"
             android:text="语言设置"
+            android:background="@color/grey_cc"
             android:layout_height="wrap_content" />
     </LinearLayout>
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:background="@mipmap/ico9"
+            android:layout_centerInParent="true"
+            android:text="统计"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/color_ff"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:background="@mipmap/ico9"
+            android:layout_centerInParent="true"
+            android:text="解散"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/color_ff"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:background="@mipmap/ico9"
+            android:layout_centerInParent="true"
+            android:text="暂停"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/color_ff"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:background="@mipmap/ico9"
+            android:layout_centerInParent="true"
+            android:text="过号"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/color_ff"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:background="@mipmap/ico9"
+            android:layout_centerInParent="true"
+            android:text="下一位"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/color_ff"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:background="@mipmap/ico9"
+            android:layout_centerInParent="true"
+            android:text="重呼"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/color_ff"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

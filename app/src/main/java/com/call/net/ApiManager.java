@@ -32,7 +32,7 @@ public class ApiManager {
     /**
      * 获取服务网点队列列表
      */
-    public static final String GETDEPLIST_GROUP = "getDepartGroupList";
+    public static final String GETDEPLIST_GROUP = "GetDepartGroupList";
     /**
      * 获取队列排队列表
      */

@@ -1,10 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:text="语言设置"
-        android:layout_height="wrap_content" />
-</FrameLayout>
+    android:orientation="vertical"
+    android:background="@color/white">
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/radioBtnLocal"
+                android:layout_width="wrap_content"
+                android:text="本地语言"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/radioBtnOrigin"
+                android:layout_width="wrap_content"
+                android:text="远程语言"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/re_search_language"
+        android:layout_below="@id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="36dp">
+        <RelativeLayout
+            android:id="@+id/re_language"
+            android:layout_width="match_parent"
+            android:background="@drawable/search_frame_selector"
+            android:layout_toLeftOf="@+id/re_refresh"
+            android:layout_centerVertical="true"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_language_ku"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:layout_toLeftOf="@+id/ivDown"
+                android:textColor="@color/color_ff"
+                android:layout_marginLeft="5dp"
+                android:text="中文语言音库"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/ivDown"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_down_arrow" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_refresh"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_refresh"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_refresh"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="@dimen/x480"
+        android:layout_height="@dimen/y120"
+        android:layout_marginBottom="@dimen/x300"
+        android:background="@drawable/login_r8_bg_shape"
+        android:textColor="@color/white"
+        android:text="确定"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="16sp" />
+</RelativeLayout>
