@@ -47,7 +47,7 @@ public abstract class BaseActivity<T extends BaseRequestDao> extends RxAppCompat
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(setLayoutResID());
-        initStatus();
+//        initStatus();
         mContext = this;
         createRequestData = onCreateRequestData();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏

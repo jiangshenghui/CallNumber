@@ -9,9 +9,9 @@ import retrofit2.http.POST;
 
 public interface UpdateNetService {
 
-    /**
-     * 升级
-     */
-    @POST(ApiManager.PAY_URL)
-    Observable<UpdateBean> update(@Body Map<String, String> paramsMap);
+//    /**
+//     * 升级
+//     */
+//    @POST(ApiManager.PAY_URL)
+//    Observable<UpdateBean> update(@Body Map<String, String> paramsMap);
 }

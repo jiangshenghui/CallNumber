@@ -14,9 +14,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface PayNetService {
-    /**
-     * 登录
-     */
-    @POST(ApiManager.PAY_URL)
-    Observable<PreOrderBean> pay(@Body Map<String, String> paramsMap);
+//    /**
+//     * 登录
+//     */
+//    @POST(ApiManager.PAY_URL)
+//    Observable<PreOrderBean> pay(@Body Map<String, String> paramsMap);
 }

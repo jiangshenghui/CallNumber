@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="mainColor">#EEB031</color>
+    <color name="selectColor">#787878</color>
+
+    <color name="default_text_color">#3C3C3C</color>
+    <color name="text_color_78">#787878</color>
+    <color name="text_color_6a">#6A6A6A</color>
+
+    <color name="order_detail_bg_green">#4DBD44</color>
+    <color name="order_detail_bg_yellow">#F8B62B</color>
+    <color name="order_detail_bg_red">#FA5050</color>
+    <color name="order_detail_bg_gay">#C8C8C8</color>
+
+    <color name="index_car_btn_text_color">#f6f6f6</color>
+    <color name="index_car_text_color">#6B6B6B</color>
+    <color name="mainColorGray">#F2F2F2</color>
+    <color name="login_color_bg">#e4e3e3</color>
+    <color name="login_color_hint">#D2D2D2</color>
+    <color name="dirver_color">#d2d2d2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="color_ff">#ff3c3c3c</color>
+    <color name="color_C6">#C6A55A</color>
+    <color name="color_f6">#f6f7f9</color>
+    <color name="grey_cc">#e9e9e9</color>
+    <color name="green_00">#00cc9b</color>
+    <color name="grey_66">#666666</color>
+    <color name="rice_white">#EFEFF4</color>
+    <color name="color32">#323232</color>
+    <color name="color28">#28ab9b</color>
+    <color name="color8f">#f8f9b8</color>
+    <color name="colorb3">#3b3a3a</color>
 </resources>

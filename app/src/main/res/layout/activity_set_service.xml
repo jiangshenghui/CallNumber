@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/white"  >
+    <RelativeLayout
+        android:id="@+id/re_title"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="45dp">
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/x14"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/logo"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="设置"
+            android:layout_toRightOf="@+id/iv_logo"
+            android:textSize="14sp"
+            android:layout_marginLeft="@dimen/x9"
+            android:textColor="@color/color32"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/rice_white"
+        android:layout_height="56dp">
+        <Button
+            android:id="@+id/btn_queue_set"
+            android:layout_width="103dp"
+            android:text="队列设置"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="@color/color28"
+            android:background="@color/white"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/btn_language"
+            android:layout_width="103dp"
+            android:text="语音设置"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:background="@null"
+            android:textColor="@color/color32"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_set"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

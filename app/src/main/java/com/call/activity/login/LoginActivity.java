@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -26,15 +25,15 @@ import com.bg.baseutillib.tool.SystemUtils;
 import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseActivity;
-import com.call.activity.service.ServiceWindowActivity;
+import com.call.activity.service.ServiceNetWorkActivity;
 import com.call.event.LoginEvent;
 import com.call.net.login.LoginDao;
 import com.call.net.login.request.CommonBody;
 import com.call.net.login.request.ParamsSet;
-import com.call.net.login.response.SessionBean;
 import com.call.net.login.response.UserBean;
 import com.call.utils.AppConfig;
 import com.call.utils.AppUserData;
+import com.call.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -48,7 +47,7 @@ import butterknife.OnClick;
  * 登录
  */
 public class LoginActivity extends RvBaseActivity {
-
+   //co
     @BindView(R.id.etPhone)
     EditText etPhone;
     @BindView(R.id.etPassword)
@@ -67,15 +66,6 @@ public class LoginActivity extends RvBaseActivity {
             finish();
             return;
         }
-
-//        if(!TextUtils.isEmpty(SharedPreferencesUtil.readCookieVaule())){
-//            if(AppUserData.getInstance().getUserBean().isPartner){//是合伙人
-//                startActivity(UpgradeAgentActivity.class);
-//            }else {
-//                startActivity(PartnerStatementActivity.class);
-//            }
-//            finish();
-//        }
     }
 
     @Override
@@ -85,11 +75,11 @@ public class LoginActivity extends RvBaseActivity {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.GRAY);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            View decorView = getWindow().getDecorView();
+//            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            getWindow().setStatusBarColor(Color.GRAY);
+//        }
     }
 
     @Override
@@ -135,15 +125,15 @@ public class LoginActivity extends RvBaseActivity {
         return new LoginDao();
     }
 
-    @OnClick({R.id.btnLogin, R.id.tvRegister, R.id.tvForgetPassword, R.id.ivCleanPhone})
+    @OnClick({R.id.btnLogin,  R.id.tvForgetPassword, R.id.ivCleanPhone})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnLogin://登录
                 login();
                 break;
-            case R.id.tvRegister://注册
-//                startActivityForResult(RegisterActivity.class, 125);
-                break;
+//            case R.id.tvRegister://注册
+////                startActivityForResult(RegisterActivity.class, 125);
+//                break;
             case R.id.tvForgetPassword://忘记密码
                 Bundle bundle = new Bundle();
                 bundle.putString("phone",etPhone.getText().toString());
@@ -189,6 +179,7 @@ public class LoginActivity extends RvBaseActivity {
         paramsSets.add(paramsSet1);
         paramsSets.add(paramsSet2);
         commonBody.paramsSet = paramsSets;
+        mDialog = Utils.showProgressDialog(this);
         ((LoginDao)createRequestData).login(this, commonBody, pwd, new RxNetCallback<UserBean>() {
             @Override
             public void onSuccess(UserBean userBean) {
@@ -203,7 +194,7 @@ public class LoginActivity extends RvBaseActivity {
                     AppUserData.getInstance().setPassWord(pwd);
                     AppUserData.getInstance().setIsLogin(true);
                     EventBus.getDefault().post(new LoginEvent(true));
-                    startActivity(ServiceWindowActivity.class);
+                    startActivity(ServiceNetWorkActivity.class);
                     finish();
                 }
             }
