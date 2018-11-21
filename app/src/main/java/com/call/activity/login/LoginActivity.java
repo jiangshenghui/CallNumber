@@ -21,12 +21,15 @@ import android.widget.ToggleButton;
 
 import com.bg.baseutillib.net.RxNetCallback;
 import com.bg.baseutillib.net.exception.ApiException;
+import com.bg.baseutillib.tool.SharedPreferencesUtil;
 import com.bg.baseutillib.tool.SystemUtils;
 import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseActivity;
 import com.call.activity.service.ServiceNetWorkActivity;
+import com.call.activity.service.SetServiceActivity;
 import com.call.event.LoginEvent;
+import com.call.net.ShareManager;
 import com.call.net.login.LoginDao;
 import com.call.net.login.request.CommonBody;
 import com.call.net.login.request.ParamsSet;
@@ -39,6 +42,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -58,6 +62,9 @@ public class LoginActivity extends RvBaseActivity {
     Button btnLogin;
     @BindView(R.id.ivCleanPhone)
     ImageView ivCleanPhone;
+    @BindView(R.id.ivRemendPw)
+    ImageView ivRemendPw;
+    private boolean rememberPass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +87,15 @@ public class LoginActivity extends RvBaseActivity {
 //            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 //            getWindow().setStatusBarColor(Color.GRAY);
 //        }
+        rememberPass=   SharedPreferencesUtil.readBoolean("rememberPass");
+        if(rememberPass){
+            ivRemendPw.setImageResource(R.mipmap.checkout);
+            etPhone.setText( AppUserData.getInstance().getMobile());
+            etPassword.setText( AppUserData.getInstance().getPassWord());
+        }else {
+            etPassword.setText("");
+            ivRemendPw.setImageResource(R.mipmap.checkout_no);
+        }
     }
 
     @Override
@@ -125,7 +141,7 @@ public class LoginActivity extends RvBaseActivity {
         return new LoginDao();
     }
 
-    @OnClick({R.id.btnLogin,  R.id.tvForgetPassword, R.id.ivCleanPhone})
+    @OnClick({R.id.btnLogin,  R.id.tvForgetPassword, R.id.ivCleanPhone,R.id.ivRemendPw})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnLogin://登录
@@ -141,6 +157,15 @@ public class LoginActivity extends RvBaseActivity {
                 break;
             case R.id.ivCleanPhone:
                 etPhone.setText("");
+                break;
+            case R.id.ivRemendPw://记住密码
+                rememberPass = ! rememberPass;
+                SharedPreferencesUtil.writeBoolean("rememberPass",rememberPass);
+                if(rememberPass){
+                    ivRemendPw.setImageResource(R.mipmap.checkout);
+                }else {
+                    ivRemendPw.setImageResource(R.mipmap.checkout_no);
+                }
                 break;
 
         }
@@ -194,7 +219,7 @@ public class LoginActivity extends RvBaseActivity {
                     AppUserData.getInstance().setPassWord(pwd);
                     AppUserData.getInstance().setIsLogin(true);
                     EventBus.getDefault().post(new LoginEvent(true));
-                    startActivity(ServiceNetWorkActivity.class);
+                    startActivity(SetServiceActivity.class);
                     finish();
                 }
             }

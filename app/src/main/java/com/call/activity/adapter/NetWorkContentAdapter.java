@@ -51,7 +51,7 @@ public class NetWorkContentAdapter  extends BaseListAdapter<EntrySetBean> {
         ButterKnife.bind(this, viewHolder.itemView);
         tvbespeakSort.setText(mDataList.get(position).bespeakSort);
         tvPerson.setText(mDataList.get(position).phone);
-        tvQueue.setText(mDataList.get(position).queueState+"");
+        tvQueue.setText("  "+mDataList.get(position).queueState+"  ");
 
         if(mDataList.get(position).isChoose){
             reView.setBackgroundColor(context.getResources().getColor(R.color.order_detail_bg_red));

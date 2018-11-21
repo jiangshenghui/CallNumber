@@ -107,7 +107,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_weight="1"
                                 android:text="业务名称"
-                                android:textColor="#3b3a3a"
+                                android:textColor="#3c3b3b"
                                 android:gravity="center"
                                 android:textSize="15sp"
                                 android:layout_height="match_parent" />
@@ -115,7 +115,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_weight="1"
                                 android:text="业务板块"
-                                android:textColor="#3b3a3a"
+                                android:textColor="#3c3b3b"
                                 android:gravity="center"
                                 android:textSize="15sp"
                                 android:layout_height="match_parent" />
@@ -123,7 +123,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_weight="1"
                                 android:text="办理数"
-                                android:textColor="#3b3a3a"
+                                android:textColor="#3c3b3b"
                                 android:gravity="center"
                                 android:textSize="15sp"
                                 android:layout_height="match_parent" />
@@ -131,7 +131,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_weight="1"
                                 android:text="过号数"
-                                android:textColor="#3b3a3a"
+                                android:textColor="#3c3b3b"
                                 android:gravity="center"
                                 android:textSize="15sp"
                                 android:layout_height="match_parent" />

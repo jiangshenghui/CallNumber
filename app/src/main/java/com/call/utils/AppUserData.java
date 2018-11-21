@@ -127,7 +127,12 @@ public class AppUserData {
     public void setMobile(String mobile) {
         SharedPreferencesUtil.writeString(MOBILE, mobile);
     }
-
+    /**
+     * 保存用户登录账号
+     */
+    public String  getMobile( ) {
+        return SharedPreferencesUtil.readString(MOBILE);
+    }
     /**
      * 获取用户所在城市code码
      */

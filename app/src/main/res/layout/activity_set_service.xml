@@ -26,30 +26,33 @@
             android:layout_centerVertical="true"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:background="@color/rice_white"
-        android:layout_height="56dp">
+        android:layout_height="36dp">
         <Button
             android:id="@+id/btn_queue_set"
             android:layout_width="103dp"
             android:text="队列设置"
             android:gravity="center"
+            android:layout_alignParentBottom="true"
             android:textSize="14sp"
             android:textColor="@color/color28"
             android:background="@color/white"
-            android:layout_height="match_parent" />
+            android:layout_height="30dp" />
         <Button
             android:id="@+id/btn_language"
             android:layout_width="103dp"
+            android:layout_toRightOf="@+id/btn_queue_set"
             android:text="语音设置"
             android:textSize="14sp"
             android:gravity="center"
+            android:layout_alignParentBottom="true"
             android:background="@null"
             android:textColor="@color/color32"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="30dp" />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fragment_set"

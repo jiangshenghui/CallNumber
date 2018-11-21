@@ -88,16 +88,19 @@ public class SetServiceActivity extends RvBaseActivity {
         switch (view.getId()) {
             case R.id.btn_queue_set:
                 switchFragment(queueFragment).commit();
-                btnQueue.setBackgroundResource(R.color.green_00);
-                btnLanguage.setBackgroundResource(R.color.grey_cc);
+                btnQueue.setTextColor(getResources().getColor(R.color.color28));
+                btnLanguage.setTextColor(getResources().getColor(R.color.color32));
+                btnQueue.setBackgroundResource(R.color.white);
+                btnLanguage.setBackgroundResource(R.color.transparent);
                 break;
             case R.id.btn_language:
+                btnQueue.setTextColor(getResources().getColor(R.color.color32));
+                btnLanguage.setTextColor(getResources().getColor(R.color.color28));
                 switchFragment(languageFragment).commit();
-                btnQueue.setBackgroundResource(R.color.grey_cc);
-                btnLanguage.setBackgroundResource(R.color.green_00);
+                btnQueue.setBackgroundResource(R.color.transparent);
+                btnLanguage.setBackgroundResource(R.color.white);
                 break;
         }
-
     }
 
     @Override

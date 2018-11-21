@@ -57,9 +57,9 @@ public class LanguageFragment extends RvBaseFragment {
          List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
 
         EntrySetBean entrySet1 = new EntrySetBean();
-        entrySet1.name = "中文女生语音库1";
+        entrySet1.name = "中文女声语音库,能在WIN7系统上使用ScanSoft_MeiLing_ChineseMandarin";
         EntrySetBean entrySet2 = new EntrySetBean();
-        entrySet2.name = "中文女生语音库1";
+        entrySet2.name = "中文女声语音库,能在WIN7系统上使用ScanSoft_MeiLing_ChineseMandarin";
         mList.add(entrySet1);
         mList.add(entrySet2);
         netListAdapter.addData(mList);

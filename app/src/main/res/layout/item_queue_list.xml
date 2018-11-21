@@ -17,10 +17,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/radioBtn"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
-            android:textColor="#666666"
-            android:textSize="14sp" />
+            android:textColor="#000000"
+            android:textSize="13sp" />
     </RelativeLayout>
 
 

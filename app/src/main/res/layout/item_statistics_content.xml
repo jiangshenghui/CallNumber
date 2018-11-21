@@ -14,8 +14,7 @@
             android:id="@+id/tvBusinessName"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:text="A003  "
-            android:textColor="#3b3a3a"
+            android:textColor="#3c3b3b"
             android:gravity="center"
             android:textSize="15sp"
             android:layout_height="match_parent" />
@@ -23,8 +22,7 @@
             android:id="@+id/tvGroupName"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:text="A003  "
-            android:textColor="#3b3a3a"
+            android:textColor="#3c3b3b"
             android:gravity="center"
             android:textSize="15sp"
             android:layout_height="match_parent" />
@@ -32,8 +30,7 @@
             android:id="@+id/tvCompleteNumber"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:text="A003  "
-            android:textColor="#3b3a3a"
+            android:textColor="#3c3b3b"
             android:gravity="center"
             android:textSize="15sp"
             android:layout_height="match_parent" />
@@ -41,10 +38,14 @@
             android:id="@+id/tvPassNumber"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:text="A003  "
-            android:textColor="#3b3a3a"
+            android:textColor="#3c3b3b"
             android:gravity="center"
             android:textSize="15sp"
             android:layout_height="match_parent" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/grey_cc"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1px"></View>
 </RelativeLayout>
