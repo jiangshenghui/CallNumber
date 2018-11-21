@@ -10,6 +10,7 @@ public class EntrySetBean implements Serializable {
     public String pId;//": "0",
     public String userId;//": "Use154095456732C4A088D8D8CD3BCD7E1DA"
     public boolean isChoose;
+    public boolean isHeadChoose;
 
     //3、获取服务网点窗口列表
     public String creater;
@@ -37,5 +38,28 @@ public class EntrySetBean implements Serializable {
     public String startWaitTime;
     public String waittime;
 
+   //5、取队列排队列表
+    public String bespeakSort;
+    public String callTime;
+    public String calledTimes;
+    public String groupId;
+    public String isBespeak;
+    public String numberhead;
+    public String packageId;
+    public String phone;
+    public String queueState;
+    public String recallTime;
+    public String redeIndustrytype;
+    public String userName;
+    public String waitCount;
+    public String waitTime;
+    public String windowId;
 
+    public String GroupName;
+    public String WaitNumber;
+
+    //业务统计
+    public String BusinessName;
+    public String CompleteNumber;
+    public String PassNumber;
 }

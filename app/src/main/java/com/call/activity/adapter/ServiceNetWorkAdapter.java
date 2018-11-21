@@ -1,13 +1,13 @@
 package com.call.activity.adapter;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-
 import com.bg.baseutillib.base.BaseListAdapter;
 import com.call.R;
 import com.call.net.window.response.EntrySetBean;
-
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -15,15 +15,18 @@ import butterknife.ButterKnife;
 
 public class ServiceNetWorkAdapter extends BaseListAdapter<EntrySetBean> {
 
-    @BindView(R.id.tv_vip_level)
-    TextView tvVipLevel;
     @BindView(R.id.tv_vip_desc)
     TextView tvDesc;
 
-    private List<EntrySetBean> mDataList = new ArrayList<EntrySetBean>();
+    @BindView(R.id.re_view)
+    RelativeLayout reView;
 
-    public ServiceNetWorkAdapter() {
+    public List<EntrySetBean> mDataList = new ArrayList<EntrySetBean>();
 
+    private Context context;
+
+    public ServiceNetWorkAdapter(Context context) {
+         this.context = context;
     }
 
         @Override
@@ -44,7 +47,17 @@ public class ServiceNetWorkAdapter extends BaseListAdapter<EntrySetBean> {
         @Override
         protected void bindData(int itemViewType, final int position, BgViewHolder viewHolder, List<EntrySetBean> dataList) {
             ButterKnife.bind(this, viewHolder.itemView);
-            tvDesc.setText(mDataList.get(position).name);
+            String groupname = mDataList.get(position).groupname;
+            if(!TextUtils.isEmpty(groupname)){
+                int index = groupname.indexOf("--");
+                groupname = groupname.substring(index+2,groupname.length());
+                tvDesc.setText(groupname);
+            }
+            if(mDataList.get(position).isHeadChoose){
+                reView.setBackgroundColor(context.getResources().getColor(R.color.color34));
+            }else {
+                reView.setBackgroundColor(context.getResources().getColor(R.color.color28));
+            }
             //item点击事件
             if (mOnItemClickListener != null) {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -58,25 +71,6 @@ public class ServiceNetWorkAdapter extends BaseListAdapter<EntrySetBean> {
 
         }
 
-        private OnBtnClickListener mOnBtnClickListener;
-
-        public interface OnBtnClickListener {
-            void onDetails(int position);
-
-            void onDoRent(int position);
-
-            void onAgain(int position);
-
-            void onComment(int position);
-
-            void onDoing(int position);
-
-            void onDoPay(int position);
-        }
-
-        public void setOnBtnClickListener(OnBtnClickListener listener) {
-            mOnBtnClickListener = listener;
-        }
     public void setData(List<EntrySetBean> data) {
         if (data != null && data.size() > 0) {
             mDataList.clear();

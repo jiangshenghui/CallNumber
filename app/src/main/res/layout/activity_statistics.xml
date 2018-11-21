@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/color28"
+        android:layout_height="55dp">
+        <RelativeLayout
+            android:id="@+id/re_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_back_write"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvNetWorkName"
+            android:layout_width="wrap_content"
+            android:textColor="@color/color8f"
+            android:textSize="23sp"
+            android:layout_toRightOf="@+id/re_back"
+            android:text="业务统计"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color28"
+        android:layout_height="46dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="窗口"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:id="@+id/re_depart_windows"
+            android:layout_width="220dp"
+            android:background="@color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_height="23dp">
+
+            <TextView
+                android:id="@+id/tvWindow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:layout_toLeftOf="@+id/ivDown"
+                android:textColor="@color/color_ff"
+                android:layout_marginLeft="5dp"
+                android:text="请选择窗口"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/ivDown"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_down_arrow" />
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_above="@+id/ll_btn_bottom"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="@color/color34"
+                        android:layout_height="36dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:text="业务名称"
+                                android:textColor="#3b3a3a"
+                                android:gravity="center"
+                                android:textSize="15sp"
+                                android:layout_height="match_parent" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:text="业务板块"
+                                android:textColor="#3b3a3a"
+                                android:gravity="center"
+                                android:textSize="15sp"
+                                android:layout_height="match_parent" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:text="办理数"
+                                android:textColor="#3b3a3a"
+                                android:gravity="center"
+                                android:textSize="15sp"
+                                android:layout_height="match_parent" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:text="过号数"
+                                android:textColor="#3b3a3a"
+                                android:gravity="center"
+                                android:textSize="15sp"
+                                android:layout_height="match_parent" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/content_staistics_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"   />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

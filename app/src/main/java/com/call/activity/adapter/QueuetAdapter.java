@@ -2,17 +2,14 @@ package com.call.activity.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import com.call.R;
 import com.call.net.window.response.EntrySetBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,10 +55,10 @@ public class QueuetAdapter extends BaseAdapter {
             holder.radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (EntrySetBean info: mList){
-                        info.isChoose = false;
-                    }
-                    mList.get(position).isChoose = true;
+//                    for (EntrySetBean info: mList){
+//                        info.isChoose = false;
+//                    }
+                    mList.get(position).isChoose = !mList.get(position).isChoose;
                     notifyDataSetChanged();
                 }
             });

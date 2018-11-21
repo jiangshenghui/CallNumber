@@ -4,6 +4,7 @@
     android:orientation="horizontal"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@+id/reTongji"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">
@@ -18,6 +19,7 @@
             android:layout_height="53dp" />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/reJiesan"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">
@@ -32,6 +34,7 @@
             android:layout_height="53dp" />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rePause"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">
@@ -46,6 +49,7 @@
             android:layout_height="53dp" />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/reGuohao"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">
@@ -60,6 +64,7 @@
             android:layout_height="53dp" />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/reNext"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">
@@ -74,6 +79,7 @@
             android:layout_height="53dp" />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/reReCall"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">

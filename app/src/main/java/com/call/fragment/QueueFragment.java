@@ -22,7 +22,10 @@ import com.call.dialog.SpinerPopWindow;
 import com.call.net.login.request.CommonBody;
 import com.call.net.login.request.ParamsSet;
 import com.call.net.window.WindowDao;
+import com.call.net.window.response.EntrySetBean;
 import com.call.net.window.response.ServiceNetWorkBean;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -87,6 +90,23 @@ public class QueueFragment extends RvBaseFragment {
                 break;
             case R.id.btnSure:
                 Bundle bundle = new Bundle();
+                boolean isChoose = false;
+                 List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
+                 for(EntrySetBean eBean :queuetAdapter.mList){
+                   if(eBean.isChoose){
+                       isChoose = true;
+                       mList.add(eBean);
+                   }
+                }
+                if(!isChoose){
+                    ToastUtil.showShortToast("请选择业务类型");
+                    return;
+                }
+                bundle.putSerializable("businessType",(Serializable) mList);
+                bundle.putSerializable("netWorkName",tvNetwork.getText().toString());
+                if(tvNetwork.getTag() != null){
+                    bundle.putSerializable("depId",tvNetwork.getTag().toString());
+                }
                 startActivity(ServiceNetWorkActivity.class,bundle);
                 break;
         }
@@ -143,11 +163,8 @@ public class QueueFragment extends RvBaseFragment {
                 if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet != null&& serviceNetWorkBean.entrySet.size() > 0) {//登录成功
                     windowsListAdapter.clearData();
                     windowsListAdapter.addData(serviceNetWorkBean.entrySet);
-
                     mSpinerPopWindow = new SpinerPopWindow(getActivity(),itemClickListener1,windowsListAdapter);
                     mSpinerPopWindow.setOnDismissListener(dismissListener1);
-
-
                 }
             }
             @Override
@@ -235,7 +252,7 @@ public class QueueFragment extends RvBaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
             mSpinerPopWindow.dismiss();
             tvWindows.setText(windowsListAdapter.mList.get(position).windowName);
-            tvWindows.setTag(netListAdapter.mList.get(position).id);
+            tvWindows.setTag(windowsListAdapter.mList.get(position).id);
         }
     };
 

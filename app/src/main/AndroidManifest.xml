@@ -23,8 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".activity.service.ServiceNetWorkActivity" />-->
-        <!--<activity android:name=".activity.service.SetServiceActivity"></activity>-->
+        <activity android:name=".activity.service.ServiceNetWorkActivity" />
+        <!-- <activity android:name=".activity.service.SetServiceActivity"></activity> -->
+        <activity android:name=".activity.service.StatisticsActivity"></activity>
     </application>
 
 </manifest>
