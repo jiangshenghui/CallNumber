@@ -52,10 +52,15 @@ public class NetWorkContentAdapter  extends BaseListAdapter<EntrySetBean> {
         tvbespeakSort.setText(mDataList.get(position).bespeakSort);
         tvPerson.setText(mDataList.get(position).phone);
         tvQueue.setText(mDataList.get(position).queueState+"");
-        if(position%2 == 0){
-            reView.setBackgroundColor(context.getResources().getColor(R.color.white));
+
+        if(mDataList.get(position).isChoose){
+            reView.setBackgroundColor(context.getResources().getColor(R.color.order_detail_bg_red));
         }else {
-            reView.setBackgroundColor(context.getResources().getColor(R.color.colore2));
+            if(position%2 == 0){
+                reView.setBackgroundColor(context.getResources().getColor(R.color.white));
+            }else {
+                reView.setBackgroundColor(context.getResources().getColor(R.color.colore2));
+            }
         }
         //item点击事件
         if (mOnItemClickListener != null) {

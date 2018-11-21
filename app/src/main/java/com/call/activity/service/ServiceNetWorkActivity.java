@@ -30,7 +30,6 @@ import butterknife.OnClick;
  */
 public class ServiceNetWorkActivity extends RvBaseActivity {
 
-
     @BindView(R.id.tvNetWorkName)
     TextView tvNetWorkName;
 
@@ -52,7 +51,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
     private WaitPersonAdapter waitPersonAdapter;
 
-    private String depId;
+    private String depId;//网点Id
+
+    private String groupId;//队列ID
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +91,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         netWorkContentAdapter = new NetWorkContentAdapter(this);
         recyclerViewContent.setLayoutManager(new LinearLayoutManager(this) );
         if(mList != null && mList.size() > 0){
-            getServiceNetWork(mList.get(0).id);
+            groupId  = mList.get(0).id;
+            getServiceNetWork(groupId);
         }
 
         waitPersonAdapter = new WaitPersonAdapter(this);
@@ -105,7 +107,18 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                }
                 serviceNetWorkAdapter.mDataList.get(position).isHeadChoose = true;
                 serviceNetWorkAdapter.notifyDataSetChanged();
-                getServiceNetWork(mList.get(position).id);
+                groupId = mList.get(position).id;
+                getServiceNetWork(groupId);
+            }
+        });
+        netWorkContentAdapter.setOnItemClickListener(new BaseListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                for (EntrySetBean info: netWorkContentAdapter.mDataList){
+                    info.isChoose = false;
+                }
+                netWorkContentAdapter.mDataList.get(position).isChoose = !netWorkContentAdapter.mDataList.get(position).isChoose;
+                netWorkContentAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -195,25 +208,240 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                 startActivity(StatisticsActivity.class,bundle);
                 break;
             case R.id.reJiesan:
+                EntrySetBean entrySetBean = getEntrySetBean();
+                if(entrySetBean == null){
+                    ToastUtil.showShortToast("请选择用户");
+                    return;
+                }
+                clientDissolutionQueue(entrySetBean.groupId);
                 break;
             case R.id.rePause:
+                entrySetBean = getEntrySetBean();
+                if(entrySetBean == null){
+                    ToastUtil.showShortToast("请选择用户");
+                    return;
+                }
+                clientPauseCall(entrySetBean.id);//队列id
                 break;
             case R.id.reGuohao:
+                 entrySetBean = getEntrySetBean();
+                if(entrySetBean == null){
+                    ToastUtil.showShortToast("请选择用户");
+                    return;
+                }
+                clientPassCall(entrySetBean.id,entrySetBean.groupId);
                 break;
             case R.id.reNext:
+                entrySetBean = getEntrySetBean();
+                if(entrySetBean == null){
+                    ToastUtil.showShortToast("请选择用户");
+                    return;
+                }
+                clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId);
                 break;
             case R.id.reReCall:
+                entrySetBean = getEntrySetBean();
+                if(entrySetBean == null){
+                    ToastUtil.showShortToast("请选择用户");
+                    return;
+                }
+                clientReCall(entrySetBean.id);
                 break;
             case R.id.re_back:
                 finish();
                 break;
         }
     }
-
+    private EntrySetBean getEntrySetBean(){
+        EntrySetBean entrySetBean = null;
+        for (EntrySetBean info: netWorkContentAdapter.mDataList){
+            if(info.isChoose){
+                entrySetBean = info;
+                break;
+            }
+        }
+        return entrySetBean;
+    }
     @Override
     protected void onResume() {
         super.onResume();
 
     }
+
+    /***
+     * 解散
+     * @param groupId
+     */
+    private  void clientDissolutionQueue(String groupId){
+        CommonBody commonBody = new CommonBody();
+        String groupIds = "";
+        List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
+        ParamsSet paramsSet = new ParamsSet();
+        paramsSet.name = "groupId";
+        paramsSet.value = groupId;//队列id
+        paramsSetList.add(paramsSet);
+        commonBody.paramsSet = paramsSetList;
+        ((WindowDao)createRequestData).clientDissolutionQueue(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
+            @Override
+            public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
+                if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
+                   ToastUtil.showShortToast("解散成功");
+                }else{
+                    ToastUtil.showShortToast("解散失败");
+                }
+            }
+            @Override
+            public void onError(ApiException e) {
+                ToastUtil.showShortToast("解散失败");
+                if(!TextUtils.isEmpty(e.getMessage())){
+                    ToastUtil.showShortToast(e.getMessage());
+                }
+            }
+        });
+    }
+    /***
+     * 暂停
+     * @param queueId
+     */
+    private  void clientPauseCall(String queueId){
+        CommonBody commonBody = new CommonBody();
+        List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
+        ParamsSet paramsSet = new ParamsSet();
+        paramsSet.name = "queueId";
+        paramsSet.value = queueId;//队列id
+        paramsSetList.add(paramsSet);
+        commonBody.paramsSet = paramsSetList;
+        ((WindowDao)createRequestData).clientPauseCall(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
+            @Override
+            public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
+                if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
+                    ToastUtil.showShortToast("操作成功");
+                }else{
+                    ToastUtil.showShortToast("操作失败");
+                }
+            }
+            @Override
+            public void onError(ApiException e) {
+                ToastUtil.showShortToast("操作失败");
+                if(!TextUtils.isEmpty(e.getMessage())){
+                    ToastUtil.showShortToast(e.getMessage());
+                }
+            }
+        });
+    }
+    /***
+     * 过号
+     * @param queueId
+     */
+    private  void clientPassCall(String queueId,String groupId){
+        CommonBody commonBody = new CommonBody();
+        String groupIds = "";
+        List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
+        ParamsSet paramsSet = new ParamsSet();
+        paramsSet.name = "queueId";
+        paramsSet.value = queueId;//队列id
+
+        ParamsSet paramsSet1 = new ParamsSet();
+        paramsSet1.name = "groupId";
+        paramsSet1.value = groupId;//网点id
+        paramsSetList.add(paramsSet);
+        paramsSetList.add(paramsSet1);
+        commonBody.paramsSet = paramsSetList;
+        ((WindowDao)createRequestData).clientPassCall(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
+            @Override
+            public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
+                if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
+                    ToastUtil.showShortToast("操作成功");
+                }else{
+                    ToastUtil.showShortToast("操作失败");
+                }
+            }
+            @Override
+            public void onError(ApiException e) {
+                ToastUtil.showShortToast("操作失败");
+                if(!TextUtils.isEmpty(e.getMessage())){
+                    ToastUtil.showShortToast(e.getMessage());
+                }
+            }
+        });
+    }
+
+    /***
+     * 下一位
+     * @param groupId
+     */
+    private  void clientCallNext(String groupId,String windowId,String userId){
+        CommonBody commonBody = new CommonBody();
+        String groupIds = "";
+        List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
+
+        ParamsSet paramsWindow = new ParamsSet();
+        paramsWindow.name = "groupId";
+        paramsWindow.value = groupId;//队列id
+
+        ParamsSet paramsSetGroup = new ParamsSet();
+        paramsSetGroup.name = "windowId";
+        paramsSetGroup.value = windowId;//网点id
+
+        ParamsSet paramsSetUser = new ParamsSet();
+        paramsSetUser.name = "userId";
+        paramsSetUser.value = userId;//网点id
+
+        paramsSetList.add(paramsWindow);
+        paramsSetList.add(paramsSetGroup);
+        paramsSetList.add(paramsSetUser);
+
+        commonBody.paramsSet = paramsSetList;
+        ((WindowDao)createRequestData).clientCallNext(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
+            @Override
+            public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
+                if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
+                    ToastUtil.showShortToast("操作成功");
+                }else{
+                    ToastUtil.showShortToast("操作失败");
+                }
+            }
+            @Override
+            public void onError(ApiException e) {
+                ToastUtil.showShortToast("操作成功");
+                if(!TextUtils.isEmpty(e.getMessage())){
+                    ToastUtil.showShortToast(e.getMessage());
+                }
+            }
+        });
+    }
+    /***
+     * 重呼
+     * @param queueId
+     */
+    private  void clientReCall(String queueId ){
+        CommonBody commonBody = new CommonBody();
+        String groupIds = "";
+        List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
+        ParamsSet paramsSet = new ParamsSet();
+        paramsSet.name = "queueId";
+        paramsSet.value = queueId;//队列id
+        paramsSetList.add(paramsSet);
+
+        commonBody.paramsSet = paramsSetList;
+        ((WindowDao)createRequestData).clientReCall(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
+            @Override
+            public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
+                if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
+                    ToastUtil.showShortToast("重呼成功");
+                }else{
+                    ToastUtil.showShortToast("重呼失败");
+                }
+            }
+            @Override
+            public void onError(ApiException e) {
+                ToastUtil.showShortToast("重呼失败");
+                if(!TextUtils.isEmpty(e.getMessage())){
+                    ToastUtil.showShortToast(e.getMessage());
+                }
+            }
+        });
+    }
+
 }
 
