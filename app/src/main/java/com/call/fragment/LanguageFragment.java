@@ -5,10 +5,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bg.baseutillib.tool.SharedPreferencesUtil;
 import com.call.R;
 import com.call.RvBaseFragment;
