@@ -3,11 +3,9 @@ package com.call;
 import android.app.Activity;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-
 import com.bg.baseutillib.BgApplication;
 import com.bg.baseutillib.tool.FileUploadUtil;
 import com.call.net.ApiManager;
-
 import java.util.LinkedList;
 import java.util.List;
 
