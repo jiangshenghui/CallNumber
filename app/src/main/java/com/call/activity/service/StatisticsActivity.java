@@ -44,18 +44,17 @@ public class StatisticsActivity extends RvBaseActivity {
     @BindView(R.id.re_depart_windows)
     RelativeLayout reDepartWindows;
 
-
     private StaisticContentAdapter staisticContentAdapter;
 
-   private String depId = "";
+    private String depId = "";
 
     private SpinerPopWindow mSpinerPopWindow;
 
     private WindowListAdapter windowsListAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

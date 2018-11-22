@@ -129,11 +129,11 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/ivRemendPw"
-                android:layout_width="wrap_content"
+                android:layout_width="18dp"
                 android:src="@mipmap/checkout_no"
                 android:layout_toLeftOf="@+id/tvForgetPassword"
                 android:layout_centerVertical="true"
-                android:layout_height="wrap_content" />
+                android:layout_height="18dp" />
             <TextView
                 android:id="@+id/tvForgetPassword"
                 android:layout_width="wrap_content"
