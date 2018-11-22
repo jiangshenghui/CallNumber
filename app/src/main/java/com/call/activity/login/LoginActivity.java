@@ -146,7 +146,7 @@ public class LoginActivity extends RvBaseActivity {
                 etPhone.setText("");
                 break;
             case R.id.ivRemendPw://记住密码
-                rememberPass = ! rememberPass;
+                rememberPass = !rememberPass;
                 SharedPreferencesUtil.writeBoolean("rememberPass",rememberPass);
                 if(rememberPass){
                     ivRemendPw.setImageResource(R.mipmap.checkout);
