@@ -2,9 +2,7 @@ package com.call;
 
 import android.os.Bundle;
 import android.view.View;
-
 import com.bg.baseutillib.base.BaseFragment;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
