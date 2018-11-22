@@ -89,10 +89,11 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         recyclerViewHead.setAdapter(serviceNetWorkAdapter);
 
         netWorkContentAdapter = new NetWorkContentAdapter(this);
+        recyclerViewContent.setAdapter(netWorkContentAdapter);//设置Adapter
         recyclerViewContent.setLayoutManager(new LinearLayoutManager(this) );
         if(mList != null && mList.size() > 0){
             groupId  = mList.get(0).id;
-            getServiceNetWork(groupId);
+            getGroupQueueList(groupId);
         }
 
         waitPersonAdapter = new WaitPersonAdapter(this);
@@ -108,7 +109,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                 serviceNetWorkAdapter.mDataList.get(position).isHeadChoose = true;
                 serviceNetWorkAdapter.notifyDataSetChanged();
                 groupId = mList.get(position).id;
-                getServiceNetWork(groupId);
+                getGroupQueueList(groupId);
             }
         });
         netWorkContentAdapter.setOnItemClickListener(new BaseListAdapter.OnItemClickListener() {
@@ -122,18 +123,14 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             }
         });
     }
-    private  void getServiceNetWork(String id){
-        CommonBody commonBody = new CommonBody();
 
+    /**
+     * 获取队列排队列表
+     * @param id
+     */
+    private  void getGroupQueueList(String id){
+        CommonBody commonBody = new CommonBody();
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
-//        for (int i = 0; i < mList.size(); i++) {
-//            if(mList.get(i).isChoose){
-//                ParamsSet paramsSet = new ParamsSet();
-//                paramsSet.name = "groupId";
-//                paramsSet.value = mList.get(i).id;
-//                paramsSetList.add(paramsSet);
-//            }
-//        }
         ParamsSet paramsSet = new ParamsSet();
         paramsSet.name = "groupId";
         paramsSet.value = id;
@@ -142,10 +139,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         ((WindowDao)createRequestData).getGroupQueueList(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
-                if (serviceNetWorkBean != null  &&serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
+                if (serviceNetWorkBean != null && "0".equals(serviceNetWorkBean.status) &&serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
                     mDataList = serviceNetWorkBean.entrySet;
                     netWorkContentAdapter.addData(serviceNetWorkBean.entrySet);
-                    recyclerViewContent.setAdapter(netWorkContentAdapter);//设置Adapter
                 }else {
                     netWorkContentAdapter.clearData();
                 }
