@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RadioButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.call.R;
 import com.call.net.window.response.EntrySetBean;
@@ -52,23 +52,23 @@ public class QueuetAdapter extends BaseAdapter {
             holder.radioButton = convertView.findViewById(R.id.radioBtn);
             convertView.setTag(holder);
 
-            holder.radioButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    for (EntrySetBean info: mList){
-//                        info.isChoose = false;
-//                    }
-                    mList.get(position).isChoose = !mList.get(position).isChoose;
-                    notifyDataSetChanged();
-                }
-            });
+//            holder.radioButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    for (EntrySetBean info: mList){
+////                        info.isChoose = false;
+////                    }
+//                    mList.get(position).isChoose = !mList.get(position).isChoose;
+//                    notifyDataSetChanged();
+//                }
+//            });
         } else {
             holder = (QueuetAdapter.ViewHolder) convertView.getTag();
         }
         if(mList.get(position).isChoose){
-            holder.radioButton.setChecked(true);
+            holder.radioButton.setImageResource(R.drawable.me_at);
         }else {
-            holder.radioButton.setChecked(false);
+            holder.radioButton.setImageResource(R.drawable.me_at_n);
         }
         String groupname = mList.get(position).groupname;
         if(!TextUtils.isEmpty(groupname)){
@@ -93,6 +93,6 @@ public class QueuetAdapter extends BaseAdapter {
     }
     class ViewHolder {
         TextView shopType;
-        RadioButton radioButton;
+        ImageView radioButton;
     }
 }

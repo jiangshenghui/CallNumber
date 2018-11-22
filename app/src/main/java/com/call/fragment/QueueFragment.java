@@ -65,6 +65,18 @@ public class QueueFragment extends RvBaseFragment {
         girdQueue.setAdapter(queuetAdapter);
 
         getDepartmentData();
+
+        girdQueue.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //                    for (EntrySetBean info: mList){
+//                        info.isChoose = false;
+//                    }
+                queuetAdapter.mList.get(position).isChoose = !queuetAdapter.mList.get(position).isChoose;
+                queuetAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
@@ -98,7 +110,7 @@ public class QueueFragment extends RvBaseFragment {
                    }
                 }
                 if(!isChoose){
-                    ToastUtil.showShortToast("请选择业务类型");
+                    ToastUtil.showShortToast("请选择排队队列");
                     return;
                 }
                 bundle.putSerializable("businessType",(Serializable) mList);

@@ -3,10 +3,13 @@ package com.call.fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bg.baseutillib.tool.SharedPreferencesUtil;
 import com.call.R;
 import com.call.RvBaseFragment;
 import com.call.activity.adapter.NetWorkListAdapter;
@@ -23,10 +26,6 @@ import butterknife.OnClick;
  * 语言设置
  */
 public class LanguageFragment extends RvBaseFragment {
-    @BindView(R.id.radioBtnLocal)
-    RadioButton radioLocal;
-    @BindView(R.id.radioBtnOrigin)
-    RadioButton radioOrigin;
     @BindView(R.id.tv_language_ku)
     TextView tvLanguageKu;
     @BindView(R.id.re_language)
@@ -36,8 +35,15 @@ public class LanguageFragment extends RvBaseFragment {
     RelativeLayout reRefresh;
     private NetWorkListAdapter netListAdapter;
 
+    @BindView(R.id.radioBtnLocal)
+    ImageView radioBtnLocal;
+
+    @BindView(R.id.radioBtnOrigin)
+    ImageView radioBtnOrigin;
+
     private SpinerPopWindow mSpinerPopNet;
 
+    private String chooseLanguage = "1";//1本地语音库 2 远程语音库
 
     public int setLayoutResID() {
         return R.layout.fragment_language;
@@ -47,8 +53,15 @@ public class LanguageFragment extends RvBaseFragment {
     public void initData(Bundle savedInstanceState) {
         netListAdapter = new NetWorkListAdapter(getActivity());
 
-
-         List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
+       chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
+       if("1".equals(chooseLanguage)){
+           radioBtnLocal.setImageResource(R.drawable.me_at);
+           radioBtnOrigin.setImageResource(R.drawable.me_at_n);
+       }else {
+           radioBtnLocal.setImageResource(R.drawable.me_at_n);
+           radioBtnOrigin.setImageResource(R.drawable.me_at);
+       }
+        List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
 
         EntrySetBean entrySet1 = new EntrySetBean();
         entrySet1.name = "中文女声语音库,能在WIN7系统上使用ScanSoft_MeiLing_ChineseMandarin";
@@ -68,16 +81,18 @@ public class LanguageFragment extends RvBaseFragment {
     @OnClick({R.id.radioBtnLocal, R.id.radioBtnOrigin,R.id.re_language})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.radioBtnLocal:// 部门窗口
-                radioLocal.setChecked(true);
-                radioOrigin.setChecked(false);
+            case R.id.radioBtnLocal://
+                radioBtnLocal.setImageResource(R.drawable.me_at);
+                radioBtnOrigin.setImageResource(R.drawable.me_at_n);
+                SharedPreferencesUtil.writeString("chooseLanguage","1");
                 break;
-            case R.id.radioBtnOrigin://部门网点
-                radioLocal.setChecked(false);
-                radioOrigin.setChecked(true);
+            case R.id.radioBtnOrigin://
+                SharedPreferencesUtil.writeString("chooseLanguage","2");
+                radioBtnLocal.setImageResource(R.drawable.me_at_n);
+                radioBtnOrigin.setImageResource(R.drawable.me_at);
 //                setTextImage(R.drawable.icon_up);
                 break;
-            case R.id.re_language://部门网点
+            case R.id.re_language://
                 mSpinerPopNet.setWidth(reLanguage.getWidth());
                 mSpinerPopNet.showAsDropDown(reLanguage);
 //                setTextImage(R.drawable.icon_up);

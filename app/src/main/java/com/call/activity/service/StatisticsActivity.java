@@ -50,6 +50,7 @@ public class StatisticsActivity extends RvBaseActivity {
    private String depId = "";
 
     private SpinerPopWindow mSpinerPopWindow;
+
     private WindowListAdapter windowsListAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

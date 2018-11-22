@@ -210,15 +210,15 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reJiesan:
                 EntrySetBean entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+                    ToastUtil.showShortToast("暂无排队人解散");
                     return;
                 }
-                clientDissolutionQueue(entrySetBean.groupId);
+                clientDissolutionQueue(groupId);
                 break;
             case R.id.rePause:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientPauseCall(entrySetBean.id);//队列id
@@ -226,7 +226,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reGuohao:
                  entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientPassCall(entrySetBean.id,entrySetBean.groupId);
@@ -234,7 +234,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reNext:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId);
@@ -242,7 +242,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reReCall:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientReCall(entrySetBean.id);
@@ -254,11 +254,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
     }
     private EntrySetBean getEntrySetBean(){
         EntrySetBean entrySetBean = null;
-        for (EntrySetBean info: netWorkContentAdapter.mDataList){
-            if(info.isChoose){
-                entrySetBean = info;
-                break;
-            }
+        if( netWorkContentAdapter.mDataList != null &&  netWorkContentAdapter.mDataList.size() > 0){
+            return  netWorkContentAdapter.mDataList.get(0);
         }
         return entrySetBean;
     }
