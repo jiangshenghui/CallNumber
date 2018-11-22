@@ -24,7 +24,6 @@ import com.call.net.login.request.ParamsSet;
 import com.call.net.window.WindowDao;
 import com.call.net.window.response.EntrySetBean;
 import com.call.net.window.response.ServiceNetWorkBean;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

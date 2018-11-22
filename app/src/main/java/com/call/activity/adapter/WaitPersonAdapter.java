@@ -2,16 +2,12 @@ package com.call.activity.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bg.baseutillib.base.BaseListAdapter;
 import com.call.R;
 import com.call.net.window.response.EntrySetBean;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

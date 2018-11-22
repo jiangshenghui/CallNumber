@@ -3,24 +3,18 @@ package com.call.fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseFragment;
 import com.call.activity.adapter.NetWorkListAdapter;
 import com.call.dialog.SpinerPopWindow;
 import com.call.net.login.LoginDao;
 import com.call.net.window.response.EntrySetBean;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
