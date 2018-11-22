@@ -78,7 +78,7 @@ public class LoginActivity extends RvBaseActivity {
 //            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 //            getWindow().setStatusBarColor(Color.GRAY);
 //        }
-        rememberPass=   SharedPreferencesUtil.readBoolean("rememberPass");
+        rememberPass = SharedPreferencesUtil.readBoolean("rememberPass");
         if(rememberPass){
             ivRemendPw.setImageResource(R.mipmap.checkout);
             etPhone.setText( AppUserData.getInstance().getMobile());
@@ -138,13 +138,9 @@ public class LoginActivity extends RvBaseActivity {
             case R.id.btnLogin://登录
                 login();
                 break;
-//            case R.id.tvRegister://注册
-////                startActivityForResult(RegisterActivity.class, 125);
-//                break;
             case R.id.tvForgetPassword://忘记密码
                 Bundle bundle = new Bundle();
                 bundle.putString("phone",etPhone.getText().toString());
-//                startActivity(ResetPasswordActivity.class,bundle);
                 break;
             case R.id.ivCleanPhone:
                 etPhone.setText("");
