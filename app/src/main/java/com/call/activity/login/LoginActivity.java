@@ -42,7 +42,7 @@ import butterknife.OnClick;
  * 登录
  */
 public class LoginActivity extends RvBaseActivity {
-   //co
+     //co
     @BindView(R.id.etPhone)
     EditText etPhone;
     @BindView(R.id.etPassword)
