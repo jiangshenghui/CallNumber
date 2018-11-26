@@ -60,7 +60,7 @@ public class LanguageFragment extends RvBaseFragment {
            radioBtnOrigin.setImageResource(R.drawable.me_at);
        }
         List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
-
+        String fileNames[] = getActivity().getAssets().getLocales();
         EntrySetBean entrySet1 = new EntrySetBean();
         entrySet1.name = "中文女声语音库,能在WIN7系统上使用ScanSoft_MeiLing_ChineseMandarin";
         EntrySetBean entrySet2 = new EntrySetBean();
