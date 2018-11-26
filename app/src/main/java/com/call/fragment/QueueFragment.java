@@ -24,7 +24,6 @@ import com.call.net.login.request.ParamsSet;
 import com.call.net.window.WindowDao;
 import com.call.net.window.response.EntrySetBean;
 import com.call.net.window.response.ServiceNetWorkBean;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,13 +66,18 @@ public class QueueFragment extends RvBaseFragment {
 
         getDepartmentData();
 
-       girdQueue.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           @Override
-           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               queuetAdapter.mList.get(position).isChoose = !queuetAdapter.mList.get(position).isChoose;
-               queuetAdapter.notifyDataSetChanged();
-           }
-       });
+
+
+        girdQueue.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //                    for (EntrySetBean info: mList){
+//                        info.isChoose = false;
+//                    }
+                queuetAdapter.mList.get(position).isChoose = !queuetAdapter.mList.get(position).isChoose;
+                queuetAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -107,7 +111,7 @@ public class QueueFragment extends RvBaseFragment {
                    }
                 }
                 if(!isChoose){
-                    ToastUtil.showShortToast("请选择业务类型");
+                    ToastUtil.showShortToast("请选择排队队列");
                     return;
                 }
                 bundle.putSerializable("businessType",(Serializable) mList);

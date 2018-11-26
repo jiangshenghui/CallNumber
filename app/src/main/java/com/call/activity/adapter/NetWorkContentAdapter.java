@@ -65,7 +65,6 @@ public class NetWorkContentAdapter  extends BaseListAdapter<EntrySetBean> {
         //item点击事件
         if (mOnItemClickListener != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     mOnItemClickListener.onItemClick(v, position);

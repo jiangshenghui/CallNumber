@@ -54,4 +54,5 @@ dependencies {
     implementation 'com.kaopiz:kprogresshud:1.0.2'
     implementation 'com.android.support:multidex:1.0.1'
     implementation project(':locktableview')
+    implementation files('libs/com.baidu.tts_2.3.2.20180713_6101c2a.jar')
 }

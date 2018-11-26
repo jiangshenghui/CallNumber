@@ -6,10 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.call.R;
 import com.call.net.window.response.EntrySetBean;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -69,11 +69,9 @@ public class LoginDao extends BaseRequestDao {
                     public void onNext(final UserBean value) {
 //                        AppUserData.getInstance().setSessionId(value.token);
 //                        SharedPreferencesUtil.writeCookie("authorization",value.token);
-                        Log.d("jsh","login"+value.paramsSet.get(0).value);
                         if (callback != null) {
                             callback.onSuccess(value);
                         }
-
                     }
                 });
     }

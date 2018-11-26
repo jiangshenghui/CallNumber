@@ -3,8 +3,6 @@ package com.call.activity.login;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -18,7 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ToggleButton;
-
 import com.bg.baseutillib.net.RxNetCallback;
 import com.bg.baseutillib.net.exception.ApiException;
 import com.bg.baseutillib.tool.SharedPreferencesUtil;
@@ -26,10 +23,8 @@ import com.bg.baseutillib.tool.SystemUtils;
 import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseActivity;
-import com.call.activity.service.ServiceNetWorkActivity;
 import com.call.activity.service.SetServiceActivity;
 import com.call.event.LoginEvent;
-import com.call.net.ShareManager;
 import com.call.net.login.LoginDao;
 import com.call.net.login.request.CommonBody;
 import com.call.net.login.request.ParamsSet;
@@ -37,13 +32,9 @@ import com.call.net.login.response.UserBean;
 import com.call.utils.AppConfig;
 import com.call.utils.AppUserData;
 import com.call.utils.Utils;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -51,7 +42,7 @@ import butterknife.OnClick;
  * 登录
  */
 public class LoginActivity extends RvBaseActivity {
-   //co
+     //co
     @BindView(R.id.etPhone)
     EditText etPhone;
     @BindView(R.id.etPassword)
@@ -87,7 +78,7 @@ public class LoginActivity extends RvBaseActivity {
 //            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 //            getWindow().setStatusBarColor(Color.GRAY);
 //        }
-        rememberPass=   SharedPreferencesUtil.readBoolean("rememberPass");
+        rememberPass = SharedPreferencesUtil.readBoolean("rememberPass");
         if(rememberPass){
             ivRemendPw.setImageResource(R.mipmap.checkout);
             etPhone.setText( AppUserData.getInstance().getMobile());
@@ -147,19 +138,15 @@ public class LoginActivity extends RvBaseActivity {
             case R.id.btnLogin://登录
                 login();
                 break;
-//            case R.id.tvRegister://注册
-////                startActivityForResult(RegisterActivity.class, 125);
-//                break;
             case R.id.tvForgetPassword://忘记密码
                 Bundle bundle = new Bundle();
                 bundle.putString("phone",etPhone.getText().toString());
-//                startActivity(ResetPasswordActivity.class,bundle);
                 break;
             case R.id.ivCleanPhone:
                 etPhone.setText("");
                 break;
             case R.id.ivRemendPw://记住密码
-                rememberPass = ! rememberPass;
+                rememberPass = !rememberPass;
                 SharedPreferencesUtil.writeBoolean("rememberPass",rememberPass);
                 if(rememberPass){
                     ivRemendPw.setImageResource(R.mipmap.checkout);

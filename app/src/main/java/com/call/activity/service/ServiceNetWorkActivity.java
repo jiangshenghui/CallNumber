@@ -89,10 +89,11 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         recyclerViewHead.setAdapter(serviceNetWorkAdapter);
 
         netWorkContentAdapter = new NetWorkContentAdapter(this);
+        recyclerViewContent.setAdapter(netWorkContentAdapter);//设置Adapter
         recyclerViewContent.setLayoutManager(new LinearLayoutManager(this) );
         if(mList != null && mList.size() > 0){
             groupId  = mList.get(0).id;
-            getServiceNetWork(groupId);
+            getGroupQueueList(groupId);
         }
 
         waitPersonAdapter = new WaitPersonAdapter(this);
@@ -108,7 +109,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                 serviceNetWorkAdapter.mDataList.get(position).isHeadChoose = true;
                 serviceNetWorkAdapter.notifyDataSetChanged();
                 groupId = mList.get(position).id;
-                getServiceNetWork(groupId);
+                getGroupQueueList(groupId);
             }
         });
         netWorkContentAdapter.setOnItemClickListener(new BaseListAdapter.OnItemClickListener() {
@@ -122,18 +123,14 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             }
         });
     }
-    private  void getServiceNetWork(String id){
-        CommonBody commonBody = new CommonBody();
 
+    /**
+     * 获取队列排队列表
+     * @param id
+     */
+    private  void getGroupQueueList(String id){
+        CommonBody commonBody = new CommonBody();
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
-//        for (int i = 0; i < mList.size(); i++) {
-//            if(mList.get(i).isChoose){
-//                ParamsSet paramsSet = new ParamsSet();
-//                paramsSet.name = "groupId";
-//                paramsSet.value = mList.get(i).id;
-//                paramsSetList.add(paramsSet);
-//            }
-//        }
         ParamsSet paramsSet = new ParamsSet();
         paramsSet.name = "groupId";
         paramsSet.value = id;
@@ -142,10 +139,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         ((WindowDao)createRequestData).getGroupQueueList(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
-                if (serviceNetWorkBean != null  &&serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
+                if (serviceNetWorkBean != null && "0".equals(serviceNetWorkBean.status) &&serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
                     mDataList = serviceNetWorkBean.entrySet;
                     netWorkContentAdapter.addData(serviceNetWorkBean.entrySet);
-                    recyclerViewContent.setAdapter(netWorkContentAdapter);//设置Adapter
                 }else {
                     netWorkContentAdapter.clearData();
                 }
@@ -199,7 +195,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         return new WindowDao();
     }
 
-    @OnClick({R.id.reTongji,R.id.reJiesan,R.id.rePause,R.id.reGuohao,R.id.reNext,R.id.reReCall,R.id.re_back})
+    @OnClick({R.id.reTongji,R.id.reJiesan,R.id.rePause,R.id.reGuohao,R.id.reNext,R.id.reReCall,R.id.re_back
+       ,R.id.btnSet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.reTongji:
@@ -210,15 +207,15 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reJiesan:
                 EntrySetBean entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+                    ToastUtil.showShortToast("暂无排队人解散");
                     return;
                 }
-                clientDissolutionQueue(entrySetBean.groupId);
+                clientDissolutionQueue(groupId);
                 break;
             case R.id.rePause:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientPauseCall(entrySetBean.id);//队列id
@@ -226,7 +223,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reGuohao:
                  entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientPassCall(entrySetBean.id,entrySetBean.groupId);
@@ -234,7 +231,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reNext:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId);
@@ -242,7 +239,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reReCall:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("请选择用户");
+//                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
                 clientReCall(entrySetBean.id);
@@ -250,15 +247,15 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.re_back:
                 finish();
                 break;
+            case R.id.btnSet:
+                startActivity(MiniActivity.class);
+                break;
         }
     }
     private EntrySetBean getEntrySetBean(){
         EntrySetBean entrySetBean = null;
-        for (EntrySetBean info: netWorkContentAdapter.mDataList){
-            if(info.isChoose){
-                entrySetBean = info;
-                break;
-            }
+        if( netWorkContentAdapter.mDataList != null &&  netWorkContentAdapter.mDataList.size() > 0){
+            return  netWorkContentAdapter.mDataList.get(0);
         }
         return entrySetBean;
     }

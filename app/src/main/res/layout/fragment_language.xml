@@ -14,14 +14,23 @@
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
-            <RadioButton
+            <ImageView
                 android:id="@+id/radioBtnLocal"
-                android:layout_width="wrap_content"
+                android:layout_width="18dp"
                 android:text="本地语言"
                 android:textColor="@color/color32"
                 android:textSize="18sp"
+                android:src="@drawable/me_at"
                 android:layout_centerVertical="true"
+                android:layout_height="18dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="本地语音库"
+                android:textColor="@color/color32"
+                android:textSize="15sp"
+                android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
@@ -29,13 +38,21 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_height="wrap_content">
-            <RadioButton
+            <ImageView
                 android:id="@+id/radioBtnOrigin"
-                android:layout_width="wrap_content"
+                android:layout_width="18dp"
                 android:text="远程语言"
                 android:textColor="@color/color32"
+                android:src="@drawable/me_at_n"
                 android:textSize="18sp"
                 android:layout_centerVertical="true"
+                android:layout_height="18dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="远程语音库"
+                android:textColor="@color/color32"
+                android:textSize="15sp"
+                android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>

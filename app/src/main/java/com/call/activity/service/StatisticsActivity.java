@@ -44,17 +44,17 @@ public class StatisticsActivity extends RvBaseActivity {
     @BindView(R.id.re_depart_windows)
     RelativeLayout reDepartWindows;
 
-
     private StaisticContentAdapter staisticContentAdapter;
 
-   private String depId = "";
+    private String depId = "";
 
     private SpinerPopWindow mSpinerPopWindow;
+
     private WindowListAdapter windowsListAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -74,6 +74,7 @@ public class StatisticsActivity extends RvBaseActivity {
             depId =  getIntent().getStringExtra("depId");
         }
         staisticContentAdapter = new StaisticContentAdapter(this);
+        recyclerViewContent.setAdapter(staisticContentAdapter);//设置Adapter
         recyclerViewContent.setLayoutManager(new LinearLayoutManager(this) );
         windowsListAdapter = new WindowListAdapter(this);
         getDepartmentWindow(depId);
@@ -99,10 +100,9 @@ public class StatisticsActivity extends RvBaseActivity {
         ((WindowDao)createRequestData).getWindowHandleStatictics(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
-                if (serviceNetWorkBean != null  &&serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
+                if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status) && serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
                     mDataList = serviceNetWorkBean.entrySet;
                     staisticContentAdapter.addData(serviceNetWorkBean.entrySet);
-                    recyclerViewContent.setAdapter(staisticContentAdapter);//设置Adapter
                 }else {
                     staisticContentAdapter.clearData();
                 }
@@ -127,8 +127,7 @@ public class StatisticsActivity extends RvBaseActivity {
         ((WindowDao)createRequestData).getServiceWindows(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
-                if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet != null&& serviceNetWorkBean.entrySet.size() > 0) {//登录成功
-                    windowsListAdapter.clearData();
+                if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet != null&& serviceNetWorkBean.entrySet.size() > 0) {
                     windowsListAdapter.addData(serviceNetWorkBean.entrySet);
                     mSpinerPopWindow = new SpinerPopWindow(StatisticsActivity.this,itemClickListener,windowsListAdapter);
                     mSpinerPopWindow.setOnDismissListener(dismissListener);
