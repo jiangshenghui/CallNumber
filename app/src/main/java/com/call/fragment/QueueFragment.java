@@ -66,6 +66,14 @@ public class QueueFragment extends RvBaseFragment {
         girdQueue.setAdapter(queuetAdapter);
 
         getDepartmentData();
+
+       girdQueue.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               queuetAdapter.mList.get(position).isChoose = !queuetAdapter.mList.get(position).isChoose;
+               queuetAdapter.notifyDataSetChanged();
+           }
+       });
     }
 
     @Override
