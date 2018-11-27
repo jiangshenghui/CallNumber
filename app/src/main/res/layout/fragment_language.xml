@@ -16,28 +16,40 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/radioBtnLocal"
-                android:layout_width="18dp"
-                android:text="本地语言"
-                android:textColor="@color/color32"
-                android:textSize="18sp"
-                android:src="@drawable/me_at"
-                android:layout_centerVertical="true"
-                android:layout_height="18dp" />
-            <TextView
+            <LinearLayout
+                android:id="@+id/llBtnLocal"
                 android:layout_width="wrap_content"
-                android:text="本地语音库"
-                android:textColor="@color/color32"
-                android:textSize="15sp"
-                android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content" />
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/radioBtnLocal"
+                    android:layout_width="18dp"
+                    android:text="本地语言"
+                    android:textColor="@color/color32"
+                    android:textSize="18sp"
+                    android:src="@drawable/me_at"
+                    android:layout_centerVertical="true"
+                    android:layout_height="18dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="本地语音库"
+                    android:textColor="@color/color32"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/llBtnOrigin"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/radioBtnOrigin"
                 android:layout_width="18dp"
@@ -54,6 +66,7 @@
                 android:textSize="15sp"
                 android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
@@ -82,7 +95,6 @@
                 android:layout_marginRight="12dp"
                 android:textColor="#000000"
                 android:layout_marginLeft="5dp"
-                android:text="中文女声语音库,能在WIN7系统上使用ScanSoft_MeiLing_ChineseMandarin"
                 android:textSize="11sp" />
 
             <ImageView
@@ -115,7 +127,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="273dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="240dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/login_r8_bg_shape"
         android:textColor="@color/white"
         android:text="确定"

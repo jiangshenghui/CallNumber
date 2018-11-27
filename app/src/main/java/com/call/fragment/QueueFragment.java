@@ -39,9 +39,9 @@ public class QueueFragment extends RvBaseFragment {
     TextView tvNetwork;
     @BindView(R.id.tv_windows)
     TextView tvWindows;
-    @BindView(R.id.re_depart_windows)
+    @BindView(R.id.re_depart_windows_sa)
     RelativeLayout reDepartWindows;
-    @BindView(R.id.re_depart_net)
+    @BindView(R.id.re_depart_net_sa)
     RelativeLayout reDepartNet;
     @BindView(R.id.gv_queue)
     GridView girdQueue;
@@ -66,6 +66,8 @@ public class QueueFragment extends RvBaseFragment {
 
         getDepartmentData();
 
+
+
         girdQueue.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -76,7 +78,6 @@ public class QueueFragment extends RvBaseFragment {
                 queuetAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
     @Override
@@ -92,7 +93,7 @@ public class QueueFragment extends RvBaseFragment {
                     return;
                 }
                 mSpinerPopWindow.setWidth(reDepartWindows.getWidth());
-                mSpinerPopWindow.showAsDropDown(reDepartWindows);
+                mSpinerPopWindow.showAsDropDown(reDepartWindows,0,40);
                 break;
             case R.id.re_depart_net://部门网点
                 mSpinerPopNet.setWidth(reDepartNet.getWidth());

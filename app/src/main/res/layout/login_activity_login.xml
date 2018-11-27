@@ -30,20 +30,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/re_title"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x60"
-            android:layout_marginRight="@dimen/x60"
-            android:layout_marginTop="@dimen/x537"
+
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="359dp"
                 android:background="@drawable/login_frame_selector"
-                android:layout_height="@dimen/y150">
+                android:layout_height="44dp">
                 <ImageView
                     android:id="@+id/ivPhone"
                     android:layout_width="wrap_content"
@@ -84,10 +84,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="359dp"
                 android:background="@drawable/login_frame_selector"
                 android:layout_marginTop="@dimen/x20"
-                android:layout_height="@dimen/y150">
+                android:layout_height="44dp">
                 <ImageView
                     android:id="@+id/ivPassword"
                     android:layout_width="wrap_content"
@@ -123,9 +123,7 @@
 
         </LinearLayout>
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="359dp"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/ivRemendPw"
@@ -147,12 +145,10 @@
         </RelativeLayout>
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
-            android:layout_marginTop="@dimen/x100"
+            android:layout_width="359dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/login_r8_bg_shape"
-            android:layout_marginLeft="@dimen/x60"
-            android:layout_marginRight="@dimen/x60"
             android:textColor="@color/white"
             android:text="登录"
             android:layout_gravity="center_horizontal"
