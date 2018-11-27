@@ -46,11 +46,11 @@ public class MiniActivity extends AppCompatActivity {
      * 发布时请替换成自己申请的appId appKey 和 secretKey。注意如果需要离线合成功能,请在您申请的应用中填写包名。
      * 本demo的包名是com.baidu.tts.sample，定义在build.gradle中。
      */
-    protected String appId = "11005757";
+    protected String appId = "14944201";
 
-    protected String appKey = "Ovcz19MGzIKoDDb3IsFFncG1";
+    protected String appKey = "pnnyNtSgvCNx8jWDzsXgKOom";
 
-    protected String secretKey = "e72ebb6d43387fc7f85205ca7e6706e2";
+    protected String secretKey = "NcVK10DGRb4gMGPweATO4Utoan6dfzDG";
 
     // TtsMode.MIX; 离在线融合，在线优先； TtsMode.ONLINE 纯在线； 没有纯离线
     private TtsMode ttsMode = TtsMode.ONLINE;
