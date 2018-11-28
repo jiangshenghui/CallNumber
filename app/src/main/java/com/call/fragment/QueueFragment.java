@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bg.baseutillib.net.RxNetCallback;
 import com.bg.baseutillib.net.exception.ApiException;
+import com.bg.baseutillib.tool.SharedPreferencesUtil;
 import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseFragment;
@@ -52,12 +53,22 @@ public class QueueFragment extends RvBaseFragment {
     private SpinerPopWindow mSpinerPopNet,mSpinerPopWindow;
     private QueuetAdapter queuetAdapter;
 
+    private String networkname = "";
+    private String networkId ="";
+    private String windowName ="";
+    private String windowId = "";
+
     public int setLayoutResID() {
         return R.layout.fragment_queue;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        networkname =  SharedPreferencesUtil.readString("networkname");
+        networkId = SharedPreferencesUtil.readString("networkid");
+
+        windowName = SharedPreferencesUtil.readString("windowName");
+        windowId = SharedPreferencesUtil.readString("windowId");
 
         netListAdapter = new NetWorkListAdapter(getActivity());
         windowsListAdapter = new WindowListAdapter(getActivity());
@@ -67,7 +78,16 @@ public class QueueFragment extends RvBaseFragment {
         getDepartmentData();
 
 
-
+        if(!TextUtils.isEmpty(networkname)){
+            tvNetwork.setText(networkname);
+            tvNetwork.setTag(networkId);
+            getDepartmentWindow(networkId);
+            getDepartmentQueue(networkId);
+        }
+        if(!TextUtils.isEmpty(windowName)){
+            tvWindows.setText(windowName);
+            tvWindows.setTag(windowId);
+        }
         girdQueue.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -242,6 +262,8 @@ public class QueueFragment extends RvBaseFragment {
             mSpinerPopNet.dismiss();
             tvNetwork.setText(netListAdapter.mList.get(position).name);
             tvNetwork.setTag(netListAdapter.mList.get(position).id);
+            SharedPreferencesUtil.writeString("networkname",netListAdapter.mList.get(position).name);
+            SharedPreferencesUtil.writeString("networkid",netListAdapter.mList.get(position).id);
             getDepartmentWindow(netListAdapter.mList.get(position).id);
             getDepartmentQueue(netListAdapter.mList.get(position).id);
         }
@@ -265,6 +287,8 @@ public class QueueFragment extends RvBaseFragment {
             mSpinerPopWindow.dismiss();
             tvWindows.setText(windowsListAdapter.mList.get(position).windowName);
             tvWindows.setTag(windowsListAdapter.mList.get(position).id);
+            SharedPreferencesUtil.writeString("windowName",windowsListAdapter.mList.get(position).windowName);
+            SharedPreferencesUtil.writeString("windowId",windowsListAdapter.mList.get(position).id);
         }
     };
 

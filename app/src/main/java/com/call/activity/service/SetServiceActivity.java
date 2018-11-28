@@ -43,14 +43,14 @@ public class SetServiceActivity extends RvBaseActivity {
     private void initFrament(){
         queueFragment = new QueueFragment();
         languageFragment = new LanguageFragment();
-//        switchFragment(queueFragment).commit();
+        switchFragment(queueFragment).commit();
         //步骤一：添加一个FragmentTransaction的实例
-        fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        //步骤二：用add()方法加上Fragment的对象rightFragment
-        transaction.add(R.id.fragment_set,queueFragment);
-        //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
-        transaction.commit();
+//        fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        //步骤二：用add()方法加上Fragment的对象rightFragment
+//        transaction.add(R.id.fragment_set,queueFragment);
+//        //步骤三：调用commit()方法使得FragmentTransaction实例的改变生效
+//        transaction.commit();
     }
     private  Fragment  currentFragment;
     private FragmentTransaction switchFragment(Fragment targetFragment) {
@@ -87,18 +87,18 @@ public class SetServiceActivity extends RvBaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_queue_set:
-                fragmentManager.beginTransaction().replace(R.id.fragment_set, queueFragment).commit();
-//                switchFragment(queueFragment).commit();
+//                fragmentManager.beginTransaction().replace(R.id.fragment_set, queueFragment).commit();
+                switchFragment(queueFragment).commit();
                 btnQueue.setTextColor(getResources().getColor(R.color.color28));
                 btnLanguage.setTextColor(getResources().getColor(R.color.color32));
                 btnQueue.setBackgroundResource(R.color.white);
                 btnLanguage.setBackgroundResource(R.color.transparent);
                 break;
             case R.id.btn_language:
-                fragmentManager.beginTransaction().replace(R.id.fragment_set, languageFragment).commit();
+//                fragmentManager.beginTransaction().replace(R.id.fragment_set, languageFragment).commit();
                 btnQueue.setTextColor(getResources().getColor(R.color.color32));
                 btnLanguage.setTextColor(getResources().getColor(R.color.color28));
-//                switchFragment(languageFragment).commit();
+                switchFragment(languageFragment).commit();
                 btnQueue.setBackgroundResource(R.color.transparent);
                 btnLanguage.setBackgroundResource(R.color.white);
                 break;

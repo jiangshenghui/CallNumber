@@ -57,11 +57,9 @@
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/ivPhone"
                     android:layout_marginLeft="@dimen/x48"
-                    android:hint="请输入您的手机号"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:maxLength="11"
-                    android:text="loginPwd"
+                    android:text=" 13800138000"
                     android:textSize="@dimen/x48" />
 
                 <ImageView

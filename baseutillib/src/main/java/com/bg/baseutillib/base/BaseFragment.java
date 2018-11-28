@@ -256,4 +256,5 @@ public abstract class BaseFragment<T extends BaseRequestDao> extends RxFragment 
         }
         return true;
     }
+
 }

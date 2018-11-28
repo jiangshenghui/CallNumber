@@ -11,6 +11,7 @@ public class EntrySetBean implements Serializable {
     public String userId;//": "Use154095456732C4A088D8D8CD3BCD7E1DA"
     public boolean isChoose;
     public boolean isHeadChoose;
+    public String voice;
 
     //3、获取服务网点窗口列表
     public String creater;
