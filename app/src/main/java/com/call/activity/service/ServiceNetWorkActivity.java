@@ -25,6 +25,7 @@ import com.baidu.tts.client.TtsMode;
 import com.bg.baseutillib.base.BaseListAdapter;
 import com.bg.baseutillib.net.RxNetCallback;
 import com.bg.baseutillib.net.exception.ApiException;
+import com.bg.baseutillib.tool.SharedPreferencesUtil;
 import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseActivity;
@@ -117,9 +118,11 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
     private Button mStop;
 
-    private TextView mShowText;
+//    private TextView mShowText;
 
     protected Handler mainHandler;
+
+    private String  chooseLanguage="1";//1本地 2远程
 
     private static final String DESC = "精简版合成，仅给出示例集成合成的调用过程。可以测试离线合成功能，首次使用请联网。\n"
             + "其中initTTS方法需要在新线程调用，否则引起UI阻塞。\n"
@@ -144,6 +147,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
+        initView();
         initPermission();
         initTTs();
         if (getIntent().getSerializableExtra("businessType") != null) {
@@ -320,13 +325,13 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 //                    ToastUtil.showShortToast("请选择用户");
                     return;
                 }
-                clientReCall(entrySetBean.id);
+                clientReCall(entrySetBean.id,entrySetBean.userName,entrySetBean.bespeakSort);
                 break;
             case R.id.re_back:
                 finish();
                 break;
             case R.id.btnSet:
-                startActivity(MiniActivity.class);
+                finish();
                 break;
         }
     }
@@ -489,7 +494,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
      * 重呼
      * @param queueId
      */
-    private  void clientReCall(String queueId ){
+    private  void clientReCall(String queueId ,final String userName, final String bespeakSort){
         CommonBody commonBody = new CommonBody();
         String groupIds = "";
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
@@ -503,7 +508,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    ToastUtil.showShortToast("重呼成功");
+                    speak(userName,bespeakSort);
                 }else{
                     ToastUtil.showShortToast("重呼失败");
                 }
@@ -674,7 +679,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             return;
         }
         int result = mSpeechSynthesizer.speak("请"+userName+"到"+bespeakSort+"办理业务");
-        mShowText.setText("");
+//        int result = mSpeechSynthesizer.speak(TEXT);
+//        mShowText.setText("");
         print("合成并播放 按钮已经点击");
         checkResult(result, "speak");
     }
@@ -687,17 +693,17 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
 //    //  下面是UI部分
 //
-//    private void initView() {
+    private void initView() {
 //        mSpeak = (Button) this.findViewById(R.id.speak);
 //        mStop = (Button) this.findViewById(R.id.stop);
-//        mShowText = (TextView) this.findViewById(R.id.showText);
-//        mShowText.setText(DESC);
+////        mShowText = (TextView) this.findViewById(R.id.showText);
+////        mShowText.setText(DESC);
 //        View.OnClickListener listener = new View.OnClickListener() {
 //            public void onClick(View v) {
 //                int id = v.getId();
 //                switch (id) {
 //                    case R.id.speak:
-//                        speak();
+//                        speak("","");
 //                        break;
 //                    case R.id.stop:
 //                        stop();
@@ -709,24 +715,24 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 //        };
 //        mSpeak.setOnClickListener(listener);
 //        mStop.setOnClickListener(listener);
-//        mainHandler = new Handler() {
-//            /*
-//             * @param msg
-//             */
-//            @Override
-//            public void handleMessage(Message msg) {
-//                super.handleMessage(msg);
-//                if (msg.obj != null) {
-//                    print(msg.obj.toString());
-//                }
-//            }
-//
-//        };
-//    }
+        mainHandler = new Handler() {
+            /*
+             * @param msg
+             */
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.obj != null) {
+                    print(msg.obj.toString());
+                }
+            }
+
+        };
+    }
 
     private void print(String message) {
         Log.i(TAG, message);
-        mShowText.append(message + "\n");
+//        mShowText.append(message + "\n");
     }
 
     @Override
