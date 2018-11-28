@@ -35,7 +35,7 @@
         <activity android:name=".activity.service.MiniActivity"></activity>
         <service android:name="com.call.activity.service.BackService">
             <intent-filter>
-                <action android:name="com.test.service.MyService"/>
+                <action android:name="com.call.activity.service.BackService"/>
             </intent-filter>
         </service>
 
