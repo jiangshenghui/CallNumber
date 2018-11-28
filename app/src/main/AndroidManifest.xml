@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/logo_lanauther"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.login.LoginActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +33,12 @@
          <activity android:name=".activity.service.SetServiceActivity"></activity>
         <activity android:name=".activity.service.StatisticsActivity"></activity>
         <activity android:name=".activity.service.MiniActivity"></activity>
+        <service android:name="com.call.activity.service.BackService">
+            <intent-filter>
+                <action android:name="com.call.activity.service.BackService"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

@@ -199,7 +199,7 @@ public class LoginActivity extends RvBaseActivity {
                     mDialog.dismiss();
                     mDialog = null;
                 }
-                if (userBean != null) {//登录成功
+                if (userBean != null ) {//登录成功
                     ToastUtil.showShortToast("登录成功");
 //                    AppUserData.getInstance().setSessionId(userBean.getBussData());
                     AppUserData.getInstance().setMobile(account);
@@ -208,6 +208,8 @@ public class LoginActivity extends RvBaseActivity {
                     EventBus.getDefault().post(new LoginEvent(true));
                     startActivity(SetServiceActivity.class);
                     finish();
+                }else {
+                    ToastUtil.showShortToast("用户名或密码错误");
                 }
             }
 

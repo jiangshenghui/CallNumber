@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.PopupWindow;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bg.baseutillib.net.RxNetCallback;
 import com.bg.baseutillib.net.exception.ApiException;
+import com.bg.baseutillib.tool.SharedPreferencesUtil;
 import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseActivity;
@@ -52,6 +54,9 @@ public class StatisticsActivity extends RvBaseActivity {
 
     private WindowListAdapter windowsListAdapter;
 
+    private String windowName ="";
+    private String windowId = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +78,15 @@ public class StatisticsActivity extends RvBaseActivity {
         if (getIntent().getSerializableExtra("depId") != null) {
             depId =  getIntent().getStringExtra("depId");
         }
+        windowName = SharedPreferencesUtil.readString("windowName");
+        windowId = SharedPreferencesUtil.readString("windowId");
+
+        if(!TextUtils.isEmpty(windowName)){
+            tvWindow.setText(windowName);
+            tvWindow.setTag(windowId);
+            getWindowHandleStatictics(windowId,depId);
+        }
+
         staisticContentAdapter = new StaisticContentAdapter(this);
         recyclerViewContent.setAdapter(staisticContentAdapter);//设置Adapter
         recyclerViewContent.setLayoutManager(new LinearLayoutManager(this) );

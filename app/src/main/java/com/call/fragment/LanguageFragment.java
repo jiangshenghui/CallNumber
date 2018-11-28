@@ -42,6 +42,7 @@ public class LanguageFragment extends RvBaseFragment {
     private SpinerPopWindow mSpinerPopNet;
 
     private String chooseLanguage = "1";//1本地语音库 2 远程语音库
+    private String voice = "0";
 
     public int setLayoutResID() {
         return R.layout.fragment_language;
@@ -52,6 +53,7 @@ public class LanguageFragment extends RvBaseFragment {
         netListAdapter = new NetWorkListAdapter(getActivity());
 
        chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
+       voice =   SharedPreferencesUtil.readString("voice");
        if("1".equals(chooseLanguage)){
            radioBtnLocal.setImageResource(R.drawable.me_at);
            radioBtnOrigin.setImageResource(R.drawable.me_at_n);
@@ -59,17 +61,27 @@ public class LanguageFragment extends RvBaseFragment {
            radioBtnLocal.setImageResource(R.drawable.me_at_n);
            radioBtnOrigin.setImageResource(R.drawable.me_at);
        }
-        List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
-//        String fileNames[] = getActivity().getAssets().getLocales();
-//        EntrySetBean entrySet1 = new EntrySetBean();
-//        entrySet1.name = "中文女声语音库,能在WIN7系统上使用ScanSoft_MeiLing_ChineseMandarin";
-//        EntrySetBean entrySet2 = new EntrySetBean();
-//        entrySet2.name = "中文女声语音库,能在WIN7系统上使用ScanSoft_MeiLing_ChineseMandarin";
-//        mList.add(entrySet1);
-//        mList.add(entrySet2);
-        netListAdapter.addData(mList);
-        mSpinerPopNet = new SpinerPopWindow(getActivity(),itemClickListener,netListAdapter);
-        mSpinerPopNet.setOnDismissListener(dismissListener);
+       if("1".equals(chooseLanguage)){
+          // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
+           List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
+           EntrySetBean entrySet1 = new EntrySetBean();
+            entrySet1.name = "普通女声";
+             entrySet1.voice = "0";
+            EntrySetBean entrySet2 = new EntrySetBean();
+            entrySet2.name = "普通男声";
+            entrySet2.voice = "1";
+            mList.add(entrySet1);
+            mList.add(entrySet2);
+           netListAdapter.addData(mList);
+           mSpinerPopNet = new SpinerPopWindow(getActivity(),itemClickListener,netListAdapter);
+           mSpinerPopNet.setOnDismissListener(dismissListener);
+           if("0".equals(voice)){
+               tvLanguageKu.setText("普通女声");
+           }else {
+               tvLanguageKu.setText("普通男声");
+           }
+           SharedPreferencesUtil.writeString("voice",voice);
+       }
     }
 
     @Override
@@ -117,6 +129,7 @@ public class LanguageFragment extends RvBaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
             mSpinerPopNet.dismiss();
             tvLanguageKu.setText(netListAdapter.mList.get(position).name);
+            SharedPreferencesUtil.writeString("voice",netListAdapter.mList.get(position).voice);
         }
     };
     /**

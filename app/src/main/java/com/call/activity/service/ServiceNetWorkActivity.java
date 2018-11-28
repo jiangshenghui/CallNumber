@@ -27,6 +27,7 @@ import com.bg.baseutillib.net.RxNetCallback;
 import com.bg.baseutillib.net.exception.ApiException;
 import com.bg.baseutillib.tool.SharedPreferencesUtil;
 import com.bg.baseutillib.tool.ToastUtil;
+import com.call.OnCusDialogInterface;
 import com.call.R;
 import com.call.RvBaseActivity;
 import com.call.activity.adapter.NetWorkContentAdapter;
@@ -40,6 +41,7 @@ import com.call.net.window.WindowDao;
 import com.call.net.window.response.EntrySetBean;
 import com.call.net.window.response.ServiceNetWorkBean;
 import com.call.utils.AutoCheck;
+import com.call.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -290,15 +292,26 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reJiesan:
                 EntrySetBean entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-                    ToastUtil.showShortToast("暂无排队人解散");
+                    ToastUtil.showShortToast("请先叫号");
                     return;
                 }
-                clientDissolutionQueue(groupId);
+                Utils.showDialog(ServiceNetWorkActivity.this, "", "解散或未办理完退出会直接影响用户体验，可能导致用户投诉，会影响你的信用值，信用值过低，可能会被短期封号，请谨慎操作，建议你办理完，排小二代表用户谢谢你了！", "确定", "取消", new OnCusDialogInterface() {
+                    @Override
+                    public void onConfirmClick() {
+                        clientDissolutionQueue(groupId);
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+
+                    }
+                });
+
                 break;
             case R.id.rePause:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-//                    ToastUtil.showShortToast("请选择用户");
+                    ToastUtil.showShortToast("请先叫号");
                     return;
                 }
                 clientPauseCall(entrySetBean.id);//队列id
@@ -306,7 +319,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reGuohao:
                  entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-//                    ToastUtil.showShortToast("请选择用户");
+                    ToastUtil.showShortToast("请先叫号");
                     return;
                 }
                 clientPassCall(entrySetBean.id,entrySetBean.groupId);
@@ -314,7 +327,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reNext:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-//                    ToastUtil.showShortToast("请选择用户");
+                    ToastUtil.showShortToast("请先叫号");
                     return;
                 }
                 clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName,entrySetBean.bespeakSort);
@@ -322,7 +335,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             case R.id.reReCall:
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean == null){
-//                    ToastUtil.showShortToast("请选择用户");
+                    ToastUtil.showShortToast("请先叫号");
                     return;
                 }
                 clientReCall(entrySetBean.id,entrySetBean.userName,entrySetBean.bespeakSort);
@@ -573,7 +586,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
         // 5. 以下setParam 参数选填。不填写则默认值生效
         // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
+        String voice =  SharedPreferencesUtil.readString("voice");
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, voice);
         // 设置合成的音量，0-9 ，默认 5
         mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");
         // 设置合成的语速，0-9 ，默认 5
