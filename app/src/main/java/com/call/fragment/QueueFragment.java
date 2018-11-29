@@ -113,7 +113,7 @@ public class QueueFragment extends RvBaseFragment {
                     return;
                 }
                 mSpinerPopWindow.setWidth(reDepartWindows.getWidth());
-                mSpinerPopWindow.showAsDropDown(reDepartWindows,0,40);
+                mSpinerPopWindow.showAsDropDown(reDepartWindows);
                 break;
             case R.id.re_depart_net://部门网点
                 mSpinerPopNet.setWidth(reDepartNet.getWidth());
@@ -131,11 +131,16 @@ public class QueueFragment extends RvBaseFragment {
                    }
                 }
                 if(!isChoose){
-                    ToastUtil.showShortToast("请选择排队队列");
+                    ToastUtil.showShortToast("请选择队列设置");
+                    return;
+                }
+                if(tvWindows.getText().toString().trim().equals("请选择窗口")){
+                    ToastUtil.showShortToast("请选择窗口");
                     return;
                 }
                 bundle.putSerializable("businessType",(Serializable) mList);
                 bundle.putSerializable("netWorkName",tvNetwork.getText().toString());
+                bundle.putSerializable("window",tvWindows.getText().toString());
                 if(tvNetwork.getTag() != null){
                     bundle.putSerializable("depId",tvNetwork.getTag().toString());
                 }

@@ -81,7 +81,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
     private String groupId;//队列ID
 
-
+    private String window;
 
     private static final String TEXT = "欢迎使用百度语音合成，请在代码中修改合成文本";
 
@@ -159,6 +159,10 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         if (getIntent().getSerializableExtra("netWorkName") != null) {
             netWorkName =  getIntent().getStringExtra("netWorkName");
         }
+        if (getIntent().getSerializableExtra("window") != null) {
+            window =  getIntent().getStringExtra("window");
+        }
+
         if (getIntent().getSerializableExtra("depId") != null) {
             depId =  getIntent().getStringExtra("depId");
         }
@@ -489,7 +493,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    speak(userName,bespeakSort);
+                    speak(bespeakSort);
                 }else{
                     ToastUtil.showShortToast("叫号失败");
                 }
@@ -521,7 +525,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    speak(userName,bespeakSort);
+                    speak(bespeakSort);
                 }else{
                     ToastUtil.showShortToast("重呼失败");
                 }
@@ -535,7 +539,6 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             }
         });
     }
-
 
 
     /**
@@ -673,7 +676,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         return true;
     }
 
-    private void speak(String userName,String bespeakSort) {
+    private void speak(String bespeakSort) {
         /* 以下参数每次合成时都可以修改
          *  mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
          *  设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
@@ -692,7 +695,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             print("[ERROR], 初始化失败");
             return;
         }
-        int result = mSpeechSynthesizer.speak("请"+userName+"到"+bespeakSort+"办理业务");
+        int result = mSpeechSynthesizer.speak("请"+bespeakSort+"号到"+window);
 //        int result = mSpeechSynthesizer.speak(TEXT);
 //        mShowText.setText("");
         print("合成并播放 按钮已经点击");

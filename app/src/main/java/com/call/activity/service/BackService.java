@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.bg.baseutillib.tool.SharedPreferencesUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,7 +24,7 @@ public class BackService extends Service {
     /** 心跳检测时间  */
     private static final long HEART_BEAT_RATE = 3 * 1000;
     /** 主机IP地址  */
-    private static final String HOST = "192.168.31.101";
+    private   String HOST = "";
     /** 端口号  */
     public static final int PORT = 8888;
     /** 消息广播  */
@@ -57,6 +59,7 @@ public class BackService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d("jsh","InitSocketThread1");
+        HOST =  SharedPreferencesUtil.readString("ip");
         new InitSocketThread().start();
     }
 

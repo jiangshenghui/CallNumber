@@ -1,13 +1,16 @@
 package com.call.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bg.baseutillib.tool.SharedPreferencesUtil;
+import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseFragment;
 import com.call.activity.adapter.NetWorkListAdapter;
@@ -26,6 +29,11 @@ import butterknife.OnClick;
 public class LanguageFragment extends RvBaseFragment {
     @BindView(R.id.tv_language_ku)
     TextView tvLanguageKu;
+
+    @BindView(R.id.et_language_ku)
+    EditText et_language_ku;
+
+
     @BindView(R.id.re_language)
     RelativeLayout reLanguage;
 
@@ -43,6 +51,7 @@ public class LanguageFragment extends RvBaseFragment {
 
     private String chooseLanguage = "1";//1本地语音库 2 远程语音库
     private String voice = "0";
+    private String ip = "";
 
     public int setLayoutResID() {
         return R.layout.fragment_language;
@@ -54,58 +63,76 @@ public class LanguageFragment extends RvBaseFragment {
 
        chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
        voice =   SharedPreferencesUtil.readString("voice");
+        ip =   SharedPreferencesUtil.readString("ip");
        if("1".equals(chooseLanguage)){
            radioBtnLocal.setImageResource(R.drawable.me_at);
            radioBtnOrigin.setImageResource(R.drawable.me_at_n);
+           et_language_ku.setVisibility(View.GONE);
+           tvLanguageKu.setVisibility(View.VISIBLE);
        }else {
            radioBtnLocal.setImageResource(R.drawable.me_at_n);
            radioBtnOrigin.setImageResource(R.drawable.me_at);
+           tvLanguageKu.setVisibility(View.GONE);
+           et_language_ku.setVisibility(View.VISIBLE);
        }
        if("1".equals(chooseLanguage)){
           // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
-           List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
-           EntrySetBean entrySet1 = new EntrySetBean();
-            entrySet1.name = "普通女声";
-             entrySet1.voice = "0";
-            EntrySetBean entrySet2 = new EntrySetBean();
-            entrySet2.name = "普通男声";
-            entrySet2.voice = "1";
-            mList.add(entrySet1);
-            mList.add(entrySet2);
-           netListAdapter.addData(mList);
-           mSpinerPopNet = new SpinerPopWindow(getActivity(),itemClickListener,netListAdapter);
-           mSpinerPopNet.setOnDismissListener(dismissListener);
+
            if("0".equals(voice)){
                tvLanguageKu.setText("普通女声");
            }else {
                tvLanguageKu.setText("普通男声");
            }
            SharedPreferencesUtil.writeString("voice",voice);
+       }else {
+           if(!TextUtils.isEmpty(ip)){
+               et_language_ku.setText(ip);
+           }
        }
+        List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
+        EntrySetBean entrySet1 = new EntrySetBean();
+        entrySet1.name = "普通女声";
+        entrySet1.voice = "0";
+        EntrySetBean entrySet2 = new EntrySetBean();
+        entrySet2.name = "普通男声";
+        entrySet2.voice = "1";
+        mList.add(entrySet1);
+        mList.add(entrySet2);
+        netListAdapter.addData(mList);
+        mSpinerPopNet = new SpinerPopWindow(getActivity(),itemClickListener,netListAdapter);
+        mSpinerPopNet.setOnDismissListener(dismissListener);
     }
 
     @Override
     public void initListener() {
 
     }
-    @OnClick({R.id.llBtnLocal, R.id.llBtnOrigin,R.id.re_language})
+    @OnClick({R.id.llBtnLocal, R.id.llBtnOrigin,R.id.re_language,R.id.btnSure})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llBtnLocal://
                 radioBtnLocal.setImageResource(R.drawable.me_at);
                 radioBtnOrigin.setImageResource(R.drawable.me_at_n);
                 SharedPreferencesUtil.writeString("chooseLanguage","1");
+                et_language_ku.setVisibility(View.GONE);
+                tvLanguageKu.setVisibility(View.VISIBLE);
                 break;
             case R.id.llBtnOrigin://
                 SharedPreferencesUtil.writeString("chooseLanguage","2");
                 radioBtnLocal.setImageResource(R.drawable.me_at_n);
                 radioBtnOrigin.setImageResource(R.drawable.me_at);
+                tvLanguageKu.setVisibility(View.GONE);
+                et_language_ku.setVisibility(View.VISIBLE);
 //                setTextImage(R.drawable.icon_up);
                 break;
             case R.id.re_language://
                 mSpinerPopNet.setWidth(reLanguage.getWidth());
                 mSpinerPopNet.showAsDropDown(reLanguage);
 //                setTextImage(R.drawable.icon_up);
+                break;
+            case R.id.btnSure:
+                SharedPreferencesUtil.writeString("ip",et_language_ku.getText().toString().trim());
+                ToastUtil.showLongToast("设置远程语音成功");
                 break;
         }
     }

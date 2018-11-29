@@ -96,7 +96,19 @@
                 android:textColor="#000000"
                 android:layout_marginLeft="5dp"
                 android:textSize="11sp" />
-
+            <EditText
+                android:id="@+id/et_language_ku"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="请输入远程IP"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:layout_toLeftOf="@+id/ivDown"
+                android:layout_marginRight="12dp"
+                android:textColor="#000000"
+                android:layout_marginLeft="5dp"
+                android:textSize="11sp" />
             <ImageView
                 android:id="@+id/ivDown"
                 android:layout_width="wrap_content"
@@ -124,7 +136,7 @@
 
     </RelativeLayout>
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnSure"
         android:layout_width="273dp"
         android:layout_height="30dp"
         android:layout_marginBottom="20dp"
