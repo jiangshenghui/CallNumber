@@ -20,7 +20,7 @@ import java.util.Arrays;
 public class BackService extends Service {
     private static final String TAG = "BackService";
     /** 心跳检测时间  */
-    private static final long HEART_BEAT_RATE = 3 * 1000;
+    private static final long HEART_BEAT_RATE = 10 * 1000;
     /** 主机IP地址  */
     private   String HOST = "";
     /** 端口号  */
@@ -62,7 +62,7 @@ public class BackService extends Service {
         @Override
         public void run() {
             if (System.currentTimeMillis() - sendTime >= HEART_BEAT_RATE) {
-                boolean isSuccess = sendMsg("");// 就发送一个\r\n过去, 如果发送失败，就重新初始化一个socket
+                boolean isSuccess = sendMsg("dd");// 就发送一个\r\n过去, 如果发送失败，就重新初始化一个socket
                 if (!isSuccess) {
                     mHandler.removeCallbacks(heartBeatRunnable);
                     mReadThread.release();
@@ -88,6 +88,7 @@ public class BackService extends Service {
                     try {
                         OutputStream os = soc.getOutputStream();
                         String message = msg + "\r\n";
+                        Log.d("jsh","write:"+message);
                         os.write(message.getBytes("UTF-8"));
                         os.flush();
                     } catch (IOException e) {

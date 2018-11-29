@@ -22,9 +22,8 @@
         android:roundIcon="@mipmap/logo_lanauther"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.login.LoginActivity"
-            android:screenOrientation ="landscape"
-            android:configChanges="screenSize|keyboardHidden|orientation">
+        <activity android:name=".MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

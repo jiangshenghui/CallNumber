@@ -84,16 +84,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("jsh","onStart");
-//        bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
+        bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
         // 开始服务
-//        registerReceiver();
+        registerReceiver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("jsh","onResume");
         // 注册广播 最好在onResume中注册
         // registerReceiver();
     }
@@ -101,11 +99,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("jsh","onPause");
         // 注销广播 最好在onPause上注销
-//        unregisterReceiver(mReceiver);
+        unregisterReceiver(mReceiver);
         // 注销服务
-//        unbindService(conn);
+        unbindService(conn);
     }
 
     // 注册广播
