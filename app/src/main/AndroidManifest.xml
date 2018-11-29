@@ -22,17 +22,26 @@
         android:roundIcon="@mipmap/logo_lanauther"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.login.LoginActivity">
+        <activity android:name=".activity.login.LoginActivity"
+            android:screenOrientation ="landscape"
+            android:configChanges="screenSize|keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.service.ServiceNetWorkActivity" />
-         <activity android:name=".activity.service.SetServiceActivity"></activity>
-        <activity android:name=".activity.service.StatisticsActivity"></activity>
-        <activity android:name=".activity.service.MiniActivity"></activity>
+        <activity android:name=".activity.service.ServiceNetWorkActivity"
+            android:screenOrientation ="landscape"
+            android:configChanges="orientation|keyboardHidden"/>
+         <activity android:name=".activity.service.SetServiceActivity"
+             android:screenOrientation ="landscape"
+             android:configChanges="screenSize|keyboardHidden|orientation"/>
+        <activity android:name=".activity.service.StatisticsActivity"
+            android:screenOrientation ="landscape"
+            android:configChanges="screenSize|keyboardHidden|orientation"/>
+        <activity android:name=".activity.service.MiniActivity"
+            android:screenOrientation ="landscape"></activity>
         <service android:name="com.call.activity.service.BackService">
             <intent-filter>
                 <action android:name="com.call.activity.service.BackService"/>

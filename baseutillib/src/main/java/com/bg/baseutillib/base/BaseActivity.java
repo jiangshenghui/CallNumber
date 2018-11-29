@@ -50,7 +50,7 @@ public abstract class BaseActivity<T extends BaseRequestDao> extends RxAppCompat
 //        initStatus();
         mContext = this;
         createRequestData = onCreateRequestData();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//竖屏
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//竖屏
         ActivityCollector.addActivity(this);
         initViews(savedInstanceState);//初始化控件
         initData(savedInstanceState);//初始化数据等业务逻辑

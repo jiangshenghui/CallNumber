@@ -1,6 +1,7 @@
 package com.call.activity.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,16 +52,16 @@ public class NetWorkContentAdapter  extends BaseListAdapter<EntrySetBean> {
         ButterKnife.bind(this, viewHolder.itemView);
         tvbespeakSort.setText(mDataList.get(position).bespeakSort);
         tvPerson.setText(mDataList.get(position).phone);
-        tvQueue.setText("  "+mDataList.get(position).queueState+"  ");
-
-        if(mDataList.get(position).isChoose){
-            reView.setBackgroundColor(context.getResources().getColor(R.color.order_detail_bg_red));
+        tvQueue.setText("  "+mDataList.get(position).waitCount+"  ");
+        if("5".equals(mDataList.get(position).queueState.trim())){//正在办理
+            reView.setBackgroundColor(context.getResources().getColor(R.color.color28));
         }else {
-            if(position%2 == 0){
-                reView.setBackgroundColor(context.getResources().getColor(R.color.white));
-            }else {
-                reView.setBackgroundColor(context.getResources().getColor(R.color.colore2));
-            }
+            reView.setBackgroundColor(context.getResources().getColor(R.color.white));
+//            if(position%2 == 0){
+//                reView.setBackgroundColor(context.getResources().getColor(R.color.white));
+//            }else {
+//                reView.setBackgroundColor(context.getResources().getColor(R.color.colore2));
+//            }
         }
         //item点击事件
         if (mOnItemClickListener != null) {

@@ -84,14 +84,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
+        Log.d("jsh","onStart");
+//        bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
         // 开始服务
-        registerReceiver();
+//        registerReceiver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("jsh","onResume");
         // 注册广播 最好在onResume中注册
         // registerReceiver();
     }
@@ -99,10 +101,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("jsh","onPause");
         // 注销广播 最好在onPause上注销
-        unregisterReceiver(mReceiver);
+//        unregisterReceiver(mReceiver);
         // 注销服务
-        unbindService(conn);
+//        unbindService(conn);
     }
 
     // 注册广播
@@ -120,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
             // 消息广播
             if (action.equals(BackService.MESSAGE_ACTION)) {
                 String stringExtra = intent.getStringExtra("message");
+                Log.d("jsh","stringExtra:"+stringExtra);
 //                tv.setText(stringExtra);
             } else if (action.equals(BackService.HEART_BEAT_ACTION)) {// 心跳广播
 //                tv.setText("正常心跳");

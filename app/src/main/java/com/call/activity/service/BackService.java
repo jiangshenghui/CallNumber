@@ -8,9 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-
 import com.bg.baseutillib.tool.SharedPreferencesUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,7 +24,7 @@ public class BackService extends Service {
     /** 主机IP地址  */
     private   String HOST = "";
     /** 端口号  */
-    public static final int PORT = 8888;
+    public static final int PORT = 9999;
     /** 消息广播  */
     public static final String MESSAGE_ACTION = "org.feng.message_ACTION";
     /** 心跳广播  */
@@ -39,12 +37,7 @@ public class BackService extends Service {
 
     private ReadThread mReadThread;
 
-//    private IBackService.Stub iBackService = new IBackService.Stub() {
-//        @Override
-//        public boolean sendMessage(String message) throws RemoteException {
-//            return sendMsg(message);
-//        }
-//    };
+
     public class MyBinder extends Binder {
         public boolean sendMessage(String message) throws RemoteException {
             return sendMsg(message);
@@ -58,8 +51,8 @@ public class BackService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("jsh","InitSocketThread1");
         HOST =  SharedPreferencesUtil.readString("ip");
+        Log.d("jsh","HOST:"+HOST);
         new InitSocketThread().start();
     }
 
@@ -95,7 +88,7 @@ public class BackService extends Service {
                     try {
                         OutputStream os = soc.getOutputStream();
                         String message = msg + "\r\n";
-                        os.write(message.getBytes());
+                        os.write(message.getBytes("UTF-8"));
                         os.flush();
                     } catch (IOException e) {
                         e.printStackTrace();

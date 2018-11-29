@@ -1,24 +1,34 @@
 package com.call.activity.service;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.chainofresponsibility.logger.LoggerProxy;
+import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
@@ -34,7 +44,6 @@ import com.call.activity.adapter.NetWorkContentAdapter;
 import com.call.activity.adapter.ServiceNetWorkAdapter;
 import com.call.activity.adapter.WaitPersonAdapter;
 import com.call.control.InitConfig;
-import com.call.listener.UiMessageListener;
 import com.call.net.login.request.CommonBody;
 import com.call.net.login.request.ParamsSet;
 import com.call.net.window.WindowDao;
@@ -42,13 +51,13 @@ import com.call.net.window.response.EntrySetBean;
 import com.call.net.window.response.ServiceNetWorkBean;
 import com.call.utils.AutoCheck;
 import com.call.utils.Utils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.OnClick;
 /***
@@ -56,11 +65,14 @@ import butterknife.OnClick;
  */
 public class ServiceNetWorkActivity extends RvBaseActivity {
 
+    private static final String TAG = "jsh";
+    private Intent mServiceIntent;
+
     @BindView(R.id.tvNetWorkName)
     TextView tvNetWorkName;
 
     private ServiceNetWorkAdapter serviceNetWorkAdapter;
-    private List<EntrySetBean> mDataList;
+    private List<EntrySetBean> mDataList = new ArrayList<EntrySetBean>();
 
     private String netWorkName;
     public List<EntrySetBean> mList;
@@ -114,31 +126,22 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
     protected SpeechSynthesizer mSpeechSynthesizer;
 
-    // =========== 以下为UI部分 ==================================================
-
-    private Button mSpeak;
-
-    private Button mStop;
-
-//    private TextView mShowText;
-
     protected Handler mainHandler;
 
     private String  chooseLanguage="1";//1本地 2远程
 
-    private static final String DESC = "精简版合成，仅给出示例集成合成的调用过程。可以测试离线合成功能，首次使用请联网。\n"
-            + "其中initTTS方法需要在新线程调用，否则引起UI阻塞。\n"
-            + "纯在线请修改代码里ttsMode为TtsMode.ONLINE， 没有纯离线。\n"
-            + "离线功能需要手动将assets目录下的资源文件复制到TEMP_DIR =/sdcard/baiduTTS \n"
-            + "完整的SDK调用方式可以参见MainActivity\n\n";
 
+    Timer timer ;
+    TimerTask task;
 
-    private static final String TAG = "MiniActivity";
-
+    private  boolean isNext =  false;
+    private String bespeakSort;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("jsh","onCreate:");
+
 
     }
 
@@ -147,11 +150,13 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         return R.layout.activity_service_network;
     }
 
-    @Override
+//    @Override
     public void initData(Bundle savedInstanceState) {
+        mServiceIntent = new Intent(this, BackService.class);
         chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
+
         initView();
-        initPermission();
+//        initPermission();
         initTTs();
         if (getIntent().getSerializableExtra("businessType") != null) {
             mList = (List<EntrySetBean>)getIntent().getExtras().get("businessType");
@@ -166,6 +171,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         if (getIntent().getSerializableExtra("depId") != null) {
             depId =  getIntent().getStringExtra("depId");
         }
+        timer = new Timer();
+
+
         tvNetWorkName.setText(netWorkName);
         serviceNetWorkAdapter = new ServiceNetWorkAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -182,9 +190,18 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         recyclerViewContent.setLayoutManager(new LinearLayoutManager(this) );
         if(mList != null && mList.size() > 0){
             groupId  = mList.get(0).id;
-            getGroupQueueList(groupId);
+//            getGroupQueueList(groupId);
         }
 
+
+//                new TimerTask() {
+//            @Override
+//            public void run() {
+//                getGroupQueueList(groupId);
+//            }
+//        };
+        task = new MyTask();
+        timer.schedule(task,0,3000);
         waitPersonAdapter = new WaitPersonAdapter(this);
         waitRecycler.setLayoutManager(new LinearLayoutManager(this) );
 
@@ -211,6 +228,19 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                 netWorkContentAdapter.notifyDataSetChanged();
             }
         });
+
+    }
+
+    class MyTask extends TimerTask{
+        @Override
+        public void run(){
+            getGroupQueueList(groupId);
+        }
+    };
+    @Override
+    public void onStop() {
+        super.onStop();
+//        timer.cancel();
     }
 
     /**
@@ -228,9 +258,14 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         ((WindowDao)createRequestData).getGroupQueueList(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
-                if (serviceNetWorkBean != null && "0".equals(serviceNetWorkBean.status) &&serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
-                    mDataList = serviceNetWorkBean.entrySet;
-                    netWorkContentAdapter.addData(serviceNetWorkBean.entrySet);
+                if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet  != null && serviceNetWorkBean.entrySet.size() > 0) {
+                    mDataList.clear();
+                    for(EntrySetBean secretKey :serviceNetWorkBean.entrySet){
+                        if("5".equals(secretKey.queueState.trim())||"0".equals(secretKey.queueState.trim())){
+                            mDataList.add(secretKey);
+                        }
+                    }
+                    netWorkContentAdapter.addData(mDataList);
                 }else {
                     netWorkContentAdapter.clearData();
                 }
@@ -248,7 +283,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         CommonBody commonBody = new CommonBody();
         String groupIds = "";
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
-        for (int i = 0; i < mList.size(); i++) {
+        for (int i = 0; mList!= null && i < mList.size(); i++) {
             if(mList.get(i).isChoose){
                 groupIds += mList.get(i).id+"#";
             }
@@ -330,11 +365,16 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                 break;
             case R.id.reNext:
                 entrySetBean = getEntrySetBean();
-                if(entrySetBean == null){
-                    ToastUtil.showShortToast("请先叫号");
+                if(entrySetBean != null){
+                    ToastUtil.showShortToast("请先完成叫号中的号码");
                     return;
                 }
-                clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName,entrySetBean.bespeakSort);
+                if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0){
+                    isNext = true;
+                    entrySetBean = netWorkContentAdapter.mDataList.get(0);
+                    bespeakSort = entrySetBean.bespeakSort;
+                    clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
+                }
                 break;
             case R.id.reReCall:
                 entrySetBean = getEntrySetBean();
@@ -342,7 +382,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                     ToastUtil.showShortToast("请先叫号");
                     return;
                 }
-                clientReCall(entrySetBean.id,entrySetBean.userName,entrySetBean.bespeakSort);
+                bespeakSort = entrySetBean.bespeakSort;
+                clientReCall(entrySetBean.id,entrySetBean.userName);
                 break;
             case R.id.re_back:
                 finish();
@@ -354,15 +395,18 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
     }
     private EntrySetBean getEntrySetBean(){
         EntrySetBean entrySetBean = null;
-        if( netWorkContentAdapter.mDataList != null &&  netWorkContentAdapter.mDataList.size() > 0){
-            return  netWorkContentAdapter.mDataList.get(0);
+        if(netWorkContentAdapter.mDataList != null){
+            for(EntrySetBean setBean: netWorkContentAdapter.mDataList){
+                if("5".equals(setBean.queueState.trim())){//0排队中，5叫号中，1办理完成，2过号，3退出
+                    return setBean;
+                }
+            }
         }
         return entrySetBean;
     }
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     /***
@@ -412,14 +456,14 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    ToastUtil.showShortToast("操作成功");
+                    ToastUtil.showShortToast("暂停成功");
                 }else{
-                    ToastUtil.showShortToast("操作失败");
+                    ToastUtil.showShortToast("暂停失败");
                 }
             }
             @Override
             public void onError(ApiException e) {
-                ToastUtil.showShortToast("操作失败");
+                ToastUtil.showShortToast("暂停失败");
                 if(!TextUtils.isEmpty(e.getMessage())){
                     ToastUtil.showShortToast(e.getMessage());
                 }
@@ -448,14 +492,26 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    ToastUtil.showShortToast("操作成功");
+                    ToastUtil.showShortToast("过号成功");
+                    EntrySetBean entrySetBean = null;
+
+                    List<EntrySetBean> mDataListTemp = new ArrayList<EntrySetBean>();
+                    for(EntrySetBean bean :netWorkContentAdapter.mDataList){
+                        if(!"5".equals(bean.queueState.trim())){
+                            mDataListTemp.add(bean);
+                        }
+                    }
+                    if(mDataListTemp != null && mDataListTemp.size() > 0){
+                        entrySetBean = mDataListTemp.get(0);
+                        clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
+                    }
                 }else{
-                    ToastUtil.showShortToast("操作失败");
+                    ToastUtil.showShortToast("过号失败");
                 }
             }
             @Override
             public void onError(ApiException e) {
-                ToastUtil.showShortToast("操作失败");
+                ToastUtil.showShortToast("过号失败");
                 if(!TextUtils.isEmpty(e.getMessage())){
                     ToastUtil.showShortToast(e.getMessage());
                 }
@@ -467,7 +523,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
      * 下一位
      * @param groupId
      */
-    private  void clientCallNext(String groupId, String windowId, String userId,final String userName, final String bespeakSort){
+    private  void clientCallNext(String groupId, String windowId, String userId,final String userName){
         CommonBody commonBody = new CommonBody();
         String groupIds = "";
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
@@ -493,7 +549,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    speak(bespeakSort);
+                    speak();
                 }else{
                     ToastUtil.showShortToast("叫号失败");
                 }
@@ -511,7 +567,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
      * 重呼
      * @param queueId
      */
-    private  void clientReCall(String queueId ,final String userName, final String bespeakSort){
+    private  void clientReCall(String queueId ,final String userName){
         CommonBody commonBody = new CommonBody();
         String groupIds = "";
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
@@ -525,7 +581,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    speak(bespeakSort);
+                    speak();
                 }else{
                     ToastUtil.showShortToast("重呼失败");
                 }
@@ -559,7 +615,46 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             }
         }
         // 日志更新在UI中，可以换成MessageListener，在logcat中查看日志
-        SpeechSynthesizerListener listener = new UiMessageListener(mainHandler);
+        SpeechSynthesizerListener listener = new SpeechSynthesizerListener() {
+            @Override
+            public void onSynthesizeStart(String s) {
+
+            }
+
+            @Override
+            public void onSynthesizeDataArrived(String s, byte[] bytes, int i) {
+
+            }
+
+            @Override
+            public void onSynthesizeFinish(String s) {
+
+            }
+
+            @Override
+            public void onSpeechStart(String s) {
+
+            }
+
+            @Override
+            public void onSpeechProgressChanged(String s, int i) {
+
+            }
+
+            @Override
+            public void onSpeechFinish(String s) {
+                   if(isNext){
+                       speak();
+                       isNext = false;
+                   }
+                   ToastUtil.showShortToast("完成说话");
+            }
+
+            @Override
+            public void onError(String s, SpeechError speechError) {
+
+            }
+        };
 
         // 1. 获取实例
         mSpeechSynthesizer = SpeechSynthesizer.getInstance();
@@ -676,7 +771,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         return true;
     }
 
-    private void speak(String bespeakSort) {
+    private void speak() {
         /* 以下参数每次合成时都可以修改
          *  mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
          *  设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
@@ -690,48 +785,56 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
          *  MIX_MODE_HIGH_SPEED_NETWORK ， 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
          *  MIX_MODE_HIGH_SPEED_SYNTHESIZE, 2G 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
          */
-
-        if (mSpeechSynthesizer == null) {
-            print("[ERROR], 初始化失败");
-            return;
-        }
-        int result = mSpeechSynthesizer.speak("请"+bespeakSort+"号到"+window);
+        String voiceMsg = "请"+bespeakSort+"号到"+window;
+        if("1".equals(chooseLanguage)){
+            if (mSpeechSynthesizer == null) {
+                print("[ERROR], 初始化失败");
+                return;
+            }
+            int result = mSpeechSynthesizer.speak(voiceMsg);
 //        int result = mSpeechSynthesizer.speak(TEXT);
 //        mShowText.setText("");
-        print("合成并播放 按钮已经点击");
-        checkResult(result, "speak");
-    }
+            print("合成并播放 按钮已经点击");
+            checkResult(result, "speak");
+        }else {
+            speakOrigin(voiceMsg);
+            if(isNext){
+                try {
+                    Thread.sleep(10);
+                    speakOrigin(voiceMsg);
+                    isNext = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
+    }
+     private void speakOrigin(String voiceMsg){
+         try {
+             Log.i(TAG, "是否为空：" + binder);
+             if (binder == null) {
+                 Toast.makeText(getApplicationContext(),
+                         "没有连接，可能是服务器已断开", Toast.LENGTH_SHORT).show();
+             } else {
+                 boolean isSend = binder.sendMessage(voiceMsg);
+                 Log.d("jsh","isSend:"+isSend);
+                 Toast.makeText(ServiceNetWorkActivity.this,
+                         isSend ? "success" : "fail", Toast.LENGTH_SHORT)
+                         .show();
+//                        et.setText("");
+             }
+         } catch (RemoteException e) {
+             e.printStackTrace();
+         }
+     }
     private void stop() {
         print("停止合成引擎 按钮已经点击");
         int result = mSpeechSynthesizer.stop();
         checkResult(result, "stop");
     }
 
-//    //  下面是UI部分
-//
     private void initView() {
-//        mSpeak = (Button) this.findViewById(R.id.speak);
-//        mStop = (Button) this.findViewById(R.id.stop);
-////        mShowText = (TextView) this.findViewById(R.id.showText);
-////        mShowText.setText(DESC);
-//        View.OnClickListener listener = new View.OnClickListener() {
-//            public void onClick(View v) {
-//                int id = v.getId();
-//                switch (id) {
-//                    case R.id.speak:
-//                        speak("","");
-//                        break;
-//                    case R.id.stop:
-//                        stop();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        };
-//        mSpeak.setOnClickListener(listener);
-//        mStop.setOnClickListener(listener);
         mainHandler = new Handler() {
             /*
              * @param msg
@@ -769,42 +872,69 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         }
     }
 
-    //  下面是android 6.0以上的动态授权
-
-    /**
-     * android 6.0 以上需要动态申请权限
-     */
-    private void initPermission() {
-        String[] permissions = {
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.MODIFY_AUDIO_SETTINGS,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_SETTINGS,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.CHANGE_WIFI_STATE
-        };
-
-        ArrayList<String> toApplyList = new ArrayList<String>();
-
-        for (String perm : permissions) {
-            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
-                toApplyList.add(perm);
-                // 进入到这里代表没有权限.
-            }
-        }
-        String[] tmpList = new String[toApplyList.size()];
-        if (!toApplyList.isEmpty()) {
-            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
-        }
-
-    }
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // 此处为android 6.0以上动态授权的回调，用户自行实现。
+    }
+    // 注册广播
+    private void registerReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BackService.HEART_BEAT_ACTION);
+        intentFilter.addAction(BackService.MESSAGE_ACTION);
+        registerReceiver(mReceiver, intentFilter);
+    }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            // 消息广播
+            if (action.equals(BackService.MESSAGE_ACTION)) {
+                String stringExtra = intent.getStringExtra("message");
+                Log.d("jsh","stringExtra:"+stringExtra);
+//                tv.setText(stringExtra);
+            } else if (action.equals(BackService.HEART_BEAT_ACTION)) {// 心跳广播
+//                tv.setText("正常心跳");
+            }
+        }
+    };
+    private BackService.MyBinder binder;
+    private ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            // 未连接为空
+            binder = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // 已连接
+            binder=(BackService.MyBinder) service;
+        }
+    };
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
+        // 开始服务
+        registerReceiver();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 注销广播 最好在onPause上注销
+        unregisterReceiver(mReceiver);
+        // 注销服务
+        Log.d("jsh","onPause:"+conn);
+        unbindService(conn);// 解绑服务
     }
 }
 

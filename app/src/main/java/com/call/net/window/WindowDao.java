@@ -153,7 +153,6 @@ public class WindowDao  extends BaseRequestDao {
         commonBody.status = "0";
         commonBody.token ="0";
         Gson gson = new Gson();
-        Log.d("jsh","getGroupQueueList:"+gson.toJson(commonBody));
         NetworkRequest.getNetService(context, WindowNetDao.class, ApiManager.HOST)
                 .getServiceNetWork(gson.toJson(commonBody))
 //                .map(new ServerResponseFunc<UserBean>())//有时我们会需要使用操作符进行变换

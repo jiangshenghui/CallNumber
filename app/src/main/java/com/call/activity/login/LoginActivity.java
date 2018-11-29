@@ -1,10 +1,14 @@
 package com.call.activity.login;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -78,6 +82,7 @@ public class LoginActivity extends RvBaseActivity {
 //            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 //            getWindow().setStatusBarColor(Color.GRAY);
 //        }
+        initPermission();
         rememberPass = SharedPreferencesUtil.readBoolean("rememberPass");
         if(rememberPass){
             ivRemendPw.setImageResource(R.mipmap.checkout);
@@ -87,6 +92,37 @@ public class LoginActivity extends RvBaseActivity {
             etPassword.setText("");
             ivRemendPw.setImageResource(R.mipmap.checkout_no);
         }
+    }
+    //  下面是android 6.0以上的动态授权
+
+    /**
+     * android 6.0 以上需要动态申请权限
+     */
+    private void initPermission() {
+        String[] permissions = {
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.MODIFY_AUDIO_SETTINGS,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_SETTINGS,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE
+        };
+
+        ArrayList<String> toApplyList = new ArrayList<String>();
+
+        for (String perm : permissions) {
+            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
+                toApplyList.add(perm);
+                // 进入到这里代表没有权限.
+            }
+        }
+        String[] tmpList = new String[toApplyList.size()];
+        if (!toApplyList.isEmpty()) {
+            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+        }
+
     }
 
     @Override
