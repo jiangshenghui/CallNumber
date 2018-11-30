@@ -22,6 +22,7 @@ public class EntrySetBean implements Serializable {
     public String usestatue;
     public String winAddress;
     public String  windowName;
+    public String businessId;
 
 
     //4、网点队列列表
@@ -63,4 +64,10 @@ public class EntrySetBean implements Serializable {
     public String BusinessName;
     public String CompleteNumber;
     public String PassNumber;
+
+    public String CompanyName;
+    public String HeadPortrait;
+    public String IdNumber;
+    public String Phone;
+    public String UserName;
 }
