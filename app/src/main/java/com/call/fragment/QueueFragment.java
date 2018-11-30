@@ -3,6 +3,7 @@ package com.call.fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -25,7 +26,12 @@ import com.call.net.login.request.ParamsSet;
 import com.call.net.window.WindowDao;
 import com.call.net.window.response.EntrySetBean;
 import com.call.net.window.response.ServiceNetWorkBean;
+import com.call.utils.StringUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -61,7 +67,8 @@ public class QueueFragment extends RvBaseFragment {
     public int setLayoutResID() {
         return R.layout.fragment_queue;
     }
-
+    private String json;
+    List<EntrySetBean> alterSamples;
     @Override
     public void initData(Bundle savedInstanceState) {
         networkname =  SharedPreferencesUtil.readString("networkname");
@@ -69,14 +76,20 @@ public class QueueFragment extends RvBaseFragment {
 
         windowName = SharedPreferencesUtil.readString("windowName");
         windowId = SharedPreferencesUtil.readString("windowId");
+        json = SharedPreferencesUtil.readString("alterSampleJson");
+        if(!StringUtils.isEmpty(json)){
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<EntrySetBean>>(){}.getType();
+            alterSamples = new ArrayList<EntrySetBean>();
+            alterSamples = gson.fromJson(json, type);
 
+        }
         netListAdapter = new NetWorkListAdapter(getActivity());
         windowsListAdapter = new WindowListAdapter(getActivity());
         queuetAdapter = new QueuetAdapter(getActivity());
         girdQueue.setAdapter(queuetAdapter);
 
         getDepartmentData();
-
 
         if(!TextUtils.isEmpty(networkname)){
             tvNetwork.setText(networkname);
@@ -144,6 +157,9 @@ public class QueueFragment extends RvBaseFragment {
                 if(tvNetwork.getTag() != null){
                     bundle.putSerializable("depId",tvNetwork.getTag().toString());
                 }
+                Gson gson = new Gson();
+                String json = gson.toJson(mList);
+                SharedPreferencesUtil.writeString("alterSampleJson",json);
                 startActivity(ServiceNetWorkActivity.class,bundle);
                 break;
         }
@@ -230,6 +246,16 @@ public class QueueFragment extends RvBaseFragment {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet != null && serviceNetWorkBean.entrySet.size() > 0) {//登录成功
+                    if(alterSamples != null && alterSamples.size() > 0){
+                        for(EntrySetBean eSetBean:serviceNetWorkBean.entrySet){
+                            for(EntrySetBean entrySetBean:alterSamples){
+                                if(eSetBean.id.equals(entrySetBean.id)&& entrySetBean.isChoose){
+                                    eSetBean.isChoose = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     queuetAdapter.clearData();
                     queuetAdapter.addData(serviceNetWorkBean.entrySet);
                 }

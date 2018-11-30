@@ -62,6 +62,7 @@ public class WindowListAdapter extends BaseAdapter {
 
     public List<EntrySetBean> addData(List<EntrySetBean> list) {
         if (list != null && list.size() > 0) {
+            mList.clear();
             mList.addAll(list);
             notifyDataSetChanged();
         }

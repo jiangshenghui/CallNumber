@@ -322,6 +322,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
     @OnClick({R.id.reTongji,R.id.reJiesan,R.id.rePause,R.id.reGuohao,R.id.reNext,R.id.reReCall,R.id.re_back
        ,R.id.btnSet})
     public void onViewClicked(View view) {
+        EntrySetBean entrySetBean = null;
         switch (view.getId()) {
             case R.id.reTongji:
                 Bundle bundle = new Bundle();
@@ -329,11 +330,6 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                 startActivity(StatisticsActivity.class,bundle);
                 break;
             case R.id.reJiesan:
-                EntrySetBean entrySetBean = getEntrySetBean();
-                if(entrySetBean == null){
-                    ToastUtil.showShortToast("请先叫号");
-                    return;
-                }
                 Utils.showDialog(ServiceNetWorkActivity.this, "", "解散或未办理完退出会直接影响用户体验，可能导致用户投诉，会影响你的信用值，信用值过低，可能会被短期封号，请谨慎操作，建议你办理完，排小二代表用户谢谢你了！", "确定", "取消", new OnCusDialogInterface() {
                     @Override
                     public void onConfirmClick() {
@@ -345,7 +341,6 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 
                     }
                 });
-
                 break;
             case R.id.rePause:
                 entrySetBean = getEntrySetBean();
@@ -364,9 +359,13 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                 clientPassCall(entrySetBean.id,entrySetBean.groupId);
                 break;
             case R.id.reNext:
+                if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() == 0){
+                    ToastUtil.showShortToast("暂无排队，请稍后叫号");
+                    return;
+                }
                 entrySetBean = getEntrySetBean();
-                if(entrySetBean != null){
-                    ToastUtil.showShortToast("请先完成叫号中的号码");
+                if(entrySetBean != null){//正在叫号
+                    clientHandleCall(entrySetBean.id,entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
                     return;
                 }
                 if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0){
@@ -582,6 +581,38 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
                     speak();
+                }else{
+                    ToastUtil.showShortToast("重呼失败");
+                }
+            }
+            @Override
+            public void onError(ApiException e) {
+                ToastUtil.showShortToast("重呼失败");
+                if(!TextUtils.isEmpty(e.getMessage())){
+                    ToastUtil.showShortToast(e.getMessage());
+                }
+            }
+        });
+    }
+    /***
+     * 办理完成
+     * @param queueId
+     */
+    private  void clientHandleCall(String queueId,final  String groupId,final String windowId,final String userName ,final String userId){
+        CommonBody commonBody = new CommonBody();
+        String groupIds = "";
+        List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
+        ParamsSet paramsSet = new ParamsSet();
+        paramsSet.name = "queueId";
+        paramsSet.value = queueId;//队列id
+        paramsSetList.add(paramsSet);
+
+        commonBody.paramsSet = paramsSetList;
+        ((WindowDao)createRequestData).clientHandleCall(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
+            @Override
+            public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
+                if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
+                    clientCallNext(groupId,windowId,userId,userName);
                 }else{
                     ToastUtil.showShortToast("重呼失败");
                 }

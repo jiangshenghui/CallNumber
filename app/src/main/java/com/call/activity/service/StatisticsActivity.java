@@ -142,6 +142,10 @@ public class StatisticsActivity extends RvBaseActivity {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet != null&& serviceNetWorkBean.entrySet.size() > 0) {
+                    EntrySetBean entrySetBean = new EntrySetBean();
+                    entrySetBean.windowName = "全部窗口";
+                    entrySetBean.id ="-1";
+                    serviceNetWorkBean.entrySet.add(0,entrySetBean);
                     windowsListAdapter.addData(serviceNetWorkBean.entrySet);
                     mSpinerPopWindow = new SpinerPopWindow(StatisticsActivity.this,itemClickListener,windowsListAdapter);
                     mSpinerPopWindow.setOnDismissListener(dismissListener);
@@ -192,8 +196,10 @@ public class StatisticsActivity extends RvBaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.re_depart_windows:// 部门窗口
-                mSpinerPopWindow.setWidth(reDepartWindows.getWidth());
-                mSpinerPopWindow.showAsDropDown(reDepartWindows);
+                if(mSpinerPopWindow != null){
+                    mSpinerPopWindow.setWidth(reDepartWindows.getWidth());
+                    mSpinerPopWindow.showAsDropDown(reDepartWindows);
+                }
                 break;
             case R.id.re_back:
                 finish();

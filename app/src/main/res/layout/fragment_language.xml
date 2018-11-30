@@ -129,6 +129,7 @@
                 android:id="@+id/iv_refresh"
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:src="@mipmap/icon_refresh"
                 android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content" />

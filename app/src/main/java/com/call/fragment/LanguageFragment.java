@@ -2,6 +2,7 @@ package com.call.fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -47,6 +48,9 @@ public class LanguageFragment extends RvBaseFragment {
     @BindView(R.id.radioBtnOrigin)
     ImageView radioBtnOrigin;
 
+    @BindView(R.id.ivDown)
+    ImageView ivDown;
+
     private SpinerPopWindow mSpinerPopNet;
 
     private String chooseLanguage = "1";//1本地语音库 2 远程语音库
@@ -63,21 +67,27 @@ public class LanguageFragment extends RvBaseFragment {
 
        chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
        voice =   SharedPreferencesUtil.readString("voice");
-        ip =   SharedPreferencesUtil.readString("ip");
+       ip =   SharedPreferencesUtil.readString("ip");
+        if(TextUtils.isEmpty(chooseLanguage)){
+            chooseLanguage = "1";
+            voice = "0";
+        }
        if("1".equals(chooseLanguage)){
            radioBtnLocal.setImageResource(R.drawable.me_at);
            radioBtnOrigin.setImageResource(R.drawable.me_at_n);
            et_language_ku.setVisibility(View.GONE);
            tvLanguageKu.setVisibility(View.VISIBLE);
+           ivDown.setVisibility(View.VISIBLE);
        }else {
            radioBtnLocal.setImageResource(R.drawable.me_at_n);
            radioBtnOrigin.setImageResource(R.drawable.me_at);
            tvLanguageKu.setVisibility(View.GONE);
            et_language_ku.setVisibility(View.VISIBLE);
+           ivDown.setVisibility(View.GONE);
        }
        if("1".equals(chooseLanguage)){
           // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
-
+           Log.d("jsh","voice:"+voice);
            if("0".equals(voice)){
                tvLanguageKu.setText("普通女声");
            }else {
@@ -116,6 +126,7 @@ public class LanguageFragment extends RvBaseFragment {
                 SharedPreferencesUtil.writeString("chooseLanguage","1");
                 et_language_ku.setVisibility(View.GONE);
                 tvLanguageKu.setVisibility(View.VISIBLE);
+                ivDown.setVisibility(View.VISIBLE);
                 break;
             case R.id.llBtnOrigin://
                 SharedPreferencesUtil.writeString("chooseLanguage","2");
@@ -123,6 +134,7 @@ public class LanguageFragment extends RvBaseFragment {
                 radioBtnOrigin.setImageResource(R.drawable.me_at);
                 tvLanguageKu.setVisibility(View.GONE);
                 et_language_ku.setVisibility(View.VISIBLE);
+                ivDown.setVisibility(View.GONE);
 //                setTextImage(R.drawable.icon_up);
                 break;
             case R.id.re_language://

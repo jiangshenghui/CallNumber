@@ -54,14 +54,13 @@ public class NetWorkContentAdapter  extends BaseListAdapter<EntrySetBean> {
         tvPerson.setText(mDataList.get(position).phone);
         tvQueue.setText("  "+mDataList.get(position).waitCount+"  ");
         if("5".equals(mDataList.get(position).queueState.trim())){//正在办理
-            reView.setBackgroundColor(context.getResources().getColor(R.color.color28));
+            tvbespeakSort.setTextColor(context.getResources().getColor(R.color.color34));
+            tvPerson.setTextColor(context.getResources().getColor(R.color.color34));
+            tvPerson.setTextColor(context.getResources().getColor(R.color.color34));
         }else {
-            reView.setBackgroundColor(context.getResources().getColor(R.color.white));
-//            if(position%2 == 0){
-//                reView.setBackgroundColor(context.getResources().getColor(R.color.white));
-//            }else {
-//                reView.setBackgroundColor(context.getResources().getColor(R.color.colore2));
-//            }
+            tvbespeakSort.setTextColor(context.getResources().getColor(R.color.color3b));
+            tvPerson.setTextColor(context.getResources().getColor(R.color.color3b));
+            tvPerson.setTextColor(context.getResources().getColor(R.color.color3b));
         }
         //item点击事件
         if (mOnItemClickListener != null) {
@@ -72,7 +71,6 @@ public class NetWorkContentAdapter  extends BaseListAdapter<EntrySetBean> {
                 }
             });
         }
-
     }
 
     public void setData(List<EntrySetBean> data) {
