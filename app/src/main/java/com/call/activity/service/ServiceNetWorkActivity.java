@@ -171,7 +171,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         if (getIntent().getSerializableExtra("depId") != null) {
             depId =  getIntent().getStringExtra("depId");
         }
-        timer = new Timer();
+//        timer = new Timer();
 
 
         tvNetWorkName.setText(netWorkName);
@@ -190,7 +190,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         recyclerViewContent.setLayoutManager(new LinearLayoutManager(this) );
         if(mList != null && mList.size() > 0){
             groupId  = mList.get(0).id;
-//            getGroupQueueList(groupId);
+            getGroupQueueList(groupId);
         }
 
 
@@ -200,8 +200,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 //                getGroupQueueList(groupId);
 //            }
 //        };
-        task = new MyTask();
-        timer.schedule(task,0,3000);
+//        task = new MyTask();
+//        timer.schedule(task,0,3000);
+        startTimer();
         waitPersonAdapter = new WaitPersonAdapter(this);
         waitRecycler.setLayoutManager(new LinearLayoutManager(this) );
 
@@ -229,6 +230,48 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
             }
         });
 
+    }
+    private Timer mTimer = null;
+    private TimerTask mTimerTask = null;
+    private static int count = 0;
+    private boolean isPause = false;
+    private static int delay = 3000;  //1s
+    private static int period = 3000;  //1s
+
+    private void startTimer() {
+        if (mTimer == null) {
+            mTimer = new Timer();
+        }
+
+        if (mTimerTask == null) {
+            mTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Log.i(TAG, "count: " + String.valueOf(count));
+                    if(isPause){
+                        getGroupQueueList(groupId);
+                    }
+                    count++;
+                }
+            };
+        }
+
+        if (mTimer != null && mTimerTask != null) {
+            mTimer.schedule(mTimerTask, delay, period);
+        }
+
+    }
+
+    private void stopTimer(){
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+        if (mTimerTask != null) {
+            mTimerTask.cancel();
+            mTimerTask = null;
+        }
+        count = 0;
     }
 
     class MyTask extends TimerTask{
@@ -816,7 +859,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
          *  MIX_MODE_HIGH_SPEED_NETWORK ， 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
          *  MIX_MODE_HIGH_SPEED_SYNTHESIZE, 2G 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
          */
-        String voiceMsg = "请"+bespeakSort+"号到"+window;
+        String voiceMsg = "请"+bespeakSort+"号到，"+window;
         if("1".equals(chooseLanguage)){
             if (mSpeechSynthesizer == null) {
                 print("[ERROR], 初始化失败");
@@ -849,10 +892,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
                          "没有连接，可能是服务器已断开", Toast.LENGTH_SHORT).show();
              } else {
                  boolean isSend = binder.sendMessage(voiceMsg);
-                 Log.d("jsh","isSend:"+isSend);
-                 Toast.makeText(ServiceNetWorkActivity.this,
-                         isSend ? "success" : "fail", Toast.LENGTH_SHORT)
-                         .show();
+//                 Toast.makeText(ServiceNetWorkActivity.this,
+//                         isSend ? "success" : "fail", Toast.LENGTH_SHORT)
+//                         .show();
 //                        et.setText("");
              }
          } catch (RemoteException e) {
@@ -886,16 +928,6 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
 //        mShowText.append(message + "\n");
     }
 
-    @Override
-    protected void onDestroy() {
-        if (mSpeechSynthesizer != null) {
-            mSpeechSynthesizer.stop();
-            mSpeechSynthesizer.release();
-            mSpeechSynthesizer = null;
-            print("释放资源成功");
-        }
-        super.onDestroy();
-    }
 
     private void checkResult(int result, String method) {
         if (result != 0) {
@@ -949,6 +981,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
     protected void onStart() {
         super.onStart();
         bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
+        isPause = true;
         // 开始服务
         registerReceiver();
     }
@@ -963,9 +996,21 @@ public class ServiceNetWorkActivity extends RvBaseActivity {
         super.onPause();
         // 注销广播 最好在onPause上注销
         unregisterReceiver(mReceiver);
+        isPause = false;
         // 注销服务
-        Log.d("jsh","onPause:"+conn);
-        unbindService(conn);// 解绑服务
+//        unbindService(conn);// 解绑服务
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSpeechSynthesizer != null) {
+            mSpeechSynthesizer.stop();
+            mSpeechSynthesizer.release();
+            mSpeechSynthesizer = null;
+//            print("释放资源成功");
+        }
+        unbindService(conn);
+        stopService(mServiceIntent);
     }
 }
 

@@ -18,6 +18,7 @@ import com.call.activity.service.BackService;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "jsh";
     private Intent mServiceIntent;
+    private boolean isBond = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
                     if (binder == null) {
                         Toast.makeText(getApplicationContext(),
                                 "没有连接，可能是服务器已断开", Toast.LENGTH_SHORT).show();
+//                        if(isBond){
+//                            unbindService(conn);
+//                            isBond = false;
+//                        }
+//                        isBond = bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
                     } else {
                         boolean isSend = binder.sendMessage(string);
                         Toast.makeText(MainActivity.this,
@@ -70,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void initData() {
         mServiceIntent = new Intent(this, BackService.class);
-
+        Log.d("jsh","initData");
 //        btn.setOnClickListener(new OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -84,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
+        isBond = bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
         // 开始服务
-        registerReceiver();
+//        registerReceiver();
     }
 
     @Override
@@ -100,9 +106,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         // 注销广播 最好在onPause上注销
-        unregisterReceiver(mReceiver);
+//        unregisterReceiver(mReceiver);
         // 注销服务
-        unbindService(conn);
+        if(isBond){
+
+
+            isBond = false;
+        }
     }
 
     // 注册广播
@@ -141,4 +151,12 @@ public class MainActivity extends AppCompatActivity {
             binder=(BackService.MyBinder) service;
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("jsh","onDestroy");
+        unbindService(conn);
+        stopService(mServiceIntent);
+    }
 }
