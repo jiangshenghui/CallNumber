@@ -43,9 +43,9 @@ import butterknife.OnClick;
 public class QueueFragment extends RvBaseFragment {
 
     @BindView(R.id.tv_network)
-    TextView tvNetwork;
+    public TextView tvNetwork;
     @BindView(R.id.tv_windows)
-    TextView tvWindows;
+    public  TextView tvWindows;
     @BindView(R.id.re_depart_windows_sa)
     RelativeLayout reDepartWindows;
     @BindView(R.id.re_depart_net_sa)
@@ -57,7 +57,7 @@ public class QueueFragment extends RvBaseFragment {
     private NetWorkListAdapter netListAdapter;
     private WindowListAdapter windowsListAdapter;
     private SpinerPopWindow mSpinerPopNet,mSpinerPopWindow;
-    private QueuetAdapter queuetAdapter;
+    public   QueuetAdapter queuetAdapter;
 
     private String networkname = "";
     private String networkId ="";
@@ -117,7 +117,7 @@ public class QueueFragment extends RvBaseFragment {
     public void initListener() {
 
     }
-    @OnClick({R.id.re_depart_windows, R.id.re_depart_net,R.id.btnSure})
+    @OnClick({R.id.re_depart_windows, R.id.re_depart_net})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.re_depart_windows:// 部门窗口
@@ -132,35 +132,6 @@ public class QueueFragment extends RvBaseFragment {
                 mSpinerPopNet.setWidth(reDepartNet.getWidth());
                 mSpinerPopNet.showAsDropDown(reDepartNet);
 //                setTextImage(R.drawable.icon_up);
-                break;
-            case R.id.btnSure:
-                Bundle bundle = new Bundle();
-                boolean isChoose = false;
-                 List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
-                 for(EntrySetBean eBean :queuetAdapter.mList){
-                   if(eBean.isChoose){
-                       isChoose = true;
-                       mList.add(eBean);
-                   }
-                }
-                if(!isChoose){
-                    ToastUtil.showShortToast("请选择队列设置");
-                    return;
-                }
-                if(tvWindows.getText().toString().trim().equals("请选择窗口")){
-                    ToastUtil.showShortToast("请选择窗口");
-                    return;
-                }
-                bundle.putSerializable("businessType",(Serializable) mList);
-                bundle.putSerializable("netWorkName",tvNetwork.getText().toString());
-                bundle.putSerializable("window",tvWindows.getText().toString());
-                if(tvNetwork.getTag() != null){
-                    bundle.putSerializable("depId",tvNetwork.getTag().toString());
-                }
-                Gson gson = new Gson();
-                String json = gson.toJson(mList);
-                SharedPreferencesUtil.writeString("alterSampleJson",json);
-                startActivity(ServiceNetWorkActivity.class,bundle);
                 break;
         }
     }

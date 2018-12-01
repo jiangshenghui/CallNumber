@@ -131,18 +131,6 @@
         android:numColumns="2"
         android:layout_marginRight="76dp"
         android:layout_marginLeft="76dp"
-        android:layout_above="@+id/btnSure"
         android:layout_height="wrap_content">
     </GridView>
-    <Button
-        android:id="@+id/btnSure"
-        android:layout_width="359dp"
-        android:layout_height="44dp"
-        android:background="@drawable/login_r8_bg_shape"
-        android:textColor="@color/white"
-        android:text="确定"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="16sp" />
 </RelativeLayout>

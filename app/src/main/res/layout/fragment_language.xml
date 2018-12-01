@@ -8,7 +8,6 @@
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,7 +19,8 @@
                 android:id="@+id/llBtnLocal"
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:gravity="center_vertical"
+                android:layout_height="60dp">
                 <ImageView
                     android:id="@+id/radioBtnLocal"
                     android:layout_width="18dp"
@@ -49,7 +49,9 @@
                 android:id="@+id/llBtnOrigin"
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_height="60dp">
             <ImageView
                 android:id="@+id/radioBtnOrigin"
                 android:layout_width="18dp"
@@ -144,6 +146,7 @@
         android:background="@drawable/login_r8_bg_shape"
         android:textColor="@color/white"
         android:text="确定"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textSize="16sp" />

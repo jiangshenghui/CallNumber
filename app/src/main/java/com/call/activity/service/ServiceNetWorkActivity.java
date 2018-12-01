@@ -94,6 +94,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
 
     private String groupId;//队列ID
 
+    public String windowId;
+
     private String window;
 
     private static final String TEXT = "欢迎使用百度语音合成，请在代码中修改合成文本";
@@ -131,6 +133,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
 
     private String  chooseLanguage="1";//1本地 2远程
 
+    private String businessId = "";
+
+    private String userIdValue  ="";
 
     Timer timer ;
     TimerTask task;
@@ -172,6 +177,10 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
         if (getIntent().getSerializableExtra("depId") != null) {
             depId =  getIntent().getStringExtra("depId");
         }
+        if (getIntent().getSerializableExtra("windowId") != null) {
+            windowId =  getIntent().getStringExtra("windowId");
+        }
+
 //        timer = new Timer();
 
 
@@ -416,11 +425,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                     isNext = true;
                     entrySetBean = netWorkContentAdapter.mDataList.get(0);
                     bespeakSort = entrySetBean.bespeakSort;
-                    if("2".equals(entrySetBean.businessId)){
-                        getArchivalUserInfo(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
-                    }else {
-                        clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
-                    }
+                    clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
                 }
                 break;
             case R.id.reReCall:
@@ -436,10 +441,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 finish();
                 break;
             case R.id.btnSet:
-
-                ConfirmDialog dlg = new ConfirmDialog(ServiceNetWorkActivity.this,0,"火杏","张三","44545454");
-                dlg.showDialog((ConfirmDialog.DialogButtonClickListener) this);
-//                finish();
+                finish();
                 break;
         }
     }
@@ -553,7 +555,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                     }
                     if(mDataListTemp != null && mDataListTemp.size() > 0){
                         entrySetBean = mDataListTemp.get(0);
-                        clientCallNext(entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
+                        clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
                     }
                 }else{
                     ToastUtil.showShortToast("过号失败");
@@ -573,7 +575,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
      * 下一位
      * @param groupId
      */
-    private  void clientCallNext(String groupId, String windowId, String userId,final String userName){
+    private  void clientCallNext(String groupId, final String userId, final String userName){
         CommonBody commonBody = new CommonBody();
         String groupIds = "";
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
@@ -585,6 +587,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
         ParamsSet paramsSetGroup = new ParamsSet();
         paramsSetGroup.name = "windowId";
         paramsSetGroup.value = windowId;//网点id
+        Log.d("jsh","windowId:"+windowId);
 
         ParamsSet paramsSetUser = new ParamsSet();
         paramsSetUser.name = "userId";
@@ -598,7 +601,18 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
         ((WindowDao)createRequestData).clientCallNext(this, commonBody, new RxNetCallback<ServiceNetWorkBean>() {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
+
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
+                     businessId = "";
+                     userIdValue = userId;
+                    if(serviceNetWorkBean.paramsSet != null && serviceNetWorkBean.paramsSet.size() > 0){
+                        for(ParamsSet paramsSet :serviceNetWorkBean.paramsSet){
+                            if(paramsSet.name.endsWith("businessId")){
+                                businessId = paramsSet.value;
+                                break;
+                            }
+                        }
+                    }
                     speak();
                 }else{
                     ToastUtil.showShortToast("叫号失败");
@@ -663,7 +677,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    clientCallNext(groupId,windowId,userId,userName);
+                    clientCallNext(groupId,userId,userName);
                 }else{
                     ToastUtil.showShortToast("重呼失败");
                 }
@@ -679,9 +693,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
     }
 
     /***
-     * 办理完成
+     * 查詢用戶信息
      */
-    private  void getArchivalUserInfo(final  String groupId,final String windowId,final String userName ,final String userId){
+    private  void getArchivalUserInfo(final String userId){
         CommonBody commonBody = new CommonBody();
         String groupIds = "";
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
@@ -695,18 +709,9 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)&& serviceNetWorkBean.entrySet != null && serviceNetWorkBean.entrySet.size() >0) {
-                    String msg = "公司名称："+serviceNetWorkBean.entrySet.get(0).CompanyName+",";
-                    Utils.showDialog(ServiceNetWorkActivity.this, "", "解散或未办理完退出会直接影响用户体验，可能导致用户投诉，会影响你的信用值，信用值过低，可能会被短期封号，请谨慎操作，建议你办理完，排小二代表用户谢谢你了！", "确定", "取消", new OnCusDialogInterface() {
-                        @Override
-                        public void onConfirmClick() {
-                            clientCallNext(groupId,windowId,userId,userName);
-                        }
-                        @Override
-                        public void onCancelClick() {
-
-                        }
-                    });
-
+                    ConfirmDialog dlg = new ConfirmDialog(ServiceNetWorkActivity.this,0,serviceNetWorkBean.entrySet.get(0).CompanyName,serviceNetWorkBean.entrySet.get(0).UserName,serviceNetWorkBean.entrySet.get(0).IdNumber
+                            ,serviceNetWorkBean.entrySet.get(0).HeadPortrait);
+                    dlg.showDialog((ConfirmDialog.DialogButtonClickListener) ServiceNetWorkActivity.this);
                 }
             }
             @Override
@@ -766,8 +771,12 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                    if(isNext){
                        speak();
                        isNext = false;
+                   }else {
+                       Log.d("jsh","businessId"+businessId);
+                       if("2".equals(businessId)){
+                          getArchivalUserInfo(userIdValue);
+                      }
                    }
-                   ToastUtil.showShortToast("完成说话");
             }
 
             @Override
@@ -925,6 +934,10 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                     isNext = false;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+            }else {
+                if("2".equals(businessId)){
+                    getArchivalUserInfo(userIdValue);
                 }
             }
         }

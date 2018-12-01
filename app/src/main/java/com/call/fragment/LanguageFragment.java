@@ -32,7 +32,7 @@ public class LanguageFragment extends RvBaseFragment {
     TextView tvLanguageKu;
 
     @BindView(R.id.et_language_ku)
-    EditText et_language_ku;
+    public EditText et_language_ku;
 
 
     @BindView(R.id.re_language)
@@ -117,7 +117,7 @@ public class LanguageFragment extends RvBaseFragment {
     public void initListener() {
 
     }
-    @OnClick({R.id.llBtnLocal, R.id.llBtnOrigin,R.id.re_language,R.id.btnSure})
+    @OnClick({R.id.llBtnLocal, R.id.llBtnOrigin,R.id.re_language})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llBtnLocal://
@@ -141,10 +141,6 @@ public class LanguageFragment extends RvBaseFragment {
                 mSpinerPopNet.setWidth(reLanguage.getWidth());
                 mSpinerPopNet.showAsDropDown(reLanguage);
 //                setTextImage(R.drawable.icon_up);
-                break;
-            case R.id.btnSure:
-                SharedPreferencesUtil.writeString("ip",et_language_ku.getText().toString().trim());
-                ToastUtil.showLongToast("设置远程语音成功");
                 break;
         }
     }
