@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -146,6 +147,15 @@ public class SetServiceActivity extends RvBaseActivity {
 
                 if(languageFragment.et_language_ku !=null){
                     SharedPreferencesUtil.writeString("ip",languageFragment.et_language_ku.getText().toString().trim());
+                }
+                String chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
+                String voice =   SharedPreferencesUtil.readString("voice");
+
+                if(TextUtils.isEmpty(chooseLanguage)){
+                    SharedPreferencesUtil.writeString("chooseLanguage","1");
+                }
+                if(TextUtils.isEmpty(voice)){
+                    SharedPreferencesUtil.writeString("voice","0");
                 }
                 break;
         }

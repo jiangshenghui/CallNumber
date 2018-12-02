@@ -663,7 +663,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
      * 办理完成
      * @param queueId
      */
-    private  void clientHandleCall(String queueId,final  String groupId,final String windowId,final String userName ,final String userId){
+    private  void clientHandleCall(final  String queueId,final  String groupId,final String windowId,final String userName ,final String userId){
         CommonBody commonBody = new CommonBody();
         String groupIds = "";
         List<ParamsSet> paramsSetList = new ArrayList<ParamsSet>();
@@ -677,7 +677,17 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
-                    clientCallNext(groupId,userId,userName);
+                    List<EntrySetBean> mDataList = new ArrayList<EntrySetBean>();
+                    for(EntrySetBean entrySetBean:netWorkContentAdapter.mDataList){
+                          if(!queueId.equals(entrySetBean.id)){
+                              mDataList.add(entrySetBean);
+                          }
+                    }
+                    if(mDataList.size() > 0){
+                        bespeakSort = mDataList.get(0).bespeakSort;
+                        isNext = true;
+                        clientCallNext(mDataList.get(0).groupId,mDataList.get(0).userId,mDataList.get(0).userName);
+                    }
                 }else{
                     ToastUtil.showShortToast("重呼失败");
                 }

@@ -168,7 +168,7 @@ public class LoginActivity extends RvBaseActivity {
         return new LoginDao();
     }
 
-    @OnClick({R.id.btnLogin,  R.id.tvForgetPassword, R.id.ivCleanPhone,R.id.ivRemendPw})
+    @OnClick({R.id.btnLogin,  R.id.tvForgetPassword, R.id.ivCleanPhone,R.id.rePassword})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnLogin://登录
@@ -181,7 +181,7 @@ public class LoginActivity extends RvBaseActivity {
             case R.id.ivCleanPhone:
                 etPhone.setText("");
                 break;
-            case R.id.ivRemendPw://记住密码
+            case R.id.rePassword://记住密码
                 rememberPass = !rememberPass;
                 SharedPreferencesUtil.writeBoolean("rememberPass",rememberPass);
                 if(rememberPass){
