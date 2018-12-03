@@ -62,6 +62,12 @@ public class NetWorkContentAdapter  extends BaseListAdapter<EntrySetBean> {
             tvPerson.setTextColor(context.getResources().getColor(R.color.color3b));
             tvPerson.setTextColor(context.getResources().getColor(R.color.color3b));
         }
+        if(position %2 ==0){
+            reView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }else {
+            reView.setBackgroundColor(context.getResources().getColor(R.color.colorf7));
+
+        }
         //item点击事件
         if (mOnItemClickListener != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

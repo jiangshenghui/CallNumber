@@ -7,8 +7,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.call.R;
 
 /**
@@ -27,18 +29,21 @@ public class ConfirmDialog {
     private TextView mPromptTxt;
     private  View contentView;
     private String comparename,name,idCard;
+    private String imageUrl;
+    private ImageView imageView;
 
     public ConfirmDialog(Context context, int requestCode, String msg){
         this.mContext = context;
         this.mReqCode = requestCode;
         this.mMsgStr = msg;
     }
-    public ConfirmDialog(Context context, int requestCode, String comparename,String name,String idCard){
+    public ConfirmDialog(Context context, int requestCode, String comparename,String name,String idCard,String imageUrl){
         this.mContext = context;
         this.mReqCode = requestCode;
         this.comparename = comparename;
         this.name = name;
         this.idCard = idCard;
+        this.imageUrl = imageUrl;
     }
 
     public interface DialogButtonClickListener{
@@ -51,17 +56,19 @@ public class ConfirmDialog {
         contentView = LayoutInflater.from(mContext).inflate(R.layout.dialog_confirm, null);
         dlg.setContentView(contentView);
 
-//        ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
-//        layoutParams.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels*0.9);
-//        contentView.setLayoutParams(layoutParams);
+        ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
+        layoutParams.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels*0.5);
+        contentView.setLayoutParams(layoutParams);
 
         tvcompareName = contentView.findViewById(R.id.tv_compare_name);
         tvName = contentView.findViewById(R.id.tv_name);
         tvIDcard = contentView.findViewById(R.id.tv_id_card);
-
+        imageView = contentView.findViewById(R.id.imageView);
         tvcompareName.setText(comparename);
         tvName.setText(name);
         tvIDcard.setText(idCard);
+
+        Glide.with(mContext).load("http://ghapi.paihao123.com/Image/"+imageUrl).into(imageView);
 
         contentView.findViewById(R.id.btninfo).setOnClickListener(new View.OnClickListener() {
             @Override

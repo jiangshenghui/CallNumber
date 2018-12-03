@@ -5,13 +5,24 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+
+import com.bg.baseutillib.tool.SharedPreferencesUtil;
+import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseActivity;
 import com.call.fragment.LanguageFragment;
 import com.call.fragment.QueueFragment;
 import com.call.net.window.WindowDao;
+import com.call.net.window.response.EntrySetBean;
+import com.google.gson.Gson;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -83,7 +94,7 @@ public class SetServiceActivity extends RvBaseActivity {
         return new WindowDao();
     }
 
-    @OnClick({R.id.btn_queue_set,R.id.btn_language})
+    @OnClick({R.id.btn_queue_set,R.id.btn_language,R.id.btnSure})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_queue_set:
@@ -102,12 +113,56 @@ public class SetServiceActivity extends RvBaseActivity {
                 btnQueue.setBackgroundResource(R.color.transparent);
                 btnLanguage.setBackgroundResource(R.color.white);
                 break;
+            case R.id.btnSure:
+                Bundle bundle = new Bundle();
+                boolean isChoose = false;
+                List<EntrySetBean> mList = new ArrayList<EntrySetBean>();
+                for(EntrySetBean eBean :queueFragment.queuetAdapter.mList){
+                    if(eBean.isChoose){
+                        isChoose = true;
+                        mList.add(eBean);
+                    }
+                }
+                if(!isChoose){
+                    ToastUtil.showShortToast("请选择队列设置");
+                    return;
+                }
+                if(queueFragment.tvWindows.getText().toString().trim().equals("请选择窗口")){
+                    ToastUtil.showShortToast("请选择窗口");
+                    return;
+                }
+                bundle.putSerializable("businessType",(Serializable) mList);
+                bundle.putSerializable("netWorkName",queueFragment.tvNetwork.getText().toString());
+                bundle.putSerializable("window",queueFragment.tvWindows.getText().toString());
+                if(queueFragment.tvNetwork.getTag() != null){
+                    bundle.putSerializable("depId",queueFragment.tvNetwork.getTag().toString());
+                }
+                if(queueFragment.tvWindows.getTag() != null){
+                    bundle.putSerializable("windowId",queueFragment.tvWindows.getTag().toString());
+                }
+                Gson gson = new Gson();
+                String json = gson.toJson(mList);
+                SharedPreferencesUtil.writeString("alterSampleJson",json);
+                startActivity(ServiceNetWorkActivity.class,bundle);
+
+                if(languageFragment.et_language_ku !=null){
+                    SharedPreferencesUtil.writeString("ip",languageFragment.et_language_ku.getText().toString().trim());
+                }
+                String chooseLanguage = SharedPreferencesUtil.readString("chooseLanguage");
+                String voice =   SharedPreferencesUtil.readString("voice");
+
+                if(TextUtils.isEmpty(chooseLanguage)){
+                    SharedPreferencesUtil.writeString("chooseLanguage","1");
+                }
+                if(TextUtils.isEmpty(voice)){
+                    SharedPreferencesUtil.writeString("voice","0");
+                }
+                break;
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 }
