@@ -443,21 +443,18 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                         break;
                     }
                 }
-                if(entrySetBeanList.size() > 0){//当前存在叫号队列
-                    if(isCurrentWindow){//同一窗口
-                        clientHandleCall(entrySetBean.id,entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
-                    }else {
-                        if(entrySetBeanList != null &&entrySetBeanList.size() > 0){
-                            isNext = true;
-                            entrySetBean = entrySetBeanList.get(0);
-                            bespeakSort = entrySetBean.bespeakSort;
-                            clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
-                        }
-                    }
+                if(isCurrentWindow){//当前存在叫号队列
+                    clientHandleCall(entrySetBean.id,entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
                 }else {
                     if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0){
+                        List<EntrySetBean> listQueueTemp = new ArrayList<EntrySetBean>();
+                        for(EntrySetBean setBean: netWorkContentAdapter.mDataList){
+                            if(!"5".equals(setBean.queueState.trim())){//0排队中，5叫号中，1办理完成，2过号，3退出
+                                listQueueTemp.add(setBean);
+                            }
+                        }
                         isNext = true;
-                        entrySetBean = netWorkContentAdapter.mDataList.get(0);
+                        entrySetBean = listQueueTemp.get(0);
                         bespeakSort = entrySetBean.bespeakSort;
                         clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
                     }
@@ -609,6 +606,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                         }
                     }
                     if(mDataListTemp != null && mDataListTemp.size() > 0){
+                        isNext = true;
+                        bespeakSort = mDataListTemp.get(0).bespeakSort;
                         entrySetBean = mDataListTemp.get(0);
                         clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
                     }
@@ -734,7 +733,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
                     List<EntrySetBean> mDataList = new ArrayList<EntrySetBean>();
                     for(EntrySetBean entrySetBean:netWorkContentAdapter.mDataList){
-                          if(!queueId.equals(entrySetBean.id)){
+                          if(!queueId.equals(entrySetBean.id)&&"5".equals(entrySetBean.queueState)){
                               mDataList.add(entrySetBean);
                           }
                     }
@@ -979,7 +978,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
          *  MIX_MODE_HIGH_SPEED_NETWORK ， 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
          *  MIX_MODE_HIGH_SPEED_SYNTHESIZE, 2G 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
          */
-        String voiceMsg = "请"+bespeakSort+"号到，"+window;
+        String voiceMsg = "请："+bespeakSort+"号到，"+window;
         Log.d("jsh","voiceMsg:"+voiceMsg);
         if("1".equals(chooseLanguage)){
             if (mSpeechSynthesizer == null) {
