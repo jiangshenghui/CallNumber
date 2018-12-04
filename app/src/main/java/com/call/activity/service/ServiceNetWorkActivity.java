@@ -1,13 +1,11 @@
 package com.call.activity.service;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.Handler;
@@ -16,9 +14,6 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -146,9 +141,6 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("jsh","onCreate:");
-
-
     }
 
     @Override
@@ -289,7 +281,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
         public void run(){
             getGroupQueueList(groupId);
         }
-    };
+    }
     @Override
     public void onStop() {
         super.onStop();
@@ -401,6 +393,10 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                     ToastUtil.showShortToast("请先叫号");
                     return;
                 }
+                if(!isSameWindow(entrySetBean.windowId)){
+                    ToastUtil.showShortToast("暂停失败，请先叫号");
+                    return;
+                }
                 clientPauseCall(entrySetBean.id);//队列id
                 break;
             case R.id.reGuohao:
@@ -409,8 +405,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                     ToastUtil.showShortToast("请先叫号");
                     return;
                 }
-                if(isSameWindow(entrySetBean.windowId)){
-                    ToastUtil.showShortToast("不是同一窗口叫号，无法过号");
+                if(!isSameWindow(entrySetBean.windowId)){
+                    ToastUtil.showShortToast("过号失败，请先叫号");
                     return;
                 }
                 clientPassCall(entrySetBean.id,entrySetBean.groupId);
@@ -422,22 +418,20 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 }
                 entrySetBean = getEntrySetBean();
                 if(entrySetBean != null){//正在叫号
-                    if(isSameWindow(entrySetBean.windowId)){
-                        ToastUtil.showShortToast("不是同一窗口叫号，无法叫号");
-                        return;
+                    if(isSameWindow(entrySetBean.windowId)){//同一窗口
+                        clientHandleCall(entrySetBean.id,entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
+                    }else {
+                        isNext = true;
+                        bespeakSort = entrySetBean.bespeakSort;
+                        clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
                     }
-                    clientHandleCall(entrySetBean.id,entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
-                    return;
-                }
-                if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0){
-                    isNext = true;
-                    entrySetBean = netWorkContentAdapter.mDataList.get(0);
-                    if(isSameWindow(entrySetBean.windowId)){
-                        ToastUtil.showShortToast("不是同一窗口叫号，无法叫号");
-                        return;
+                }else {
+                    if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0){
+                        isNext = true;
+                        entrySetBean = netWorkContentAdapter.mDataList.get(0);
+                        bespeakSort = entrySetBean.bespeakSort;
+                        clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
                     }
-                    bespeakSort = entrySetBean.bespeakSort;
-                    clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
                 }
                 break;
             case R.id.reReCall:
@@ -446,8 +440,8 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                     ToastUtil.showShortToast("请先叫号");
                     return;
                 }
-                if(isSameWindow(entrySetBean.windowId)){
-                    ToastUtil.showShortToast("不是同一窗口叫号，无法重呼");
+                if(!isSameWindow(entrySetBean.windowId)){
+                    ToastUtil.showShortToast("重呼失败，请先叫号");
                     return;
                 }
                 bespeakSort = entrySetBean.bespeakSort;
