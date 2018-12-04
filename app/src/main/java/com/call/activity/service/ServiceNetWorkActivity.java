@@ -367,6 +367,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
     @OnClick({R.id.reTongji,R.id.reJiesan,R.id.rePause,R.id.reGuohao,R.id.reNext,R.id.reReCall,R.id.re_back
        ,R.id.btnSet})
     public void onViewClicked(View view) {
+        List<EntrySetBean> entrySetBeanList = null;
         EntrySetBean entrySetBean = null;
         switch (view.getId()) {
             case R.id.reTongji:
@@ -388,42 +389,70 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 });
                 break;
             case R.id.rePause:
-                entrySetBean = getEntrySetBean();
-                if(entrySetBean == null){
+                entrySetBeanList = getEntrySetBean();
+                if(entrySetBeanList.size() <= 0){
                     ToastUtil.showShortToast("请先叫号");
                     return;
                 }
-                if(!isSameWindow(entrySetBean.windowId)){
-                    ToastUtil.showShortToast("暂停失败，请先叫号");
-                    return;
+                boolean isCurrentWindow = false;
+                for(EntrySetBean setBean:entrySetBeanList){
+                    Log.d("jsh","setBean:"+setBean.windowId);
+                    if(isSameWindow(setBean.windowId)){
+                        isCurrentWindow = true;
+                        entrySetBean = setBean;
+                        break;
+                    }
                 }
-                clientPauseCall(entrySetBean.id);//队列id
+                if(isCurrentWindow){//是否当前窗口
+                    clientPauseCall(entrySetBean.id);//队列id
+                }else {
+                    ToastUtil.showShortToast("暂停失败，请先叫号");
+                }
                 break;
             case R.id.reGuohao:
-                 entrySetBean = getEntrySetBean();
-                if(entrySetBean == null){
+                entrySetBeanList = getEntrySetBean();
+                if(entrySetBeanList.size() <= 0){
                     ToastUtil.showShortToast("请先叫号");
                     return;
                 }
-                if(!isSameWindow(entrySetBean.windowId)){
-                    ToastUtil.showShortToast("过号失败，请先叫号");
-                    return;
+                isCurrentWindow = false;
+                for(EntrySetBean setBean:entrySetBeanList){
+                    if(isSameWindow(setBean.windowId)){
+                        isCurrentWindow = true;
+                        entrySetBean = setBean;
+                        break;
+                    }
                 }
-                clientPassCall(entrySetBean.id,entrySetBean.groupId);
+                if(isCurrentWindow){//是否当前窗口
+                    clientPassCall(entrySetBean.id,entrySetBean.groupId);
+                }else {
+                    ToastUtil.showShortToast("过号失败，请先叫号");
+                }
                 break;
             case R.id.reNext:
                 if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() == 0){
                     ToastUtil.showShortToast("暂无排队，请稍后叫号");
                     return;
                 }
-                entrySetBean = getEntrySetBean();
-                if(entrySetBean != null){//正在叫号
-                    if(isSameWindow(entrySetBean.windowId)){//同一窗口
+                entrySetBeanList = getEntrySetBean();
+                isCurrentWindow = false;
+                for(EntrySetBean setBean:entrySetBeanList){
+                    if(isSameWindow(setBean.windowId)){
+                        isCurrentWindow = true;
+                        entrySetBean = setBean;
+                        break;
+                    }
+                }
+                if(entrySetBeanList.size() > 0){//当前存在叫号队列
+                    if(isCurrentWindow){//同一窗口
                         clientHandleCall(entrySetBean.id,entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
                     }else {
-                        isNext = true;
-                        bespeakSort = entrySetBean.bespeakSort;
-                        clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
+                        if(entrySetBeanList != null &&entrySetBeanList.size() > 0){
+                            isNext = true;
+                            entrySetBean = entrySetBeanList.get(0);
+                            bespeakSort = entrySetBean.bespeakSort;
+                            clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
+                        }
                     }
                 }else {
                     if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0){
@@ -435,17 +464,25 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 }
                 break;
             case R.id.reReCall:
-                entrySetBean = getEntrySetBean();
-                if(entrySetBean == null){
+                entrySetBeanList = getEntrySetBean();
+                if(entrySetBeanList.size() <= 0){
                     ToastUtil.showShortToast("请先叫号");
                     return;
                 }
-                if(!isSameWindow(entrySetBean.windowId)){
-                    ToastUtil.showShortToast("重呼失败，请先叫号");
-                    return;
+                isCurrentWindow = false;
+                for(EntrySetBean setBean:entrySetBeanList){
+                    if(isSameWindow(setBean.windowId)){
+                        isCurrentWindow = true;
+                        entrySetBean = setBean;
+                        break;
+                    }
                 }
-                bespeakSort = entrySetBean.bespeakSort;
-                clientReCall(entrySetBean.id,entrySetBean.userName);
+                if(isCurrentWindow){//是否当前窗口
+                    bespeakSort = entrySetBean.bespeakSort;
+                    clientReCall(entrySetBean.id,entrySetBean.userName);
+                }else {
+                    ToastUtil.showShortToast("重呼失败，请先叫号");
+                }
                 break;
             case R.id.re_back:
                 finish();
@@ -455,19 +492,19 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 break;
         }
     }
-    private EntrySetBean getEntrySetBean(){
-        EntrySetBean entrySetBean = null;
+    private  List<EntrySetBean> getEntrySetBean(){
+        List<EntrySetBean> listQueueState = new ArrayList<EntrySetBean>();
         if(netWorkContentAdapter.mDataList != null){
             for(EntrySetBean setBean: netWorkContentAdapter.mDataList){
                 if("5".equals(setBean.queueState.trim())){//0排队中，5叫号中，1办理完成，2过号，3退出
-                    return setBean;
+                    listQueueState.add(setBean);
                 }
             }
         }
-        return entrySetBean;
+        return listQueueState;
     }
     private boolean isSameWindow(String windowIdTemp){
-        Log.d("jsh","windowIdTemp"+windowIdTemp);
+        Log.d("jsh","isSamewindow:"+(windowId.equals(windowIdTemp)));
         if(windowId.equals(windowIdTemp)){
             return  true;
         }
@@ -943,6 +980,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
          *  MIX_MODE_HIGH_SPEED_SYNTHESIZE, 2G 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
          */
         String voiceMsg = "请"+bespeakSort+"号到，"+window;
+        Log.d("jsh","voiceMsg:"+voiceMsg);
         if("1".equals(chooseLanguage)){
             if (mSpeechSynthesizer == null) {
                 print("[ERROR], 初始化失败");
