@@ -33,7 +33,7 @@
 
         <Button
             android:id="@+id/btnSet"
-            android:layout_width="@dimen/x150"
+            android:layout_width="@dimen/x160"
             android:layout_height="28dp"
             android:background="@color/grey_cc"
             android:layout_centerVertical="true"
