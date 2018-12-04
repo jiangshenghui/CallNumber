@@ -140,6 +140,14 @@ public class SetServiceActivity extends RvBaseActivity {
                 if(queueFragment.tvWindows.getTag() != null){
                     bundle.putSerializable("windowId",queueFragment.tvWindows.getTag().toString());
                 }
+
+                if(queueFragment.tvNetwork.getTag() != null){
+                    SharedPreferencesUtil.writeString("networkname",queueFragment.tvNetwork.getText().toString());
+                }
+                if(queueFragment.tvWindows.getTag() != null){
+                    SharedPreferencesUtil.writeString("networkid",queueFragment.tvNetwork.getTag().toString());
+                }
+
                 Gson gson = new Gson();
                 String json = gson.toJson(mList);
                 SharedPreferencesUtil.writeString("alterSampleJson",json);

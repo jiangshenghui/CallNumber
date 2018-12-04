@@ -50,7 +50,7 @@ public class QueueFragment extends RvBaseFragment {
     GridView girdQueue;
 
 
-    private NetWorkListAdapter netListAdapter;
+    public NetWorkListAdapter netListAdapter;
     private WindowListAdapter windowsListAdapter;
     private SpinerPopWindow mSpinerPopNet,mSpinerPopWindow;
     public   QueuetAdapter queuetAdapter;
@@ -212,11 +212,11 @@ public class QueueFragment extends RvBaseFragment {
         ((WindowDao)createRequestData).getDepartGroupList(getActivity(), commonBody, new RxNetCallback<ServiceNetWorkBean>() {
             @Override
             public void onSuccess(ServiceNetWorkBean serviceNetWorkBean) {
-                if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet != null && serviceNetWorkBean.entrySet.size() > 0) {//登录成功
+                if (serviceNetWorkBean != null && serviceNetWorkBean.entrySet != null && serviceNetWorkBean.entrySet.size() > 0) {
                     if(alterSamples != null && alterSamples.size() > 0){
                         for(EntrySetBean eSetBean:serviceNetWorkBean.entrySet){
                             for(EntrySetBean entrySetBean:alterSamples){
-                                if(eSetBean.id.equals(entrySetBean.id)&& entrySetBean.isChoose){
+                                if(eSetBean.id.equals(entrySetBean.id) && entrySetBean.isChoose){
                                     eSetBean.isChoose = true;
                                     break;
                                 }
@@ -260,10 +260,11 @@ public class QueueFragment extends RvBaseFragment {
             mSpinerPopNet.dismiss();
             tvNetwork.setText(netListAdapter.mList.get(position).name);
             tvNetwork.setTag(netListAdapter.mList.get(position).id);
-            SharedPreferencesUtil.writeString("networkname",netListAdapter.mList.get(position).name);
-            SharedPreferencesUtil.writeString("networkid",netListAdapter.mList.get(position).id);
             getDepartmentWindow(netListAdapter.mList.get(position).id);
             getDepartmentQueue(netListAdapter.mList.get(position).id);
+            tvWindows.setText("请选择窗口");
+            tvWindows.setTag("");
+
         }
     };
     /**
