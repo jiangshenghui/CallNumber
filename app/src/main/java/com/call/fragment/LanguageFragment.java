@@ -11,7 +11,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bg.baseutillib.tool.SharedPreferencesUtil;
-import com.bg.baseutillib.tool.ToastUtil;
 import com.call.R;
 import com.call.RvBaseFragment;
 import com.call.activity.adapter.NetWorkListAdapter;
