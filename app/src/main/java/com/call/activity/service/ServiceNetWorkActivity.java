@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.baidu.tts.auth.AuthInfo;
@@ -49,6 +50,7 @@ import com.call.utils.AutoCheck;
 import com.call.utils.Utils;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +82,10 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
 
     @BindView(R.id.wait_recycler)
     RecyclerView waitRecycler;
+
+    @BindView(R.id.reNext)
+    RelativeLayout reNext;
+
 
     private NetWorkContentAdapter netWorkContentAdapter;
 
@@ -363,6 +369,12 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
     public WindowDao onCreateRequestData() {
         return new WindowDao();
     }
+    //设置点击间隔
+    public static final int MIN_CLICK_DELAY_TIME = 8000;
+    //上次点击时间
+    private long lastClickTime = 0;
+    //上次点击时间
+    private long lastClickTime1 = 0;
 
     @OnClick({R.id.reTongji,R.id.reJiesan,R.id.rePause,R.id.reGuohao,R.id.reNext,R.id.reReCall,R.id.re_back
        ,R.id.btnSet})
@@ -410,55 +422,64 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 }
                 break;
             case R.id.reGuohao:
-                entrySetBeanList = getEntrySetBean();
-                if(entrySetBeanList.size() <= 0){
-                    ToastUtil.showShortToast("请先叫号");
-                    return;
-                }
-                isCurrentWindow = false;
-                for(EntrySetBean setBean:entrySetBeanList){
-                    if(isSameWindow(setBean.windowId)){
-                        isCurrentWindow = true;
-                        entrySetBean = setBean;
-                        break;
-                    }
-                }
-                if(isCurrentWindow){//是否当前窗口
-                    clientPassCall(entrySetBean.id,entrySetBean.groupId);
-                }else {
-                    ToastUtil.showShortToast("过号失败，请先叫号");
-                }
-                break;
-            case R.id.reNext:
-                if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() == 0){
-                    ToastUtil.showShortToast("暂无排队，请稍后叫号");
-                    return;
-                }
-                entrySetBeanList = getEntrySetBean();
-                isCurrentWindow = false;
-                for(EntrySetBean setBean:entrySetBeanList){
-                    if(isSameWindow(setBean.windowId)){
-                        isCurrentWindow = true;
-                        entrySetBean = setBean;
-                        break;
-                    }
-                }
-                if(isCurrentWindow){//当前存在叫号队列
-                    clientHandleCall(entrySetBean.id,entrySetBean.groupId,entrySetBean.windowId,entrySetBean.userId,entrySetBean.userName);
-                }else {
-                    if(netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0){
-                        List<EntrySetBean> listQueueTemp = new ArrayList<EntrySetBean>();
-                        for(EntrySetBean setBean: netWorkContentAdapter.mDataList){
-                            if(!"5".equals(setBean.queueState.trim())){//0排队中，5叫号中，1办理完成，2过号，3退出
-                                listQueueTemp.add(setBean);
+                    long currentTime1 = Calendar.getInstance().getTimeInMillis();
+                    if (currentTime1 - lastClickTime1 > 5000) {
+                        lastClickTime1 = currentTime1;
+                        entrySetBeanList = getEntrySetBean();
+                        if (entrySetBeanList.size() <= 0) {
+                            ToastUtil.showShortToast("请先叫号");
+                            return;
+                        }
+                        isCurrentWindow = false;
+                        for (EntrySetBean setBean : entrySetBeanList) {
+                            if (isSameWindow(setBean.windowId)) {
+                                isCurrentWindow = true;
+                                entrySetBean = setBean;
+                                break;
                             }
                         }
-                        isNext = true;
-                        entrySetBean = listQueueTemp.get(0);
-                        bespeakSort = entrySetBean.bespeakSort;
-                        clientCallNext(entrySetBean.groupId,entrySetBean.userId,entrySetBean.userName);
-                    }
-                }
+                        if (isCurrentWindow) {//是否当前窗口
+                            clientPassCall(entrySetBean.id, entrySetBean.groupId);
+                        } else {
+                            ToastUtil.showShortToast("过号失败，请先叫号");
+                        }
+                     }
+                    break;
+                    case R.id.reNext:
+                      //本次点击时间
+                    long currentTime = Calendar.getInstance().getTimeInMillis();
+                    if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                        lastClickTime = currentTime;
+                        if (netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() == 0) {
+                            ToastUtil.showShortToast("暂无排队，请稍后叫号");
+                            return;
+                        }
+                        entrySetBeanList = getEntrySetBean();
+                        isCurrentWindow = false;
+                        for (EntrySetBean setBean : entrySetBeanList) {
+                            if (isSameWindow(setBean.windowId)) {
+                                isCurrentWindow = true;
+                                entrySetBean = setBean;
+                                break;
+                            }
+                        }
+                        if (isCurrentWindow) {//当前存在叫号队列
+                            clientHandleCall(entrySetBean.id, entrySetBean.groupId, entrySetBean.windowId, entrySetBean.userId, entrySetBean.userName);
+                        } else {
+                            if (netWorkContentAdapter.mDataList != null && netWorkContentAdapter.mDataList.size() > 0) {
+                                List<EntrySetBean> listQueueTemp = new ArrayList<EntrySetBean>();
+                                for (EntrySetBean setBean : netWorkContentAdapter.mDataList) {
+                                    if (!"5".equals(setBean.queueState.trim())) {//0排队中，5叫号中，1办理完成，2过号，3退出
+                                        listQueueTemp.add(setBean);
+                                    }
+                                }
+                                isNext = true;
+                                entrySetBean = listQueueTemp.get(0);
+                                bespeakSort = entrySetBean.bespeakSort;
+                                clientCallNext(entrySetBean.groupId, entrySetBean.userId, entrySetBean.userName);
+                            }
+                        }
+                  }
                 break;
             case R.id.reReCall:
                 entrySetBeanList = getEntrySetBean();
