@@ -733,7 +733,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
                     List<EntrySetBean> mDataList = new ArrayList<EntrySetBean>();
                     for(EntrySetBean entrySetBean:netWorkContentAdapter.mDataList){
-                          if(!queueId.equals(entrySetBean.id)&&"5".equals(entrySetBean.queueState)){
+                          if(!queueId.equals(entrySetBean.id)&&!"5".equals(entrySetBean.queueState)){
                               mDataList.add(entrySetBean);
                           }
                     }
