@@ -733,7 +733,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 if (serviceNetWorkBean != null &&"0".equals(serviceNetWorkBean.status)) {
                     List<EntrySetBean> mDataList = new ArrayList<EntrySetBean>();
                     for(EntrySetBean entrySetBean:netWorkContentAdapter.mDataList){
-                          if(!queueId.equals(entrySetBean.id)&&!"5".equals(entrySetBean.queueState)){
+                          if(!queueId.equals(entrySetBean.id)&&!"5".equals(entrySetBean.queueState.trim())){
                               mDataList.add(entrySetBean);
                           }
                     }
@@ -742,13 +742,10 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                         isNext = true;
                         clientCallNext(mDataList.get(0).groupId,mDataList.get(0).userId,mDataList.get(0).userName);
                     }
-                }else{
-                    ToastUtil.showShortToast("重呼失败");
                 }
             }
             @Override
             public void onError(ApiException e) {
-                ToastUtil.showShortToast("重呼失败");
                 if(!TextUtils.isEmpty(e.getMessage())){
                     ToastUtil.showShortToast(e.getMessage());
                 }
