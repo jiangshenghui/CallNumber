@@ -1125,7 +1125,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
         bindService(mServiceIntent, conn, BIND_AUTO_CREATE);
         isPause = true;
         // 开始服务
-        registerReceiver();
+//        registerReceiver();
     }
 
     @Override
@@ -1137,7 +1137,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
     protected void onPause() {
         super.onPause();
         // 注销广播 最好在onPause上注销
-        unregisterReceiver(mReceiver);
+//        unregisterReceiver(mReceiver);
         isPause = false;
         // 注销服务
 //        unbindService(conn);// 解绑服务
