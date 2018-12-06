@@ -473,6 +473,10 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                                         listQueueTemp.add(setBean);
                                     }
                                 }
+                                if(listQueueTemp.size() <=0){
+                                    ToastUtil.showShortToast("暂无排队，请稍后叫号");
+                                    return;
+                                }
                                 isNext = true;
                                 entrySetBean = listQueueTemp.get(0);
                                 bespeakSort = entrySetBean.bespeakSort;
