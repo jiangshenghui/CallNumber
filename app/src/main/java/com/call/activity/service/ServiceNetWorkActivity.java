@@ -408,7 +408,6 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
                 }
                 boolean isCurrentWindow = false;
                 for(EntrySetBean setBean:entrySetBeanList){
-                    Log.d("jsh","setBean:"+setBean.windowId);
                     if(isSameWindow(setBean.windowId)){
                         isCurrentWindow = true;
                         entrySetBean = setBean;
@@ -900,6 +899,7 @@ public class ServiceNetWorkActivity extends RvBaseActivity implements ConfirmDia
         // 5. 以下setParam 参数选填。不填写则默认值生效
         // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
         String voice =  SharedPreferencesUtil.readString("voice");
+
         mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, voice);
         // 设置合成的音量，0-9 ，默认 5
         mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "9");

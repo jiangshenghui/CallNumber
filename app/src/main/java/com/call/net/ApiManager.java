@@ -12,9 +12,9 @@ public class ApiManager {
 //    public static final String HOST = "https://daorv-rent.icebartech.com/";//测试环境
 //    public static final String HOST = "http://192.168.31.241:7001/";//测试环境
   //  public static final String HOST =  "https://pai.foxxgame.com/";//正式环境
-    public static final String HOST =  " http://ghapi.paihao123.com/";//正式环境
+//    public static final String HOST =  "http://ghapi.paihao123.com/";//正式环境
 
-//    public static final String HOST = "http://yk2w5t.natappfree.cc/";//测试环境
+    public static final String HOST = "http://172.17.253.226/";//测试环境
 
     /**
      * a登录

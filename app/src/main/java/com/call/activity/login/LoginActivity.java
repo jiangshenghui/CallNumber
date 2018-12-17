@@ -201,13 +201,10 @@ public class LoginActivity extends RvBaseActivity {
         final String account = etPhone.getText().toString().trim();
         final String pwd = etPassword.getText().toString().trim();
         if (TextUtils.isEmpty(account)) {
-            ToastUtil.showShortToast("请输入手机号");
+            ToastUtil.showShortToast("请输入用户名");
             return;
         }
-        if (!AppConfig.isMobileNO(account) && !SystemUtils.isApkInDebug(mContext)) {
-            ToastUtil.showShortToast("请输入正确的手机号");
-            return;
-        }
+
         if (TextUtils.isEmpty(pwd)) {
             ToastUtil.showShortToast("请输入密码");
             return;
